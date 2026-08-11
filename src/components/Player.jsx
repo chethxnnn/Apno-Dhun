@@ -1,7 +1,15 @@
 import { useRef, useCallback } from 'react';
 import './Player.css';
 
+const modeSeekPointerImages = {
+  wedding: '/player-icons/groom.png',   // Groom moving pointer
+  folk: '/player-icons/dhol.png',       // Dhol moving pointer
+  trending: '/player-icons/fire.png',   // Fire moving pointer
+  devotional: null,                    // Diya emoji/glow for Bhakti
+};
+
 export default function Player({
+  currentMode = 'wedding',
   currentTrack,
   isPlaying,
   isBuffering,
@@ -37,6 +45,9 @@ export default function Player({
     : null;
   if (!currentTrack) return null;
 
+  const pointerImg = modeSeekPointerImages[currentMode];
+  const isWedding = currentMode === 'wedding';
+
   return (
     <div className="player-dock">
       <div className={`player-glow ${isPlaying ? 'on' : ''}`} />
@@ -53,6 +64,7 @@ export default function Player({
         <div className="info-col">
           <p className="track-name">{currentTrack.title}</p>
           <p className="track-artist">{currentTrack.artist}</p>
+
           <div
             className="seek-bar"
             ref={seekRef}
@@ -66,8 +78,37 @@ export default function Player({
             <div className="seek-track">
               <div className="seek-fill" style={{ width: `${pct}%` }} />
             </div>
-            <div className="seek-thumb" style={{ left: `${pct}%` }} />
+
+            {/* In Byaav mode: Stationary Bride image at 100% (right end of line) */}
+            {isWedding && (
+              <div className="seek-target-bride">
+                <img
+                  src="/player-icons/bride.png"
+                  alt="Bride"
+                  className="bride-seek-img"
+                  draggable="false"
+                />
+              </div>
+            )}
+
+            {/* Custom Vibe Moving Seek Pointer */}
+            <div
+              className={`seek-thumb vibe-thumb-${currentMode}`}
+              style={{ left: `${pct}%` }}
+            >
+              {pointerImg ? (
+                <img
+                  src={pointerImg}
+                  alt=""
+                  className={`pointer-img pointer-${currentMode}`}
+                  draggable="false"
+                />
+              ) : (
+                <span className="seek-icon">🪔</span>
+              )}
+            </div>
           </div>
+
           <div className="time-row">
             <span>{fmt(currentTime)}</span>
             <span>{fmt(duration)}</span>

@@ -139,6 +139,7 @@ export default function App() {
       />
 
       <Player
+        currentMode={currentMode}
         currentTrack={currentTrack}
         isPlaying={isPlaying}
         isBuffering={isBuffering}
