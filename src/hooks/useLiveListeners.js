@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 
 // Live Listeners Hook
-// If VITE_ABLY_API_KEY is configured in Vercel, loads Ably CDN and tracks 100% real-time presence.
-// Otherwise, uses dynamic organic listener pulse.
+// If VITE_ABLY_API_KEY is present, connects to Ably Realtime Presence for 100% accurate active visitor count.
 export function useLiveListeners() {
-  const [listenerCount, setListenerCount] = useState(42);
+  const ablyKey = import.meta.env?.VITE_ABLY_API_KEY;
+  const [listenerCount, setListenerCount] = useState(ablyKey ? 1 : 42);
 
   useEffect(() => {
-    const ablyKey = import.meta.env?.VITE_ABLY_API_KEY;
-
     if (ablyKey) {
       let ablyClient = null;
       let channel = null;
 
-      // Load Ably browser SDK dynamically from CDN (Zero NPM dependency required)
+      console.log('[LiveListeners] VITE_ABLY_API_KEY detected. Initializing Realtime Presence...');
+
+      // Load Ably browser SDK from CDN
       const loadAblyScript = () => {
         return new Promise((resolve, reject) => {
           if (window.Ably) {
@@ -34,23 +34,29 @@ export function useLiveListeners() {
           ablyClient = new Ably.Realtime({ key: ablyKey, clientId });
           channel = ablyClient.channels.get('apno-dhun-listeners');
 
-          // Enter presence channel
-          channel.presence.enter();
-
-          // Update count whenever someone enters or leaves
-          const updatePresenceCount = () => {
+          const fetchCurrentMembers = () => {
             channel.presence.get((err, members) => {
               if (!err && members) {
+                console.log('[LiveListeners] Realtime members active:', members.length);
                 setListenerCount(Math.max(1, members.length));
               }
             });
           };
 
-          channel.presence.subscribe(updatePresenceCount);
-          updatePresenceCount();
+          // Enter presence channel
+          channel.presence.enter(null, (err) => {
+            if (!err) {
+              fetchCurrentMembers();
+            }
+          });
+
+          // Subscribe to all presence events (enter, leave, update, present)
+          channel.presence.subscribe(() => {
+            fetchCurrentMembers();
+          });
         })
         .catch((err) => {
-          console.warn('Ably realtime presence connection failed:', err);
+          console.warn('[LiveListeners] Ably initialization error:', err);
         });
 
       return () => {
@@ -67,23 +73,18 @@ export function useLiveListeners() {
       };
     }
 
-    // Organic listener pulse fallback
+    // Fallback organic simulation ONLY if VITE_ABLY_API_KEY is not set
     const calculateBaseListeners = () => {
       const now = new Date();
       const hour = now.getHours();
       let base = 38;
-      if (hour >= 18 && hour <= 23) {
-        base = 64; // peak evening IST
-      } else if (hour >= 12 && hour < 18) {
-        base = 45; // afternoon
-      } else if (hour >= 0 && hour < 6) {
-        base = 22; // late night
-      }
+      if (hour >= 18 && hour <= 23) base = 64;
+      else if (hour >= 12 && hour < 18) base = 45;
+      else if (hour >= 0 && hour < 6) base = 22;
       return base + Math.floor(Math.random() * 6);
     };
 
     setListenerCount(calculateBaseListeners());
-
     const interval = setInterval(() => {
       setListenerCount((prev) => {
         const delta = Math.floor(Math.random() * 5) - 2;
@@ -92,7 +93,7 @@ export function useLiveListeners() {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [ablyKey]);
 
   return listenerCount;
 }
