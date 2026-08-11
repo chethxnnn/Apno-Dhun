@@ -1,0 +1,135 @@
+.title-block {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  pointer-events: none;
+  user-select: none;
+}
+
+.title-in {
+  animation: titleFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes titleFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Center position */
+.title-block.pos-center {
+  align-items: center;
+  justify-content: center;
+}
+
+.title-block.pos-center .title-img {
+  max-width: 75vw;
+  max-height: 55vh;
+}
+
+/* Center-Right-Up position (Lok: desktop move MORE to right & slightly up) */
+.title-block.pos-center-right-up {
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 32vw;
+  padding-top: 10vh;
+}
+
+.title-block.pos-center-right-up .title-img {
+  max-width: 65vw;
+  max-height: 55vh;
+}
+
+/* Center-Up position (Trend: desktop slightly up) */
+.title-block.pos-center-up {
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 10vh;
+}
+
+.title-block.pos-center-up .title-img {
+  max-width: 75vw;
+  max-height: 55vh;
+}
+
+/* Left position (Byaav: desktop left side) */
+.title-block.pos-left {
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 5vw;
+}
+
+.title-block.pos-left .title-img {
+  max-width: 50vw;
+  max-height: 55vh;
+}
+
+/* Left-Up position (Bhakti: desktop slightly up) */
+.title-block.pos-left-up {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-left: 5vw;
+  padding-top: 14vh;
+}
+
+.title-block.pos-left-up .title-img {
+  max-width: 50vw;
+  max-height: 55vh;
+}
+
+.title-img {
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 40px rgba(0, 0, 0, 0.5));
+}
+
+/* Mobile View Adjustments (max-width: 768px):
+   1. All text images centered horizontally
+   2. Lok text image slightly lower (padding-top: 22vh)
+   3. Byaav text image moved UP to top (padding-top: 12vh)
+   4. Trend text image moved UP (padding-top: 10vh)
+   5. Bhakti text image moved UP (padding-top: 13vh)
+*/
+@media (max-width: 768px) {
+  .title-block {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 12px !important;
+  }
+
+  /* Lok text image slightly lower on mobile */
+  .title-block.pos-center-right-up {
+    align-items: flex-start !important;
+    padding-top: 22vh !important;
+  }
+
+  /* Byaav text image moved UP to top on mobile */
+  .title-block.pos-left {
+    align-items: flex-start !important;
+    padding-top: 12vh !important;
+  }
+
+  /* Nayo trend text image moved UP on mobile */
+  .title-block.pos-center-up {
+    align-items: flex-start !important;
+    padding-top: 10vh !important;
+  }
+
+  /* Bhakti text image moved UP on mobile */
+  .title-block.pos-left-up {
+    align-items: flex-start !important;
+    padding-top: 13vh !important;
+  }
+
+  .title-img {
+    max-width: 92vw !important;
+    max-height: 48vh !important;
+  }
+}

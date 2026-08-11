@@ -1,0 +1,82 @@
+.live-listeners-bar {
+  position: fixed;
+  top: 74px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  pointer-events: none;
+  user-select: none;
+  animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.dim-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34c759;
+  box-shadow: 0 0 6px rgba(52, 199, 89, 0.6);
+  opacity: 0.75;
+  animation: dimPulse 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes dimPulse {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.85);
+    box-shadow: 0 0 3px rgba(52, 199, 89, 0.3);
+  }
+  100% {
+    opacity: 0.85;
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(52, 199, 89, 0.7);
+  }
+}
+
+.listeners-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hide or adjust position in Cinema mode */
+.app.cinema-active .live-listeners-bar {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateX(-50%) translateY(-6px) !important;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .live-listeners-bar {
+    top: 52px;
+    padding: 2px 8px;
+  }
+
+  .listeners-text {
+    font-size: 10px;
+  }
+
+  .dim-pulse-dot {
+    width: 5px;
+    height: 5px;
+  }
+}
