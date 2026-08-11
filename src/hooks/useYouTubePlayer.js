@@ -28,17 +28,23 @@ export function useYouTubePlayer(playlist) {
   const playerRef = useRef(null);
   const containerRef = useRef(null);
   const intervalRef = useRef(null);
+
+  // Pick initial random track index for the vibe
+  const getRandomIndex = (len) => (len > 0 ? Math.floor(Math.random() * len) : 0);
+
   const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBuffering, setIsBuffering] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(() => getRandomIndex(playlist.length));
   const [metaCache, setMetaCache] = useState({});
 
   const playlistRef = useRef(playlist);
-  const trackIndexRef = useRef(0);
+  const trackIndexRef = useRef(currentTrackIndex);
+  const shuffleRef = useRef(isShuffle);
 
   useEffect(() => {
     playlistRef.current = playlist;
@@ -47,6 +53,10 @@ export function useYouTubePlayer(playlist) {
   useEffect(() => {
     trackIndexRef.current = currentTrackIndex;
   }, [currentTrackIndex]);
+
+  useEffect(() => {
+    shuffleRef.current = isShuffle;
+  }, [isShuffle]);
 
   // Fetch YouTube Title & Artist using noembed (CORS-enabled public oEmbed)
   const fetchTrackMeta = useCallback((videoId) => {
@@ -113,6 +123,36 @@ export function useYouTubePlayer(playlist) {
     }
   }, []);
 
+  const loadTrack = useCallback(
+    (i) => {
+      if (!playerRef.current || !playlistRef.current[i]) return;
+      setCurrentTrackIndex(i);
+      setCurrentTime(0);
+      setDuration(0);
+      const track = playlistRef.current[i];
+      if (track?.id) {
+        fetchTrackMeta(track.id);
+      }
+      playerRef.current.loadVideoById(playlistRef.current[i].id);
+    },
+    [fetchTrackMeta]
+  );
+
+  const getNextTrackIndex = useCallback(() => {
+    const len = playlistRef.current.length;
+    if (len <= 1) return 0;
+
+    if (shuffleRef.current) {
+      let rand = getRandomIndex(len);
+      // Avoid repeating same track if playlist length > 1
+      while (rand === trackIndexRef.current) {
+        rand = getRandomIndex(len);
+      }
+      return rand;
+    }
+    return (trackIndexRef.current + 1) % len;
+  }, []);
+
   // Pre-fetch oEmbed metadata for current playlist items
   useEffect(() => {
     playlist.forEach((track) => {
@@ -124,6 +164,9 @@ export function useYouTubePlayer(playlist) {
 
   useEffect(() => {
     let mounted = true;
+    const initialIndex = getRandomIndex(playlist.length);
+    setCurrentTrackIndex(initialIndex);
+
     loadYouTubeAPI().then(() => {
       if (!mounted || !containerRef.current) return;
       if (playerRef.current) playerRef.current.destroy();
@@ -131,7 +174,7 @@ export function useYouTubePlayer(playlist) {
       playerRef.current = new window.YT.Player(containerRef.current, {
         height: '1',
         width: '1',
-        videoId: playlist[0]?.id || '',
+        videoId: playlist[initialIndex]?.id || playlist[0]?.id || '',
         playerVars: {
           autoplay: 0,
           controls: 0,
@@ -169,17 +212,15 @@ export function useYouTubePlayer(playlist) {
               case window.YT.PlayerState.ENDED: {
                 setIsPlaying(false);
                 stopPolling();
-                const next = (trackIndexRef.current + 1) % playlistRef.current.length;
-                setCurrentTrackIndex(next);
-                playerRef.current.loadVideoById(playlistRef.current[next].id);
+                const nextIdx = getNextTrackIndex();
+                loadTrack(nextIdx);
                 break;
               }
             }
           },
           onError: () => {
-            const next = (trackIndexRef.current + 1) % playlistRef.current.length;
-            setCurrentTrackIndex(next);
-            if (playerRef.current) playerRef.current.loadVideoById(playlistRef.current[next].id);
+            const nextIdx = getNextTrackIndex();
+            loadTrack(nextIdx);
           },
         },
       });
@@ -194,31 +235,19 @@ export function useYouTubePlayer(playlist) {
     };
   }, []);
 
-  const loadTrack = useCallback(
-    (i) => {
-      if (!playerRef.current || !playlistRef.current[i]) return;
-      setCurrentTrackIndex(i);
-      setCurrentTime(0);
-      setDuration(0);
-      const track = playlistRef.current[i];
-      if (track?.id) {
-        fetchTrackMeta(track.id);
-      }
-      playerRef.current.loadVideoById(playlistRef.current[i].id);
-    },
-    [fetchTrackMeta]
-  );
-
   const loadNewPlaylist = useCallback(
     (newPl) => {
       playlistRef.current = newPl;
-      setCurrentTrackIndex(0);
+      const initialIdx = getRandomIndex(newPl.length);
+      setCurrentTrackIndex(initialIdx);
       setCurrentTime(0);
       setDuration(0);
-      if (newPl[0]?.id) {
-        fetchTrackMeta(newPl[0].id);
+      if (newPl[initialIdx]?.id) {
+        fetchTrackMeta(newPl[initialIdx].id);
       }
-      if (playerRef.current && newPl[0]) playerRef.current.loadVideoById(newPl[0].id);
+      if (playerRef.current && newPl[initialIdx]) {
+        playerRef.current.loadVideoById(newPl[initialIdx].id);
+      }
     },
     [fetchTrackMeta]
   );
@@ -246,9 +275,14 @@ export function useYouTubePlayer(playlist) {
     }
   }, []);
 
+  const toggleShuffle = useCallback(() => {
+    setIsShuffle((prev) => !prev);
+  }, []);
+
   const nextTrack = useCallback(() => {
-    loadTrack((trackIndexRef.current + 1) % playlistRef.current.length);
-  }, [loadTrack]);
+    const nextIdx = getNextTrackIndex();
+    loadTrack(nextIdx);
+  }, [getNextTrackIndex, loadTrack]);
 
   const prevTrack = useCallback(() => {
     try {
@@ -258,7 +292,9 @@ export function useYouTubePlayer(playlist) {
         return;
       }
     } catch (e) {}
-    loadTrack(trackIndexRef.current === 0 ? playlistRef.current.length - 1 : trackIndexRef.current - 1);
+    const len = playlistRef.current.length;
+    const prevIdx = trackIndexRef.current === 0 ? len - 1 : trackIndexRef.current - 1;
+    loadTrack(prevIdx);
   }, [loadTrack]);
 
   const seekTo = useCallback((s) => {
@@ -283,6 +319,7 @@ export function useYouTubePlayer(playlist) {
     isPlaying,
     isBuffering,
     isMuted,
+    isShuffle,
     currentTime,
     duration,
     currentTrack,
@@ -291,6 +328,7 @@ export function useYouTubePlayer(playlist) {
     pause,
     togglePlay,
     toggleMute,
+    toggleShuffle,
     nextTrack,
     prevTrack,
     seekTo,

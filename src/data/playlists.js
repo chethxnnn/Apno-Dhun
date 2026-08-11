@@ -31,25 +31,19 @@ export const modeConfig = {
   },
 };
 
+// Playlists containing strictly the 5 YouTube IDs supplied by the user
 export const playlists = {
   folk: [
     { id: 'YQGDuo6Uufg', title: 'Lok Ri Dhun', artist: 'Rajasthani Folk' },
-    { id: '1noR8m_jMco', title: 'Chaudhary', artist: 'Amit Trivedi ft. Mame Khan' },
-    { id: '1T4xVn3yC48', title: 'Kesariya Balam', artist: 'Mame Khan' },
   ],
   wedding: [
     { id: '7WCpoMLMdS0', title: 'Byaav Ro Geet', artist: 'Rajasthani Wedding' },
-    { id: 'vHKsj1Wjhp0', title: 'Banna Re', artist: 'Wedding Folk' },
-    { id: 'sCx7kNgOPgg', title: 'Banni Tharo Banno', artist: 'Wedding Bangers' },
   ],
   devotional: [
     { id: 'u3RdMh6PE94', title: 'Bhagwan Ri Bhakti', artist: 'Devotional Bhajan' },
-    { id: 'gGORMNGv6aY', title: 'Khatu Shyam Bhajan', artist: 'Devotional' },
-    { id: 'NQGW2L2raWQ', title: 'Ramdev Ji Bhajan', artist: 'Devotional' },
   ],
   trending: [
+    { id: 'hxVeQam-U3M', title: 'Navo Trend Hit', artist: 'Rajasthani New' },
     { id: 'fDvCKZV5ZEo', title: 'Navo Trend', artist: 'Rajasthani Trending' },
-    { id: 'g9US1yLN5pA', title: 'Loor', artist: 'Trending Hits' },
-    { id: 'YU7WRFBakag', title: 'Mharo Rajasthan', artist: 'Trending' },
   ],
 };

@@ -23,11 +23,13 @@ export default function App() {
     isPlaying,
     isBuffering,
     isMuted,
+    isShuffle,
     currentTime,
     duration,
     currentTrack,
     togglePlay,
     toggleMute,
+    toggleShuffle,
     nextTrack,
     prevTrack,
     seekTo,
@@ -51,7 +53,7 @@ export default function App() {
     [currentMode, loadNewPlaylist]
   );
 
-  // Pro Interactivity Shortcuts: Space, M, F, Escape, Left Arrow, Right Arrow
+  // Pro Interactivity Shortcuts: Space, M, S, F, Escape, Left Arrow, Right Arrow
   useEffect(() => {
     const handleKeyDown = (e) => {
       const activeElem = document.activeElement;
@@ -75,6 +77,12 @@ export default function App() {
           e.preventDefault();
           toggleMute();
           showToast(isMuted ? '🔊 Unmuted' : '🔇 Muted');
+          break;
+
+        case 'KeyS':
+          e.preventDefault();
+          toggleShuffle();
+          showToast(isShuffle ? '🔀 Shuffle OFF' : '🔀 Shuffle ON');
           break;
 
         case 'ArrowRight':
@@ -116,7 +124,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [togglePlay, toggleMute, nextTrack, prevTrack, isPlaying, isMuted, showToast]);
+  }, [togglePlay, toggleMute, toggleShuffle, nextTrack, prevTrack, isPlaying, isMuted, isShuffle, showToast]);
 
   const config = modeConfig[currentMode];
 
@@ -144,10 +152,12 @@ export default function App() {
         isPlaying={isPlaying}
         isBuffering={isBuffering}
         isMuted={isMuted}
+        isShuffle={isShuffle}
         currentTime={currentTime}
         duration={duration}
         onTogglePlay={togglePlay}
         onToggleMute={toggleMute}
+        onToggleShuffle={toggleShuffle}
         onNext={nextTrack}
         onPrev={prevTrack}
         onSeek={seekTo}

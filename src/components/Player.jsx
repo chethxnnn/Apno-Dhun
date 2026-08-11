@@ -14,10 +14,12 @@ export default function Player({
   isPlaying,
   isBuffering,
   isMuted,
+  isShuffle,
   currentTime,
   duration,
   onTogglePlay,
   onToggleMute,
+  onToggleShuffle,
   onNext,
   onPrev,
   onSeek,
@@ -49,24 +51,58 @@ export default function Player({
   const isWedding = currentMode === 'wedding';
 
   return (
-    <div className="player-dock">
+    <div className="player-dock jharokha-dock">
+      {/* Dynamic Aura Glow */}
       <div className={`player-glow ${isPlaying ? 'on' : ''}`} />
-      <div className="player-glass">
-        {/* Album art vinyl */}
-        <div className="art-box">
+
+      {/* Royal Jharokha Arch Frame */}
+      <div className="jharokha-arch-top">
+        <svg viewBox="0 0 500 24" fill="none" className="jharokha-arch-svg" preserveAspectRatio="none">
+          <path
+            d="M 0 24 Q 150 24 200 12 Q 250 0 300 12 Q 350 24 500 24 L 500 0 L 0 0 Z"
+            fill="url(#jharokha-gold-grad)"
+            opacity="0.25"
+          />
+          <path
+            d="M 0 24 Q 150 24 200 12 Q 250 0 300 12 Q 350 24 500 24"
+            stroke="url(#jharokha-gold-line)"
+            strokeWidth="1.5"
+            fill="none"
+          />
+          <defs>
+            <linearGradient id="jharokha-gold-grad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#D4AF37" stopOpacity="0" />
+              <stop offset="50%" stopColor="#FFDF73" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#D4AF37" stopOpacity="0" />
+            </linearGradient>
+            <linearGradient id="jharokha-gold-line" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="rgba(212,175,55,0.1)" />
+              <stop offset="25%" stopColor="rgba(255,223,115,0.7)" />
+              <stop offset="50%" stopColor="#FFF2A8" />
+              <stop offset="75%" stopColor="rgba(255,223,115,0.7)" />
+              <stop offset="100%" stopColor="rgba(212,175,55,0.1)" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div className="player-glass jharokha-glass">
+        {/* Carved Brass Medallion Album Art */}
+        <div className="art-box brass-medallion">
+          <div className={`medallion-ring ${isPlaying ? 'pulse-ring' : ''}`} />
           <div className={`art-disc ${isPlaying ? 'spin' : ''}`}>
             {thumb && <img src={thumb} alt="" className="art-img" />}
           </div>
-          <div className="art-hole" />
+          <div className="art-hole brass-center" />
         </div>
 
-        {/* Info + seek */}
+        {/* Info + Golden Gota-Patti Seek Line */}
         <div className="info-col">
           <p className="track-name">{currentTrack.title}</p>
           <p className="track-artist">{currentTrack.artist}</p>
 
           <div
-            className="seek-bar"
+            className="seek-bar gota-seek-bar"
             ref={seekRef}
             onClick={handleSeek}
             role="slider"
@@ -75,8 +111,8 @@ export default function Player({
             aria-valuemax={100}
             aria-valuenow={Math.round(pct)}
           >
-            <div className="seek-track">
-              <div className="seek-fill" style={{ width: `${pct}%` }} />
+            <div className="seek-track gota-track">
+              <div className="seek-fill gota-fill" style={{ width: `${pct}%` }} />
             </div>
 
             {/* In Byaav mode: Stationary Bride image at 100% (right end of line) */}
@@ -117,6 +153,18 @@ export default function Player({
 
         {/* Controls */}
         <div className="ctrl-row">
+          {/* Shuffle button */}
+          <button
+            className={`ctrl shuffle ${isShuffle ? 'active' : ''}`}
+            onClick={onToggleShuffle}
+            aria-label={isShuffle ? 'Disable Shuffle' : 'Enable Shuffle'}
+            title={isShuffle ? 'Shuffle ON (S)' : 'Shuffle OFF (S)'}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
+            </svg>
+          </button>
+
           {/* Mute button */}
           <button
             className={`ctrl mute ${isMuted ? 'muted' : ''}`}
@@ -142,7 +190,7 @@ export default function Player({
           </button>
 
           <button
-            className={`ctrl play ${isBuffering ? 'loading' : ''}`}
+            className={`ctrl play jharokha-play ${isBuffering ? 'loading' : ''}`}
             onClick={onTogglePlay}
             aria-label={isPlaying ? 'Pause' : 'Play'}
             title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}
