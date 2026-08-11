@@ -20,7 +20,7 @@ export const modeConfig = {
     titleImg: '/titles/bhakti.png',
     titlePosition: 'left-up',
     bg: '/backgrounds/devotional.png',
-    bgPosition: '22% center',
+    bgPosition: '58% center', // frames the temple arch, Goddess & cow in center
   },
   trending: {
     label: 'Trend',
