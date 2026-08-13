@@ -26,6 +26,8 @@ export default function InstallPwaBanner() {
 
   return (
     <div className="pwa-banner mobile-only-pwa">
+      <img src="/favicon.png" alt="Apno Dhun" className="pwa-logo-left" />
+
       <div className="pwa-text-lines">
         <p className="pwa-line-1">Keep Apno Dhun on your home screen</p>
         <p className="pwa-line-2">

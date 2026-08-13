@@ -16,8 +16,8 @@
   justify-content: space-between;
   gap: 10px;
   width: calc(100% - 40px);
-  max-width: 320px; /* Reduced compact width for mobile and iPad */
-  padding: 8px 14px;
+  max-width: 340px; /* Sleek width fitting left logo, 2 lines, and cross icon */
+  padding: 8px 12px;
   border-radius: 18px;
   background: rgba(18, 16, 22, 0.92);
   backdrop-filter: blur(40px) saturate(180%);
@@ -33,11 +33,21 @@
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
+.pwa-logo-left {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
 .pwa-text-lines {
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+  flex: 1;
   text-align: left;
 }
 

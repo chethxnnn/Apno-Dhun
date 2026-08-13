@@ -12,14 +12,18 @@
   2. 💒 **Byaav** (*Byaav Ro Geet*) — Wedding Classics & Ritual Songs
   3. 🔥 **Trend** (*Navo Trend*) — Modern Hits & Trending Beats
   4. 🙏 **Bhakti** (*Bhagwan Ri Bhakti*) — Devotional Bhajans & Aarti
+- **Favicon & Brand Identity**:
+  - Web favicon configured with `public/favicon.png` (`apno favcon.png`).
+  - Add to Home Screen PWA Banner displays the favicon logo on the left-most side of the container (`[ Logo ] [ 2 Text Lines ] [ Cross ✕ ]`).
+- **Favicon & Brand Identity**:
+  - Web favicon configured with `public/favicon.png` (`apno favcon.png`).
+  - Add to Home Screen PWA Banner displays the favicon logo on the left-most side of the container (`[ Logo ] [ 2 Text Lines ] [ Cross ✕ ]`).
 - **Header Layout**:
-  - **Desktop Top-Left Block**: Sleek condensed digital clock font (**`Bebas Neue`**, `62px` with `transform: scaleY(1.18)`).
-  - **Stacked Seconds & AM/PM**: Live gold seconds (`28`) on top, with `PM` stacked directly beneath it next to the clock digits!
-  - **Aligned Date Row**: Aligned directly below the clock in top-left in exact format **`13th August, 2026`** spanning the clock display width!
-  - **Desktop Top-Right**: Spotify ↗ and YT Music ↗ social links.
-  - **Centered Navigation**: `[Lok]  [Byaav]  (🔴 APNA LOGO)  [Trend]  [Bhakti]`
-  - **Logo Zoom**: Smooth 1.22x hover zoom animation linking to Instagram (`https://instagram.com/apna.culturez`)
-  - **Mobile Layout**: Responsive bottom footer navigation bar.
+  - **Top-Left Corner**: Exact **Apno Dhun Logo** (`public/apno-dhun-logo.png` / `apno dhun logo.png`) rendered in top-left across Mobile, iPad, and Desktop views!
+  - **Desktop Mehmaan Counter**: Positioned in top-left directly **under the Apno Dhun logo** (`top: 84px; left: 28px;`).
+  - **Top-Right Corner**: Clock & Date block (`clock-block-responsive` / `simple-mobile-time`) moved to the top-right corner across Mobile, iPad, and Desktop views!
+  - **Removed Social Links**: Completely removed Spotify ↗ and YouTube Music ↗ links.
+  - **Mobile & iPad Navigation**: Responsive bottom footer navigation bar.
 - **Custom Calligraphy Titles**: High-res Devanagari PNG title images (`/titles/lok.png`, `byaav.png`, `trend.png`, `bhakti.png`) featuring continuous 6-second levitation & breathing shadow animations (`titleAmbientFloat`).
 - **Background Illustrations**: High-resolution hand-drawn art (`folk.png`, `wedding.png`, `trending.png`, `devotional.png`) with mobile-tuned framing (`42% center` for Goddess & temple arch in Bhakti).
 
