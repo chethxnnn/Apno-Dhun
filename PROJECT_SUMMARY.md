@@ -54,7 +54,9 @@
   - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
 - **Pure Native High-Resolution 2D Canvas Engine (`PatrikaModal.jsx`)**:
   - Replaced DOM rasterization with a **Pure Native High-Resolution 2D Canvas Engine** rendering directly at **1037 × 1516 native resolution** (`imageSmoothingQuality = 'high'`).
-  - **Zero Downsampling Blurriness**: Loads original `dhun-card-blank.png` and full video thumbnail image directly into 2D canvas, rendering vector red thin-serif text natively for 100% crisp 4K quality!
+  - **1:1 Visual Parity with Screen Preview**:
+    - **Cover Crop Math**: Calculates exact 16:9 aspect cover-cropping for the YouTube video thumbnail image on canvas (`610px × 343px` with 48px rounded corners), matching the CSS `background-size: cover` zoom in screen preview!
+    - **Proportional Vector Typography**: Scaled font sizes to 42px thin red serif font (`Playfair Display`) and 32px artist font (`Inter`), ensuring title size and line wrapping match the screen preview 100%!
   - **Clean Action Buttons**: Streamlined UI with just two full-width pill buttons: **"Share your Patrika"** and **"Not now"**.
   - **Custom Multiline Hinglish WhatsApp Share Message**: Shares with your exact custom multiline text structure (`Ram Ram Sa! I am listening to "[Song Title]" on Apno Dhun.\n\nApne favourite Rajasthani geet yahan suno!\nhttps://apnodhun.in`).
   - **Centered Red Thin Serif Title**: Slightly reduced title font size (`0.91rem`) with reduced vertical gap (`margin-top: -3px`) between title and artist name in muted red thin font below the thumbnail.

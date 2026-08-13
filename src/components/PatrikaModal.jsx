@@ -18,18 +18,25 @@ export default function PatrikaModal({
   const fullTitle = currentTrack.title || 'Rajasthani Song';
   const shareText = `Ram Ram Sa! I am listening to "${fullTitle}" on Apno Dhun.\n\nApne favourite Rajasthani geet yahan suno!\nhttps://apnodhun.in`;
 
-  // Pure Native High-Resolution 2D Canvas Engine (1037 x 1516 Native Resolution)
+  // Pure Native High-Resolution 2D Canvas Engine (1037 x 1516 Pixel-Perfect Ratio Engine)
   const generatePureNativeCanvasBlob = async () => {
+    // Ensure Web Fonts (Playfair Display & Inter) are fully loaded
+    if (document.fonts && document.fonts.ready) {
+      try {
+        await document.fonts.ready;
+      } catch (e) {}
+    }
+
     const canvas = document.createElement('canvas');
     canvas.width = 1037;
     canvas.height = 1516;
     const ctx = canvas.getContext('2d');
 
-    // 1. High Precision Vector Smoothing
+    // High Precision Vector Smoothing
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = 'high';
 
-    // 2. Load Native Resolution Template Image (dhun-card-blank.png)
+    // 1. Load Full-Resolution Template Image (dhun-card-blank.png)
     const bgImg = new Image();
     bgImg.crossOrigin = 'anonymous';
     bgImg.src = '/dhun-card-blank.png';
@@ -45,7 +52,7 @@ export default function PatrikaModal({
       ctx.fillRect(0, 0, 1037, 1516);
     }
 
-    // 3. Load YouTube Video Thumbnail at Original Quality
+    // 2. Load YouTube Video Thumbnail Image
     const thumbImg = new Image();
     thumbImg.crossOrigin = 'anonymous';
     thumbImg.src = thumbUrl;
@@ -54,47 +61,62 @@ export default function PatrikaModal({
       thumbImg.onerror = resolve;
     });
 
-    // Native Dimensions & Positioning on 1037x1516 Canvas
-    const thumbW = 560;
-    const thumbH = 314;
+    // Exact Proportional Dimensions matching Preview DOM (Scale Factor ~2.98x)
+    const thumbW = 610;
+    const thumbH = 343;
     const thumbX = (1037 - thumbW) / 2;
-    const thumbY = 523;
+    const thumbY = 523; // top 34.5% of 1516 = 523px
 
-    // Draw Clip with Rounded Corners (Radius 44px)
+    // Cover Crop Math (Exact same behavior as CSS background-size: cover)
+    const imgW = thumbImg.naturalWidth || 480;
+    const imgH = thumbImg.naturalHeight || 360;
+    const imgAspect = imgW / imgH;
+    const targetAspect = thumbW / thumbH;
+
+    let sx = 0, sy = 0, sw = imgW, sh = imgH;
+    if (imgAspect > targetAspect) {
+      sw = imgH * targetAspect;
+      sx = (imgW - sw) / 2;
+    } else {
+      sh = imgW / targetAspect;
+      sy = (imgH - sh) / 2;
+    }
+
+    // Draw Rounded Clipped Thumbnail with Cover Crop Zoom
     ctx.save();
     ctx.beginPath();
     if (ctx.roundRect) {
-      ctx.roundRect(thumbX, thumbY, thumbW, thumbH, 44);
+      ctx.roundRect(thumbX, thumbY, thumbW, thumbH, 48);
     } else {
       ctx.rect(thumbX, thumbY, thumbW, thumbH);
     }
     ctx.clip();
 
     if (thumbImg.complete && thumbImg.naturalWidth > 0) {
-      ctx.drawImage(thumbImg, thumbX, thumbY, thumbW, thumbH);
+      ctx.drawImage(thumbImg, sx, sy, sw, sh, thumbX, thumbY, thumbW, thumbH);
     }
     ctx.restore();
 
-    // Subtle Outline Border around Thumbnail
+    // Subtle Crimson Accent Outline Border
     ctx.save();
     ctx.strokeStyle = 'rgba(122, 14, 19, 0.25)';
     ctx.lineWidth = 4;
     ctx.beginPath();
     if (ctx.roundRect) {
-      ctx.roundRect(thumbX, thumbY, thumbW, thumbH, 44);
+      ctx.roundRect(thumbX, thumbY, thumbW, thumbH, 48);
     }
     ctx.stroke();
     ctx.restore();
 
-    // 4. Render Vector Song Title (Rich Red Thin Serif Font)
+    // 3. Render Vector Song Title (Proportionate 42px Thin Red Serif Font)
     ctx.save();
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     ctx.fillStyle = '#7A0E13';
-    ctx.font = '300 24px "Playfair Display", Georgia, serif';
+    ctx.font = '300 42px "Playfair Display", Georgia, serif';
 
-    const maxTitleWidth = 820;
-    const titleY = thumbY + thumbH + 24;
+    const maxTitleWidth = 910;
+    const titleY = thumbY + thumbH + 28; // 894px
     const words = fullTitle.split(' ');
     let line = '';
     const lines = [];
@@ -112,16 +134,16 @@ export default function PatrikaModal({
     lines.push(line.trim());
 
     let currentY = titleY;
-    const lineHeight = 32;
+    const lineHeight = 54;
     lines.slice(0, 3).forEach((l) => {
       ctx.fillText(l, 1037 / 2, currentY);
       currentY += lineHeight;
     });
 
-    // 5. Render Vector Artist Name (Muted Red Thin Font)
-    ctx.font = '300 18px "Inter", sans-serif';
+    // 4. Render Vector Artist Name (Proportionate 32px Thin Muted Red Font)
+    ctx.font = '300 32px "Inter", sans-serif';
     ctx.fillStyle = '#802025';
-    ctx.fillText(currentTrack.artist || 'Apno Dhun', 1037 / 2, currentY + 6);
+    ctx.fillText(currentTrack.artist || 'Apno Dhun', 1037 / 2, currentY + 4);
     ctx.restore();
 
     // Return uncompressed 100% quality PNG blob
