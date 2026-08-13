@@ -1,5 +1,12 @@
 export const modes = ['folk', 'wedding', 'trending', 'devotional'];
 
+export const playlistIds = {
+  folk: 'PLYAOxVEAP3bs',
+  wedding: 'PLEsCBM7K03Bk',
+  trending: 'PLeiQ7CPbnew8',
+  devotional: 'PLDM_wzSW7hoc',
+};
+
 export const modeConfig = {
   folk: {
     label: 'Lok',
@@ -31,16 +38,19 @@ export const modeConfig = {
   },
 };
 
-// Playlists containing strictly the 5 YouTube IDs supplied by the user
+// Playlists fallback containing existing static YouTube IDs
 export const playlists = {
   folk: [
-    { id: 'YQGDuo6Uufg', title: 'Lok Ri Dhun', artist: 'Rajasthani Folk' },
+    { id: 'YQGDuo6Uufg', title: 'Kesariya Balam', artist: 'Rajasthani Folk' },
+    { id: 'vHKsj1Wjhp0', title: 'Padharo Mhare Des', artist: 'Rajasthani Folk' },
   ],
   wedding: [
     { id: '7WCpoMLMdS0', title: 'Byaav Ro Geet', artist: 'Rajasthani Wedding' },
+    { id: 'sCx7kNgOPgg', title: 'Banna Re Baga Me', artist: 'Wedding Folk' },
   ],
   devotional: [
     { id: 'u3RdMh6PE94', title: 'Bhagwan Ri Bhakti', artist: 'Devotional Bhajan' },
+    { id: 'NQGW2L2raWQ', title: 'Ramdev Ji Bhajan', artist: 'Devotional' },
   ],
   trending: [
     { id: 'hxVeQam-U3M', title: 'Navo Trend Hit', artist: 'Rajasthani New' },

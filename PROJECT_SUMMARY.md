@@ -103,9 +103,19 @@
 
 ---
 
-## 🎧 5. YouTube Player Engine & Metadata Fetching
+## 🎧 5. YouTube Player Engine & Realtime Data API v3 Sync
 
-- **Hidden Player**: Operates inside a 1×1 hidden `div` via YouTube IFrame API.
+- **Realtime Playlist Auto-Sync (YouTube Data API v3)**:
+  - Connected directly to YouTube Data API v3 endpoints via `src/services/youtubeApi.js`.
+  - Mapped 4 Live Playlist IDs:
+    - **Folk (`folk`)**: `PLYAOxVEAP3bs`
+    - **Wedding (`wedding`)**: `PLEsCBM7K03Bk`
+    - **Trending (`trending`)**: `PLeiQ7CPbnew8`
+    - **Devotional (`devotional`)**: `PLDM_wzSW7hoc`
+  - **Live Auto-Update**: Whenever you add, delete, or reorder tracks in your YouTube playlists, the site updates automatically on refresh/visit with **zero code changes**!
+  - **Smart LocalStorage Caching**: 15-minute TTL cache protects your free 10,000 daily API quota while serving instant zero-latency song lists to visitors.
+  - **Offline Fallback**: Automatically falls back to static playlists if no API key is set or if YouTube API fails.
+- **Hidden Player Engine**: Operates inside a 1×1 hidden `div` via YouTube IFrame API.
 - **Dynamic Metadata Fetching**: Automatically fetches live video title and channel name via public `noembed` oEmbed API + `getVideoData()`, caching metadata in React state.
 - **Random Initial Track Order**: Automatically picks a random song upon opening the site or switching vibes.
 

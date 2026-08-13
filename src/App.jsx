@@ -12,10 +12,12 @@ import InstallPwaBanner from './components/InstallPwaBanner';
 import KeycapLegendBar from './components/KeycapLegendBar';
 import { useYouTubePlayer } from './hooks/useYouTubePlayer';
 import { useLiveListeners } from './hooks/useLiveListeners';
-import { playlists, modeConfig } from './data/playlists';
+import { playlists as initialPlaylists, modeConfig } from './data/playlists';
+import { fetchAllLivePlaylists } from './services/youtubeApi';
 
 export default function App() {
   const [currentMode, setCurrentMode] = useState('wedding');
+  const [activePlaylists, setActivePlaylists] = useState(initialPlaylists);
   const [cinemaMode, setCinemaMode] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
   const [isQueueOpen, setIsQueueOpen] = useState(false);
@@ -23,6 +25,8 @@ export default function App() {
 
   const toastTimeoutRef = useRef(null);
   const listenerCount = useLiveListeners();
+
+  const currentPlaylist = activePlaylists[currentMode] || initialPlaylists[currentMode];
 
   const {
     containerRef,
@@ -45,7 +49,24 @@ export default function App() {
     seekTo,
     loadTrack,
     loadNewPlaylist,
-  } = useYouTubePlayer(playlists[currentMode]);
+  } = useYouTubePlayer(currentPlaylist);
+
+  // Fetch live YouTube Data API playlists on mount
+  useEffect(() => {
+    fetchAllLivePlaylists().then((livePlaylists) => {
+      if (livePlaylists && Object.keys(livePlaylists).length > 0) {
+        setActivePlaylists((prev) => {
+          const updated = { ...prev, ...livePlaylists };
+          if (livePlaylists[currentMode] && livePlaylists[currentMode].length > 0) {
+            loadNewPlaylist(livePlaylists[currentMode]);
+          }
+          return updated;
+        });
+      }
+    });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const showToast = useCallback((msg) => {
     setToastMessage(msg);
@@ -59,9 +80,10 @@ export default function App() {
     (mode) => {
       if (mode === currentMode) return;
       setCurrentMode(mode);
-      loadNewPlaylist(playlists[mode]);
+      const targetPl = activePlaylists[mode] || initialPlaylists[mode];
+      loadNewPlaylist(targetPl);
     },
-    [currentMode, loadNewPlaylist]
+    [currentMode, activePlaylists, loadNewPlaylist]
   );
 
   // Web Audio Synthesized Ghungroo Chime sound effect
