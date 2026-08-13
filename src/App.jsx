@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import BackgroundLayer from './components/BackgroundLayer';
@@ -19,13 +19,10 @@ export default function App() {
   const [currentMode, setCurrentMode] = useState('wedding');
   const [activePlaylists, setActivePlaylists] = useState(initialPlaylists);
   const [cinemaMode, setCinemaMode] = useState(false);
-  const [toastMessage, setToastMessage] = useState(null);
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isPatrikaOpen, setIsPatrikaOpen] = useState(false);
 
-  const toastTimeoutRef = useRef(null);
   const listenerCount = useLiveListeners();
-
   const currentPlaylist = activePlaylists[currentMode] || initialPlaylists[currentMode];
 
   const {
@@ -63,14 +60,6 @@ export default function App() {
     });
   }, []);
 
-  const showToast = useCallback((msg) => {
-    setToastMessage(msg);
-    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-    toastTimeoutRef.current = setTimeout(() => {
-      setToastMessage(null);
-    }, 2000);
-  }, []);
-
   const handleModeChange = useCallback(
     (mode) => {
       if (mode === currentMode) return;
@@ -106,12 +95,10 @@ export default function App() {
         osc.start(ctx.currentTime + idx * 0.05);
         osc.stop(ctx.currentTime + idx * 0.05 + 0.6);
       });
-
-      showToast('🪘 Ghungroo Chime!');
     } catch (e) {
-      showToast('🪘 Ghungroo Chime!');
+      /* ignore audio error */
     }
-  }, [showToast]);
+  }, []);
 
   // Pro Interactivity Shortcuts: Space, M, S, F, Q, P, G, Escape, Arrows
   useEffect(() => {
@@ -130,19 +117,16 @@ export default function App() {
         case 'KeyK':
           e.preventDefault();
           togglePlay();
-          showToast(isPlaying ? '⏸ Paused' : '▶ Playing');
           break;
 
         case 'KeyM':
           e.preventDefault();
           toggleMute();
-          showToast(isMuted ? '🔊 Unmuted' : '🔇 Muted');
           break;
 
         case 'KeyS':
           e.preventDefault();
           toggleShuffle();
-          showToast(isShuffle ? '🔀 Shuffle OFF' : '🔀 Shuffle ON');
           break;
 
         case 'KeyQ':
@@ -164,22 +148,16 @@ export default function App() {
         case 'KeyN':
           e.preventDefault();
           nextTrack();
-          showToast('⏭ Next Track');
           break;
 
         case 'ArrowLeft':
           e.preventDefault();
           prevTrack();
-          showToast('⏮ Previous Track');
           break;
 
         case 'KeyF':
           e.preventDefault();
-          setCinemaMode((prev) => {
-            const next = !prev;
-            showToast(next ? '🎬 Cinema Mode ON (Press F to exit)' : '📺 Cinema Mode OFF');
-            return next;
-          });
+          setCinemaMode((prev) => !prev);
           break;
 
         case 'Escape':
@@ -203,10 +181,6 @@ export default function App() {
     nextTrack,
     prevTrack,
     playGhungrooSound,
-    isPlaying,
-    isMuted,
-    isShuffle,
-    showToast,
   ]);
 
   const config = modeConfig[currentMode];
@@ -215,9 +189,6 @@ export default function App() {
     <main className={`app ${cinemaMode ? 'cinema-active' : ''} ${isQueueOpen ? 'queue-active' : ''}`}>
       <YouTubeEmbed containerRef={containerRef} />
       <BackgroundLayer src={config.bg} bgPosition={config.bgPosition} />
-
-      {/* Floating Shortcut Toast Notification */}
-      {toastMessage && <div className="shortcut-toast">{toastMessage}</div>}
 
       <Header currentMode={currentMode} onModeChange={handleModeChange} />
 
