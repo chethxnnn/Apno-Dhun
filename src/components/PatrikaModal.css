@@ -51,54 +51,58 @@
 /* Centered Clean Content Container (Positioned Lower Down Below Top Template Lines) */
 .blank-clean-content-lower {
   position: absolute;
-  top: 34%; /* Shifted lower down as requested */
-  left: 8%;
-  right: 8%;
+  top: 34.5%; /* Shifted lower down to sit comfortably in middle blank area */
+  left: 6%;
+  right: 6%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 10px;
+  gap: 8px; /* Slightly tighter vertical stack gap */
 }
 
 /* Larger Thumbnail Size Wrapper (Width 205px, Height 115px) */
 .clean-thumb-wrap-larger {
   width: 205px;
-  height: 115px; /* Larger sleek height */
+  height: 115px;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(122, 14, 19, 0.3);
   flex-shrink: 0;
+  position: relative;
+  background: #000;
 }
 
+/* Original uncropped image display with zero zoom */
 .clean-thumb-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
-/* Full Song Title in Rich Red Thin Serif Font (Less Extended, Compact Width) */
+/* Full Song Title in Rich Red Thin Serif Font (Slightly Reduced Size) */
 .clean-song-title-compact {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 0.98rem;
+  font-size: 0.91rem;
   font-weight: 300; /* Thin elegant non-bold font */
   color: #7A0E13; /* Crimson red matching template color scheme */
   margin: 2px 0 0;
-  line-height: 1.25;
+  line-height: 1.26;
   width: 100%;
-  max-width: 92%; /* Less extended width */
+  max-width: 90%;
   word-wrap: break-word;
   text-shadow: 0 1px 2px rgba(122, 14, 19, 0.1);
 }
 
-/* Artist Name in Muted Red Thin Font */
+/* Artist Name in Muted Red Thin Font (Tighter gap with title) */
 .clean-artist-name-red {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 300; /* Thin non-bold font */
   color: #802025;
-  margin: 0;
+  margin: -3px 0 0; /* Reduced gap between artist and title by a bit */
   line-height: 1.25;
   width: 100%;
 }

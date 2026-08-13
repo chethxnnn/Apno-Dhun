@@ -51,11 +51,10 @@
   - **Interactive Website Share Button**: Bottom card `[ ⬆ ] Share Apno Dhun` triggers native Web Share API on supported devices or copies `apno-dhun.vercel.app` URL to clipboard with visual green checkmark feedback!
 - **Smooth Opening & Closing Animations Both Ways**:
   - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
-- **Sleek Refined Patrika Template (`PatrikaModal.jsx`)**:
-  - Uses your custom **`dhun card blank.png`** (`public/dhun-card-blank.png`, `1037x1516` resolution) as the native card template!
-  - **Lower Thumbnail Position**: Shifted larger thumbnail lower down (`Y = 515px` on Canvas, `34%` top offset in UI preview) for ideal vertical centering.
-  - **Narrower Compact Title Width**: Title width constrained (`maxTextWidth = 760px` on Canvas, `max-width: 92%` in UI preview) for a less extended, perfectly centered multi-line serif title in rich red font (`#7A0E13`).
-  - Displays centered thumbnail + full song name + artist name, exporting 100% natural 1037x1516 PNG canvas image.
+- **Pixel-Perfect html2canvas Patrika Export (`PatrikaModal.jsx`)**:
+  - Uses **`html2canvas`** to capture the exact rendered `.patrika-card-blank-bg` DOM node at 3x scale (~1037x1516), ensuring the saved image is **100% IDENTICAL to what is shown in preview** with zero text misalignments or baseline shifts!
+  - **Full Uncropped Thumbnail Display**: Displays the original video thumbnail 100% full with zero scale zoom, ensuring no text or artwork is cut off!
+  - **Centered Red Thin Serif Title**: Slightly reduced title font size (`0.91rem`) with reduced vertical gap (`margin-top: -3px`) between title and artist name in muted red thin font below the thumbnail.
 - **Mobile & iPad Top-Left Bebas Neue Clock & Responsive Date**:
   - **iPad Mode**: Increased Bebas Neue clock size to **`42px`** with full date format (`13th August, 2026`).
   - **Mobile Mode**: Compact `26px` clock with abbreviated short month format (**`13th Aug, 2026`**) spanning the exact width of the time block above it.
