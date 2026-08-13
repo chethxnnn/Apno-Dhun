@@ -52,9 +52,10 @@
   - **Interactive Website Share Button**: Bottom card `[ ⬆ ] Share Apno Dhun` triggers native Web Share API on supported devices or copies `apno-dhun.vercel.app` URL to clipboard with visual green checkmark feedback!
 - **Smooth Opening & Closing Animations Both Ways**:
   - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
-- **Pixel-Perfect html2canvas Patrika Export (`PatrikaModal.jsx`)**:
-  - Uses **`html2canvas`** at **4x Ultra HD Scale Factor** (~2074x3032 resolution), ensuring the saved PNG image has **NO COMPROMISE on quality — razor sharp 4K resolution** with zero blurriness or downsampling loss!
-  - **Background-Image Cover Container**: Uses a `background-image` container with `background-size: cover; background-position: center;` so `html2canvas` renders the thumbnail **100% full without black bars** and without scaling/zooming distortion!
+- **Pure Native High-Resolution 2D Canvas Engine (`PatrikaModal.jsx`)**:
+  - Replaced DOM rasterization with a **Pure Native High-Resolution 2D Canvas Engine** rendering directly at **1037 × 1516 native resolution** (`imageSmoothingQuality = 'high'`).
+  - **Zero Downsampling Blurriness**: Loads original `dhun-card-blank.png` and full video thumbnail image directly into 2D canvas, rendering vector red thin-serif text natively for 100% crisp 4K quality!
+  - **Clean Action Buttons**: Streamlined UI with just two full-width pill buttons: **"Share your Patrika"** and **"Not now"**.
   - **Custom Multiline Hinglish WhatsApp Share Message**: Shares with your exact custom multiline text structure (`Ram Ram Sa! I am listening to "[Song Title]" on Apno Dhun.\n\nApne favourite Rajasthani geet yahan suno!\nhttps://apnodhun.in`).
   - **Centered Red Thin Serif Title**: Slightly reduced title font size (`0.91rem`) with reduced vertical gap (`margin-top: -3px`) between title and artist name in muted red thin font below the thumbnail.
 - **Mobile & iPad Top-Left Bebas Neue Clock & Responsive Date**:
