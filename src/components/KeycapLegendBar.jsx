@@ -13,9 +13,8 @@ export default function KeycapLegendBar() {
         <span className="keycap-label">SEEK</span>
       </div>
       <div className="keycap-item">
-        <span className="keycap">N</span>
-        <span className="keycap">P</span>
-        <span className="keycap-label">TRACK</span>
+        <span className="keycap">F</span>
+        <span className="keycap-label">CINEMA MODE</span>
       </div>
       <div className="keycap-item">
         <span className="keycap">Q</span>
