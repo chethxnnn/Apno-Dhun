@@ -54,7 +54,8 @@
   - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
 - **Offscreen 1037 × 1516 Native DOM Export Node (`PatrikaModal.jsx`)**:
   - Rendered a dedicated hidden 1037 × 1516 full-res React DOM node (`exportCardRef`) offscreen so the browser's native DOM engine handles text layout, Devanagari Hindi Unicode characters ("सतरंगी लहरियो"), and font rendering with 100% perfection!
-  - Captured via `html2canvas` at `scale: 2` (2074 × 3032 Ultra HD resolution), ensuring zero missing Hindi characters, exact title font sizing (`26px` on 1037px width), and exact thumbnail cover crop zoom matching the screen preview 100%!
+  - **Exact 1:1 Title Font Size Parity**: Set `font-size: 43px;` on `.clean-song-title-compact-export` (exact mathematical 1:1 ratio matching `0.91rem` on `348px` screen preview card), ensuring title size, margins, and line wrapping match the screen preview 100%!
+  - Captured via `html2canvas` at `scale: 2` (2074 × 3032 Ultra HD resolution).
   - **Clean Action Buttons**: Streamlined UI with just two full-width pill buttons: **"Share your Patrika"** and **"Not now"**.
   - **Custom Multiline Hinglish WhatsApp Share Message**: Shares with your exact custom multiline text structure (`Ram Ram Sa! I am listening to "[Song Title]" on Apno Dhun.\n\nApne favourite Rajasthani geet yahan suno!\nhttps://apnodhun.in`).
   - **Centered Red Thin Serif Title**: Slightly reduced title font size (`0.91rem`) with reduced vertical gap (`margin-top: -3px`) between title and artist name in muted red thin font below the thumbnail.

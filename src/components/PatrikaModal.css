@@ -150,7 +150,7 @@
   transform: scale(0.98);
 }
 
-/* ─── Offscreen 1037x1516 Native Export Card Styles (100% Preview Parity) ─── */
+/* ─── Offscreen 1037x1516 Native Export Card Styles (Mathematical 1:1 Parity with Screen Preview) ─── */
 .patrika-card-blank-bg-export {
   width: 1037px;
   height: 1516px;
@@ -191,7 +191,7 @@
 
 .clean-song-title-compact-export {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 26px; /* Scaled proportionately to 0.91rem on 1037px width */
+  font-size: 43px; /* Exact 1:1 mathematical ratio with 0.91rem (14.56px) on 348px screen preview */
   font-weight: 300;
   color: #7A0E13;
   margin: 6px 0 0;
@@ -204,7 +204,7 @@
 
 .clean-artist-name-red-export {
   font-family: 'Inter', sans-serif;
-  font-size: 28px;
+  font-size: 33px; /* Exact 1:1 mathematical ratio with 11px on 348px screen preview */
   font-weight: 300;
   color: #802025;
   margin: -8px 0 0;
