@@ -128,7 +128,7 @@ export function useYouTubePlayer(playlist) {
 
   const loadTrack = useCallback(
     (i) => {
-      if (!playerRef.current || !playlistRef.current[i]) return;
+      if (!playlistRef.current[i]) return;
       setCurrentTrackIndex(i);
       setCurrentTime(0);
       setDuration(0);
@@ -136,7 +136,13 @@ export function useYouTubePlayer(playlist) {
       if (track?.id) {
         fetchTrackMeta(track.id);
       }
-      playerRef.current.loadVideoById(playlistRef.current[i].id);
+      if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
+        try {
+          playerRef.current.loadVideoById(playlistRef.current[i].id);
+        } catch (e) {
+          console.warn('loadVideoById call failed:', e);
+        }
+      }
     },
     [fetchTrackMeta]
   );
@@ -171,7 +177,9 @@ export function useYouTubePlayer(playlist) {
 
     loadYouTubeAPI().then(() => {
       if (!mounted || !containerRef.current) return;
-      if (playerRef.current) playerRef.current.destroy();
+      if (playerRef.current && typeof playerRef.current.destroy === 'function') {
+        try { playerRef.current.destroy(); } catch (e) {}
+      }
 
       playerRef.current = new window.YT.Player(containerRef.current, {
         height: '1',
@@ -230,9 +238,9 @@ export function useYouTubePlayer(playlist) {
     return () => {
       mounted = false;
       stopPolling();
-      try {
-        playerRef.current?.destroy();
-      } catch (e) {}
+      if (playerRef.current && typeof playerRef.current.destroy === 'function') {
+        try { playerRef.current.destroy(); } catch (e) {}
+      }
       playerRef.current = null;
     };
   }, []);
@@ -247,19 +255,27 @@ export function useYouTubePlayer(playlist) {
       if (newPl[initialIdx]?.id) {
         fetchTrackMeta(newPl[initialIdx].id);
       }
-      if (playerRef.current && newPl[initialIdx]) {
-        playerRef.current.loadVideoById(newPl[initialIdx].id);
+      if (playerRef.current && typeof playerRef.current.loadVideoById === 'function' && newPl[initialIdx]) {
+        try {
+          playerRef.current.loadVideoById(newPl[initialIdx].id);
+        } catch (e) {
+          console.warn('loadNewPlaylist loadVideoById error:', e);
+        }
       }
     },
     [fetchTrackMeta]
   );
 
   const play = useCallback(() => {
-    playerRef.current?.playVideo();
+    if (playerRef.current && typeof playerRef.current.playVideo === 'function') {
+      try { playerRef.current.playVideo(); } catch (e) {}
+    }
   }, []);
 
   const pause = useCallback(() => {
-    playerRef.current?.pauseVideo();
+    if (playerRef.current && typeof playerRef.current.pauseVideo === 'function') {
+      try { playerRef.current.pauseVideo(); } catch (e) {}
+    }
   }, []);
 
   const togglePlay = useCallback(() => {
@@ -267,26 +283,32 @@ export function useYouTubePlayer(playlist) {
   }, [isPlaying, play, pause]);
 
   const toggleMute = useCallback(() => {
-    if (!playerRef.current) return;
-    if (playerRef.current.isMuted()) {
-      playerRef.current.unMute();
-      setIsMuted(false);
-    } else {
-      playerRef.current.mute();
-      setIsMuted(true);
+    if (playerRef.current && typeof playerRef.current.isMuted === 'function') {
+      try {
+        if (playerRef.current.isMuted()) {
+          playerRef.current.unMute();
+          setIsMuted(false);
+        } else {
+          playerRef.current.mute();
+          setIsMuted(true);
+        }
+      } catch (e) {}
     }
   }, []);
 
   const setVolume = useCallback((val) => {
-    if (!playerRef.current) return;
-    playerRef.current.setVolume(val);
-    setVolumeState(val);
-    if (val === 0) {
-      playerRef.current.mute();
-      setIsMuted(true);
-    } else if (playerRef.current.isMuted()) {
-      playerRef.current.unMute();
-      setIsMuted(false);
+    if (playerRef.current && typeof playerRef.current.setVolume === 'function') {
+      try {
+        playerRef.current.setVolume(val);
+        setVolumeState(val);
+        if (val === 0 && typeof playerRef.current.mute === 'function') {
+          playerRef.current.mute();
+          setIsMuted(true);
+        } else if (typeof playerRef.current.unMute === 'function' && typeof playerRef.current.isMuted === 'function' && playerRef.current.isMuted()) {
+          playerRef.current.unMute();
+          setIsMuted(false);
+        }
+      } catch (e) {}
     }
   }, []);
 
@@ -300,20 +322,24 @@ export function useYouTubePlayer(playlist) {
   }, [getNextTrackIndex, loadTrack]);
 
   const prevTrack = useCallback(() => {
-    try {
-      if (playerRef.current?.getCurrentTime() > 3) {
-        playerRef.current.seekTo(0);
-        setCurrentTime(0);
-        return;
-      }
-    } catch (e) {}
+    if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
+      try {
+        if (playerRef.current.getCurrentTime() > 3 && typeof playerRef.current.seekTo === 'function') {
+          playerRef.current.seekTo(0);
+          setCurrentTime(0);
+          return;
+        }
+      } catch (e) {}
+    }
     const len = playlistRef.current.length;
     const prevIdx = trackIndexRef.current === 0 ? len - 1 : trackIndexRef.current - 1;
     loadTrack(prevIdx);
   }, [loadTrack]);
 
   const seekTo = useCallback((s) => {
-    playerRef.current?.seekTo(s, true);
+    if (playerRef.current && typeof playerRef.current.seekTo === 'function') {
+      try { playerRef.current.seekTo(s, true); } catch (e) {}
+    }
     setCurrentTime(s);
   }, []);
 

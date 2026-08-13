@@ -51,21 +51,16 @@ export default function App() {
     loadNewPlaylist,
   } = useYouTubePlayer(currentPlaylist);
 
-  // Fetch live YouTube Data API playlists on mount
+  // Fetch live YouTube Data API playlists on mount and update activePlaylists state
   useEffect(() => {
     fetchAllLivePlaylists().then((livePlaylists) => {
       if (livePlaylists && Object.keys(livePlaylists).length > 0) {
-        setActivePlaylists((prev) => {
-          const updated = { ...prev, ...livePlaylists };
-          if (livePlaylists[currentMode] && livePlaylists[currentMode].length > 0) {
-            loadNewPlaylist(livePlaylists[currentMode]);
-          }
-          return updated;
-        });
+        setActivePlaylists((prev) => ({
+          ...prev,
+          ...livePlaylists,
+        }));
       }
     });
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const showToast = useCallback((msg) => {
