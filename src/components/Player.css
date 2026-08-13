@@ -1,10 +1,14 @@
 /* ─── Player Dock ─── */
 .player-dock {
   position: fixed;
-  bottom: 28px;
+  bottom: 96px; /* Elevated higher up on desktop */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 40;
+  z-index: 50; /* Above queue backdrop fade z-index: 40 */
+  width: calc(100% - 32px);
+  max-width: 680px; /* Exact matching max-width as Queue Card */
+  margin: 0 auto;
+  box-sizing: border-box;
   animation: dockUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -16,10 +20,10 @@
 /* ─── Aura Glow ─── */
 .player-glow {
   position: absolute;
-  inset: -16px;
-  border-radius: 28px;
-  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.15) 0%, rgba(196, 30, 58, 0.1) 40%, transparent 75%);
-  filter: blur(24px);
+  inset: -18px;
+  border-radius: 9999px;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.22) 0%, rgba(196, 30, 58, 0.14) 40%, transparent 75%);
+  filter: blur(28px);
   opacity: 0;
   transition: opacity 0.6s ease;
   pointer-events: none;
@@ -33,58 +37,94 @@
 
 @keyframes glowPulse {
   from { opacity: 0.7; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1.03); }
+  to { opacity: 1; transform: scale(1.04); }
 }
 
-/* ─── Glass Container (Rounded Box) ─── */
-.player-glass {
+/* ─── Glass Capsule Container (Bigger Vinyl Disc & Increased Desktop Height) ─── */
+.capsule-glass {
   display: flex;
-  align-items: stretch;
-  gap: 14px;
-  width: max-content;
-  min-width: 420px;
-  max-width: 560px;
-  padding: 12px;
-  border-radius: 20px;
-  background: rgba(12, 12, 16, 0.72);
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  max-width: 680px; /* Matching exact width of Queue box */
+  padding: 18px 26px 18px 18px; /* Increased height and spacious padding */
+  border-radius: 9999px;
+  background: rgba(14, 12, 16, 0.88);
   backdrop-filter: blur(48px) saturate(190%);
   -webkit-backdrop-filter: blur(48px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    0 24px 60px rgba(0, 0, 0, 0.72),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
-/* ─── Square Album Art ─── */
-.art-square {
+.player-top-block {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.player-bottom-block {
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Circular Vinyl Disc Art Thumbnail (Bigger 76px on Desktop) ─── */
+.art-disc-wrap {
   position: relative;
-  width: 116px;
-  height: 116px;
+  width: 76px; /* Increased thumbnail size in desktop player */
+  height: 76px;
   flex-shrink: 0;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.art-square-img {
+.art-disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.art-disc.spin {
+  animation: vinylSpin 6s linear infinite;
+}
+
+@keyframes vinylSpin {
+  to { transform: rotate(360deg); }
+}
+
+.art-disc-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-/* ─── Right Content Column ─── */
+.art-hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11px;
+  height: 11px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(8, 8, 10, 0.9);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+
+/* ─── Center Content Column ─── */
 .player-content {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2px;
 }
 
-/* ─── Track Info ─── */
 .info-row {
   min-width: 0;
 }
@@ -92,35 +132,52 @@
 .track-name {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 14.5px;
   font-weight: 600;
   color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
 .track-artist {
-  margin: 1px 0 0;
+  margin: 2px 0 0;
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.5);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
-/* ─── Golden Gota-Patti Seek Line ─── */
+/* ─── Seek Line & Timestamps ─── */
+.seek-with-time-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.time-inline {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+/* Golden Gota-Patti Seek Line */
 .seek-bar {
   position: relative;
-  height: 20px;
+  height: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin-top: 4px;
-  touch-action: none; /* Prevent scroll while dragging on mobile */
+  flex: 1;
+  touch-action: none;
 }
 
 .seek-bar.dragging {
@@ -129,21 +186,21 @@
 
 .seek-track {
   width: 100%;
-  height: 3px;
-  border-radius: 3px;
+  height: 4px;
+  border-radius: 4px;
   background: rgba(255, 255, 255, 0.18);
   overflow: hidden;
 }
 
 .gota-track {
-  height: 3px;
+  height: 4px;
   background: rgba(212, 175, 55, 0.2);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 .seek-fill {
   height: 100%;
-  border-radius: 3px;
+  border-radius: 4px;
   background: rgba(255, 255, 255, 0.9);
   transition: width 0.15s linear;
 }
@@ -153,12 +210,11 @@
   box-shadow: 0 0 10px rgba(255, 223, 115, 0.6);
 }
 
-/* When dragging, remove transition for instant response */
 .seek-bar.dragging .seek-fill {
   transition: none;
 }
 
-/* ─── Seek Thumb (Pointer Container) ─── */
+/* ─── Seek Thumb ─── */
 .seek-thumb {
   position: absolute;
   top: 50%;
@@ -170,11 +226,6 @@
   z-index: 10;
 }
 
-.seek-bar.dragging .seek-thumb {
-  cursor: grabbing;
-}
-
-/* ─── Pointer Image Styling ─── */
 .pointer-img {
   width: auto;
   object-fit: contain;
@@ -183,21 +234,13 @@
   pointer-events: none;
 }
 
-/* Fixed sizes — never shrink or scale based on position */
-.pointer-wedding {
-  height: 42px;
-}
-
-.pointer-folk {
-  height: 30px;
-}
-
+.pointer-wedding { height: 38px; }
+.pointer-folk { height: 28px; }
 .pointer-trending {
-  height: 25px;
+  height: 24px;
   filter: drop-shadow(0 0 8px rgba(255, 100, 0, 0.8)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7));
 }
 
-/* ─── Byaav Bride Target (Right End of Line) ─── */
 .seek-target-bride {
   position: absolute;
   right: -8px;
@@ -208,15 +251,14 @@
 }
 
 .bride-seek-img {
-  height: 44px;
+  height: 40px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7));
 }
 
-/* ─── Devotional Diya Seek Icon ─── */
 .seek-icon {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
   user-select: none;
@@ -239,24 +281,28 @@
   }
 }
 
-/* ─── Time Row ─── */
 .time-row {
   display: flex;
   justify-content: space-between;
-  margin-top: 0;
+  margin-top: 3px;
   font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 10.5px;
+  color: rgba(255, 255, 255, 0.45);
   font-variant-numeric: tabular-nums;
 }
 
-/* ─── Controls Row: Mute, Prev, Play, Next, Shuffle ─── */
-.ctrl-row {
+@media (min-width: 901px) {
+  .time-inline {
+    display: none;
+  }
+}
+
+/* ─── Controls Row (Capsule Style) ─── */
+.capsule-ctrls {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 4px;
-  margin-top: 2px;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .ctrl {
@@ -266,19 +312,42 @@
   background: none;
   cursor: pointer;
   padding: 0;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.ctrl.prev, .ctrl.next, .ctrl.mute, .ctrl.shuffle {
-  width: 32px;
-  height: 32px;
+.ctrl.prev, .ctrl.next, .ctrl.mute, .ctrl.shuffle, .ctrl.patrika-btn, .ctrl.queue-btn {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.75);
 }
 
-.ctrl.prev:hover, .ctrl.next:hover, .ctrl.mute:hover, .ctrl.shuffle:hover {
+.ctrl.prev:hover, .ctrl.next:hover, .ctrl.mute:hover, .ctrl.shuffle:hover, .ctrl.patrika-btn:hover, .ctrl.queue-btn:hover {
   background: rgba(255, 255, 255, 0.1);
   color: white;
+}
+
+/* Solid White Circle Play Button */
+.ctrl.play.solid-white-play {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  color: #0c0c10;
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
+}
+
+.ctrl.play.solid-white-play:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 26px rgba(255, 255, 255, 0.35);
+}
+
+.ctrl.play.solid-white-play:active {
+  transform: scale(0.93);
+}
+
+.play-icon-svg {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
 }
 
 .ctrl.shuffle.active {
@@ -287,41 +356,82 @@
   box-shadow: 0 0 10px rgba(255, 223, 115, 0.3);
 }
 
-.ctrl.mute.muted {
-  color: rgba(229, 9, 20, 0.9);
-  background: rgba(229, 9, 20, 0.15);
+/* Queue Open Toggle Button Animation */
+.ctrl.queue-btn.open-close-active {
+  background: rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  transform: rotate(90deg);
 }
 
-.ctrl.prev:active, .ctrl.next:active {
-  transform: scale(0.9);
+.queue-toggle-icon {
+  transition: transform 0.25s ease;
 }
 
-.ctrl.play {
-  width: 42px;
-  height: 42px;
+/* ─── Smooth Expandable Hover Volume Bar ─── */
+.vol-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.vol-slider-wrap {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+}
+
+.vol-container.expanded .vol-slider-wrap {
+  width: 68px;
+  opacity: 1;
+  margin-left: 2px;
+  margin-right: 4px;
+}
+
+.vol-slider {
+  width: 68px;
+  height: 4px;
+  border-radius: 2px;
+  accent-color: #FFDF73;
+  cursor: pointer;
+  -webkit-appearance: none;
+  background: linear-gradient(90deg, #D4AF37 0%, #FFDF73 100%);
+  box-shadow: 0 0 8px rgba(255, 223, 115, 0.5);
+}
+
+.vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: white;
-  color: #08080A;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+  background: #FFFFFF;
+  border: 2px solid #FFDF73;
+  box-shadow: 0 0 10px rgba(255, 223, 115, 0.9);
+  cursor: pointer;
+  transition: transform 0.15s ease;
 }
 
-.ctrl.play:hover {
-  transform: scale(1.07);
+.vol-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
 }
 
-.ctrl.play:active {
-  transform: scale(0.93);
+.vol-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid #FFDF73;
+  box-shadow: 0 0 10px rgba(255, 223, 115, 0.9);
+  cursor: pointer;
 }
 
-.ctrl.play.loading {
-  opacity: 0.55;
-}
-
-.spinner {
-  width: 20px;
-  height: 20px;
-  border: 2.5px solid rgba(0, 0, 0, 0.15);
-  border-top-color: #08080A;
+.spinner-dark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(12, 12, 16, 0.2);
+  border-top-color: #0c0c10;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
@@ -330,42 +440,112 @@
   to { transform: rotate(360deg); }
 }
 
-/* ─── Mobile & Tablet ─── */
-@media (max-width: 900px) {
+/* ─── iPad View Specific Width Adjustments (641px - 900px) ─── */
+@media (min-width: 641px) and (max-width: 900px) {
   .player-dock {
     bottom: 84px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% - 24px);
-    max-width: 480px;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 32px) !important;
+    max-width: 580px !important;
+    margin: 0 auto !important;
   }
 
-  .player-glass {
+  .capsule-glass {
+    max-width: 580px;
+    width: 100%;
+  }
+}
+
+/* ─── Mobile View Refinements (up to 640px) ─── */
+@media (max-width: 640px) {
+  .player-dock {
+    bottom: 76px;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 24px) !important;
+    max-width: 440px !important;
+    margin: 0 auto !important;
+  }
+
+  .capsule-glass {
     min-width: auto;
     width: 100%;
+    max-width: 440px;
+    flex-direction: column;
+    align-items: stretch;
     gap: 10px;
-    padding: 10px;
-    border-radius: 16px;
+    padding: 14px 16px;
+    border-radius: 26px;
+    margin: 0 auto;
   }
 
-  .art-square {
-    width: 92px;
-    height: 92px;
-    border-radius: 12px;
+  .time-row {
+    display: none;
   }
 
-  .track-name { font-size: 13px; }
-  .track-artist { font-size: 11px; }
-
-  .ctrl.play { width: 38px; height: 38px; }
-  .ctrl.prev, .ctrl.next, .ctrl.mute, .ctrl.shuffle {
-    width: 30px;
-    height: 30px;
+  .player-top-block {
+    width: 100%;
+    align-items: center;
+    gap: 12px;
   }
 
-  /* Ensure pointer images never shrink on mobile */
-  .pointer-wedding { height: 38px; }
-  .pointer-folk { height: 26px; }
-  .pointer-trending { height: 22px; }
-  .bride-seek-img { height: 40px; }
+  .art-disc-wrap {
+    width: 48px;
+    height: 48px;
+  }
+
+  .track-name {
+    font-size: 13.5px;
+    font-weight: 700;
+  }
+
+  .track-artist {
+    font-size: 11.5px;
+  }
+
+  .player-bottom-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 2px;
+  }
+
+  .capsule-ctrls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 4px;
+  }
+
+  /* Swapped on Mobile: Patrika on Far Left (-1), Queue on Far Right (10) */
+  .ctrl.patrika-btn {
+    order: -1;
+  }
+
+  .ctrl.queue-btn {
+    order: 10;
+  }
+
+  /* Larger Prev - Play - Next Buttons on Mobile */
+  .ctrl.play.solid-white-play {
+    width: 50px;
+    height: 50px;
+  }
+
+  .ctrl.prev, .ctrl.next {
+    width: 38px;
+    height: 38px;
+  }
+
+  .ctrl.mute, .ctrl.shuffle, .ctrl.patrika-btn, .ctrl.queue-btn {
+    width: 35px;
+    height: 35px;
+  }
+
+  .vol-container.expanded .vol-slider-wrap {
+    display: none;
+  }
 }

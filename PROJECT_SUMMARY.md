@@ -13,9 +13,11 @@
   3. 🔥 **Trend** (*Navo Trend*) — Modern Hits & Trending Beats
   4. 🙏 **Bhakti** (*Bhagwan Ri Bhakti*) — Devotional Bhajans & Aarti
 - **Header Layout**:
-  - Live local time display top-left (`7:21 pm`)
-  - Centered navigation: `[Lok]  [Byaav]  (🔴 APNA LOGO)  [Trend]  [Bhakti]`
-  - Social links top-right: Spotify ↗ and YT Music ↗
+  - **Desktop Top-Left Block**: Sleek condensed digital clock font (**`Bebas Neue`**, `62px` with `transform: scaleY(1.18)`).
+  - **Stacked Seconds & AM/PM**: Live gold seconds (`28`) on top, with `PM` stacked directly beneath it next to the clock digits!
+  - **Aligned Date Row**: Aligned directly below the clock in top-left in exact format **`13th August, 2026`** spanning the clock display width!
+  - **Desktop Top-Right**: Spotify ↗ and YT Music ↗ social links.
+  - **Centered Navigation**: `[Lok]  [Byaav]  (🔴 APNA LOGO)  [Trend]  [Bhakti]`
   - **Logo Zoom**: Smooth 1.22x hover zoom animation linking to Instagram (`https://instagram.com/apna.culturez`)
   - **Mobile Layout**: Responsive bottom footer navigation bar.
 - **Custom Calligraphy Titles**: High-res Devanagari PNG title images (`/titles/lok.png`, `byaav.png`, `trend.png`, `bhakti.png`) featuring continuous 6-second levitation & breathing shadow animations (`titleAmbientFloat`).
@@ -23,27 +25,43 @@
 
 ---
 
-## 🏰 2. Glassmorphic Square Dock Music Player
+## 🏰 2. Capsule Glass Music Player & Interactive Features (busdriver.wtf Evolution)
 
-- **Outer Box**: A premium rounded corner box (`border-radius: 20px`) with frosted glass (`backdrop-filter: blur(48px)`), thin border highlights, and ambient glow.
-- **Square Album Art**: Sized to fit and align perfectly with the vertical column (`116px` square on desktop / `92px` on mobile) with custom drop shadow.
-- **Inner Layout Stack**:
-  - Left: Square Album Art
-  - Right: Vertical column containing:
-    1. **Track Title** (with auto-truncation)
-    2. **Artist Name**
-    3. **Golden Gota-Patti Seek Line** (glowing golden silk thread progress line)
-    4. **Time Indicators** (current time / total duration)
-    5. **5-Button Controls Row**: Mute, Previous, Play/Pause, Next, and Shuffle centered at the bottom of the column.
-- **Custom Vibe Seek Pointers**:
-  - 💒 **Byaav**: Royal Groom with Varmala (`groom.png`) moving towards the stationary Bride (`bride.png`) sitting at 100% end.
-  - 🪕 **Lok**: Traditional hand-painted **Rajasthani Dhol** (`dhol.png`).
-  - 🔥 **Trend**: Custom Fire Flame (`fire.png`).
-  - 🙏 **Bhakti**: Glowing traditional **Diya 🪔** with flickering flame.
-  - **Size Integrity**: Pointer sizes remain constant and never shrink when approaching the end of the song.
-- **Desktop & Mobile Interactive Drag**:
-  - Tap-to-seek support on the progress track.
-  - **Smooth Sliding Drag**: Full drag-and-seek support for both mouse events and mobile touch interfaces (`onTouchStart`, `onTouchMove`, `onTouchEnd`) with `touch-action: none` to prevent screen scroll while seeking.
+- **Capsule Dock Container**: Capsule glass container (`border-radius: 9999px`) with dark frosted glass (`backdrop-filter: blur(48px)`), gold border accents, and ambient glow.
+- **Spinning Vinyl Disc Art**: Circular vinyl disc (`art-disc spin`) with center hole on the far left.
+- **Controls & Expandable Volume Slider**:
+  - `Previous (⏮)`
+  - **Big Solid White Play Circle Button** (`▶ / ⏸`)
+  - `Next (⏭)`
+  - **Smooth Expandable Hover Volume Bar (`🔊`)**: Hovering over the volume icon smoothly expands a horizontal volume slider (`width: 65px`). Mouse leave collapses it back.
+  - `Shuffle Toggle (🔀)`
+  - `Royal Patrika Card (📜)`
+  - `Geet Maala Queue (≡)`
+- **Mobile Controls Order & Larger Button Sizes**:
+  - Mobile Controls Order: `[ Patrika ]  [ Shuffle ]  [ Prev ]  [ Play ]  [ Next ]  [ Volume ]  [ Queue ]`
+  - Desktop Controls Order: `[ Patrika ]  [ Shuffle ]  [ Prev ]  [ Play ]  [ Next ]  [ Volume ]  [ Queue ]`
+  - **Larger Mobile Play & Prev/Next Buttons**: Solid white play button increased to `50px`, Prev/Next buttons increased to `38px` for tap comfort.
+- **Exact busdriver.wtf Queue Card Layout, Real Titles & Interactive Share Button**:
+  - Exact typography, font sizes, active track pill highlights (`background: rgba(255,255,255,0.12)`), 3 orange/gold vertical dots (`⋮⋮⋮`).
+  - Automatically fetches 100% real YouTube video titles and channel names for every song in the queue.
+  - **Interactive Website Share Button**: Bottom card `[ ⬆ ] Share Apno Dhun` triggers native Web Share API on supported devices or copies `apno-dhun.vercel.app` URL to clipboard with visual green checkmark feedback!
+- **100% Bright Player Dock above Soft Backdrop Fade (Desktop & Mobile)**:
+  - Player dock stays 100% bright, crisp, and fully visible (`z-index: 50`) above the soft backdrop fade (`z-index: 40`, `rgba(0,0,0,0.42)` with `backdrop-filter: blur(8px)`).
+- **Clean Queue List View**:
+  - Removed language pills from queue list header.
+  - Hidden scrollbar on mobile view for a clean, borderless list experience.
+- **Responsive Dock & Navigation Width Alignment**:
+  - **iPad View**: Footer navigation bar restored to standard layout; player dock and Queue card set to `580px`.
+  - **Mobile View**: Player dock centered with `left: 50% !important; transform: translateX(-50%) !important` with zero rightward shift.
+- **PWA Add to Home Screen Pill Banner**:
+  - Compact width reduced to **`max-width: 320px`** for mobile and iPad views.
+  - Displays 2 lines: **Line 1**: `Keep Apno Dhun on your home screen` | **Line 2**: `Tap [ share icon ] then add to home screen`.
+  - Subtle unhighlighted close cross icon (`✕`) right next to the text.
+  - Floating cleanly at `bottom: 232px` on mobile/iPad view, fading down to `opacity: 0.3` when Queue list is active.
+- **Larger Rajasthani Safa Icon**:
+  - Safa icon increased to `34px` on desktop and `26px` on mobile with red pulsing glow (`safaPulseBig`).
+- **Desktop Keycaps Shortcuts Position**:
+  - Positioned closer below the desktop player dock at `bottom: 44px`.
 
 ---
 
@@ -54,19 +72,25 @@
 | `[ Space ]` / `[ K ]` | Toggle Play / Pause | Floating Glassmorphic Toast |
 | `[ M ]` | Toggle Mute / Unmute | Toast Notification |
 | `[ S ]` | Toggle **Shuffle Mode** | Golden Glow Button + Toast |
-| `[ → ]` | Next Track | Toast Notification |
+| `[ Q ]` | Open **Geet Maala Queue** | Frosted Glass Modal |
+| `[ P ]` | Open **Royal Patrika Card** | Vertical Card Modal |
+| `[ G ]` | Play **Ghungroo Chime** | Web Audio Bell + Toast |
+| `[ → ]` / `[ N ]` | Next Track | Toast Notification |
 | `[ ← ]` | Previous Track / Restart | Toast Notification |
-| `[ F ]` / `[ Esc ]` | **Cinema Mode** (fades UI out) | Toast Notification |
+| `[ F ]` / `[ Esc ]` | **Cinema Mode** / Close Modals | Toast Notification |
 
 ---
 
-## 🟢 4. Real-Time Live Listener Counter
+## 🟢 4. Real-Time Live Listener Counter (Safa Icon & Mehmaan Branding)
 
-- **Positioning**: Discrete small pill (`11px` font) positioned directly below the top header with a soft, dim pulsing green dot (`🟢 online`).
+- **Positioning & Z-Index Visibility**:
+  - **Desktop**: Top-right (`top: 72px; right: 28px`), `z-index: 55` remaining 100% visible above the queue backdrop fade when open.
+  - **Mobile & iPad**: Positioned at `top: 16px; left: 50%; transform: translateX(-50%)` in the **exact same top header line as the time display**!
+- **Visuals & Animations**:
+  - Replaced standard dot with a custom **Rajasthani Safa Icon** (`safa-icon.png`, `34px` desktop / `20px` compact mobile/iPad).
+  - **Typography**: **Bold count number** (`42`) + Normal weight label (**Mehmaan**) scaled to compact `11px` in mobile/iPad header line.
 - **Ably Realtime Presence Integration**:
-  - Automatically loads Ably browser SDK from CDN when `VITE_ABLY_API_KEY` (`appId.keyId:secret`) is configured in Vercel.
-  - Subscribes to presence events (`enter`, `leave`, `present`) for 100% real-time active visitor counting.
-  - Features an **automatic graceful fallback** to an organic time-of-day pulse generator if the key is missing or invalid.
+  - Subscribes to realtime presence events for 100% accurate active visitor counting with automatic fallback.
 
 ---
 

@@ -1,0 +1,51 @@
+.keycap-legend-bar {
+  position: fixed;
+  bottom: 44px; /* Moved closer up towards the desktop player dock (bottom: 96px) */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 4px 14px;
+  pointer-events: none;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.keycap-legend-bar:hover {
+  opacity: 1;
+}
+
+.keycap-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.keycap {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #FFDF73;
+  font-family: 'Inter', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.keycap-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.6px;
+}
+
+@media (max-width: 900px) {
+  .keycap-legend-bar {
+    display: none;
+  }
+}

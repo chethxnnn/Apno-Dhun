@@ -20,6 +20,28 @@
   transform: translateY(20px) !important;
 }
 
+.player-wrapper-relative {
+  position: relative;
+}
+
+/* Selective Light Fade when Queue is Open (Only fades background image and title text/image) */
+.bg-layer-wrapper,
+.title-display {
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.app.queue-active .bg-layer-wrapper,
+.app.queue-active .title-display {
+  opacity: 0.68 !important;
+  filter: brightness(0.85) !important;
+}
+
+.app.queue-active .pwa-banner {
+  opacity: 0.3 !important;
+  filter: brightness(0.6) !important;
+  pointer-events: none !important;
+}
+
 /* Shortcut Toast Notification */
 .shortcut-toast {
   position: fixed;

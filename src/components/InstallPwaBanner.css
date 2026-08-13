@@ -1,0 +1,105 @@
+/* Hidden on desktop */
+@media (min-width: 901px) {
+  .mobile-only-pwa {
+    display: none !important;
+  }
+}
+
+.pwa-banner {
+  position: fixed;
+  bottom: 232px; /* Positioned cleanly above the mobile player dock with zero overlap */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: calc(100% - 40px);
+  max-width: 320px; /* Reduced compact width for mobile and iPad */
+  padding: 8px 14px;
+  border-radius: 18px;
+  background: rgba(18, 16, 22, 0.92);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.75);
+  animation: slideUpPwa 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+@keyframes slideUpPwa {
+  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.pwa-text-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  text-align: left;
+}
+
+.pwa-line-1 {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #FFFFFF;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pwa-line-2 {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 10.8px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.65);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.pwa-share-icon-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFDF73;
+  flex-shrink: 0;
+}
+
+/* Subtle, unhighlighted cross icon */
+.pwa-close-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: none; /* No circle highlight background */
+  color: rgba(255, 255, 255, 0.45); /* Muted subtle color */
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  padding: 0;
+  transition: color 0.2s ease, transform 0.15s ease;
+}
+
+.pwa-close-btn:hover {
+  background: none;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.pwa-close-btn:active {
+  transform: scale(0.9);
+}

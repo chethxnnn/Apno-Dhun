@@ -9,17 +9,44 @@ const YT_MUSIC_URL = 'https://music.youtube.com';
 const leftModes = ['folk', 'wedding'];
 const rightModes = ['trending', 'devotional'];
 
+function getOrdinalDate(date = new Date()) {
+  const day = date.getDate();
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const month = monthNames[date.getMonth()];
+  const year = date.getFullYear();
+
+  let suffix = 'th';
+  if (day % 10 === 1 && day !== 11) suffix = 'st';
+  else if (day % 10 === 2 && day !== 12) suffix = 'nd';
+  else if (day % 10 === 3 && day !== 13) suffix = 'rd';
+
+  return `${day}${suffix} ${month}, ${year}`;
+}
+
 export default function Header({ currentMode, onModeChange }) {
   const [timeStr, setTimeStr] = useState('');
+  const [secStr, setSecStr] = useState('');
+  const [ampmStr, setAmpmStr] = useState('');
+  const [dateStr, setDateStr] = useState('');
+  const [compactTime, setCompactTime] = useState('');
 
   useEffect(() => {
     const tick = () => {
       const now = new Date();
       let h = now.getHours();
       const m = now.getMinutes().toString().padStart(2, '0');
+      const s = now.getSeconds().toString().padStart(2, '0');
       const ampm = h >= 12 ? 'pm' : 'am';
-      h = h % 12 || 12;
-      setTimeStr(`${h}:${m} ${ampm}`);
+      const h12 = h % 12 || 12;
+
+      setTimeStr(`${h12.toString().padStart(2, '0')}:${m}`);
+      setSecStr(s);
+      setAmpmStr(ampm);
+      setDateStr(getOrdinalDate(now));
+      setCompactTime(`${h12}:${m} ${ampm}`);
     };
     tick();
     const id = setInterval(tick, 1000);
@@ -63,9 +90,22 @@ export default function Header({ currentMode, onModeChange }) {
   return (
     <>
       <header className="hdr">
-        {/* Top-left: time */}
-        <div className="hdr-time">
-          <span className="time-value">{timeStr}</span>
+        {/* Desktop Top-Left: Giant Stretched Time & Aligned Date Block */}
+        <div className="hdr-left">
+          <span className="compact-time-mobile">{compactTime}</span>
+
+          <div className="desktop-clock-block">
+            <div className="clock-time-main">
+              <span className="time-digits">{timeStr}</span>
+              <div className="time-sub-stack">
+                <span className="time-sec-sup">{secStr}</span>
+                <span className="time-ampm">{ampmStr}</span>
+              </div>
+            </div>
+            <div className="clock-date-sub">
+              <span>{dateStr}</span>
+            </div>
+          </div>
         </div>
 
         {/* Desktop Center nav */}
@@ -73,8 +113,8 @@ export default function Header({ currentMode, onModeChange }) {
           {renderNav()}
         </nav>
 
-        {/* Top-right: Spotify + YT Music */}
-        <div className="hdr-links">
+        {/* Desktop Top-Right: Social Links (Spotify + YT Music) */}
+        <div className="hdr-right-links">
           <a href={SPOTIFY_URL} target="_blank" rel="noopener noreferrer" className="hdr-link" aria-label="Spotify">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/></svg>
             <span className="link-label">Spotify</span>
@@ -89,7 +129,7 @@ export default function Header({ currentMode, onModeChange }) {
         </div>
       </header>
 
-      {/* Mobile Footer Navigation (Bottom of page, clean text + logo, no pill container) */}
+      {/* Mobile Footer Navigation */}
       <footer className="mobile-footer">
         <nav className="hdr-nav mobile-only-nav">
           {renderNav()}

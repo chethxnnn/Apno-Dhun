@@ -7,7 +7,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 20px 24px;
+  padding: 20px 28px;
   pointer-events: none;
 }
 
@@ -15,18 +15,93 @@
   pointer-events: auto;
 }
 
-/* ── Time (top-left) ── */
-.hdr-time {
-  min-width: 90px;
+/* ── Top Left: Desktop Giant Stretched Time & Aligned Date Block ── */
+.hdr-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.time-value {
+.compact-time-mobile {
+  display: none;
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: white;
   text-shadow: 0 1px 8px rgba(0,0,0,0.6);
   font-variant-numeric: tabular-nums;
+}
+
+.desktop-clock-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.clock-time-main {
+  display: flex;
+  align-items: center;
+  line-height: 0.88;
+  transform: scaleY(1.18); /* Vertically stretched tall clock font */
+  transform-origin: top left;
+}
+
+.time-digits {
+  font-family: 'Bebas Neue', 'Oswald', sans-serif;
+  font-size: 62px; /* Sleeker reduced size */
+  font-weight: 400;
+  letter-spacing: 3px;
+  color: #FFFFFF;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.72);
+  font-variant-numeric: tabular-nums;
+  line-height: 0.85;
+}
+
+/* Stacked Seconds & AM/PM under seconds */
+.time-sub-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 6px;
+  gap: 2px;
+}
+
+.time-sec-sup {
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: #FFDF73;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.time-ampm {
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+/* Date Row aligned to exact width of stretched time display */
+.clock-date-sub {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px; /* Offset gap for scaleY stretch */
+}
+
+.clock-date-sub span {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.78);
+  letter-spacing: 1.1px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+  white-space: nowrap;
 }
 
 /* ── Center nav ── */
@@ -92,13 +167,11 @@
   filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
 }
 
-/* ── Right links (Spotify + YT Music) ── */
-.hdr-links {
+/* ── Top Right: Social Links (Spotify + YT Music) ── */
+.hdr-right-links {
   display: flex;
   align-items: center;
   gap: 6px;
-  min-width: 90px;
-  justify-content: flex-end;
 }
 
 .hdr-link {
@@ -150,6 +223,23 @@
     display: none !important;
   }
 
+  .desktop-clock-block {
+    display: none !important;
+  }
+
+  .compact-time-mobile {
+    display: block;
+  }
+
+  .hdr-right-links .link-label,
+  .hdr-right-links .link-arrow {
+    display: none;
+  }
+
+  .hdr-right-links .hdr-link {
+    padding: 4px;
+  }
+
   /* Mobile/Tablet Footer (Bottom of screen) */
   .mobile-footer {
     position: fixed;
@@ -194,25 +284,5 @@
 
   .mobile-only-nav .nav-logo-img {
     height: 48px;
-  }
-
-  .link-label {
-    display: none;
-  }
-
-  .link-arrow {
-    display: none;
-  }
-
-  .hdr-link {
-    padding: 4px;
-  }
-
-  .hdr-time {
-    min-width: auto;
-  }
-
-  .time-value {
-    font-size: 12px;
   }
 }

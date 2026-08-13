@@ -29,7 +29,6 @@ export function useYouTubePlayer(playlist) {
   const containerRef = useRef(null);
   const intervalRef = useRef(null);
 
-  // Pick initial random track index for the vibe
   const getRandomIndex = (len) => (len > 0 ? Math.floor(Math.random() * len) : 0);
 
   const [isReady, setIsReady] = useState(false);
@@ -37,6 +36,7 @@ export function useYouTubePlayer(playlist) {
   const [isBuffering, setIsBuffering] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
+  const [volume, setVolumeState] = useState(100);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(() => getRandomIndex(playlist.length));
@@ -111,6 +111,9 @@ export function useYouTubePlayer(playlist) {
           if (typeof playerRef.current.isMuted === 'function') {
             setIsMuted(playerRef.current.isMuted());
           }
+          if (typeof playerRef.current.getVolume === 'function') {
+            setVolumeState(playerRef.current.getVolume());
+          }
         } catch (e) {}
       }
     }, 500);
@@ -144,7 +147,6 @@ export function useYouTubePlayer(playlist) {
 
     if (shuffleRef.current) {
       let rand = getRandomIndex(len);
-      // Avoid repeating same track if playlist length > 1
       while (rand === trackIndexRef.current) {
         rand = getRandomIndex(len);
       }
@@ -153,7 +155,7 @@ export function useYouTubePlayer(playlist) {
     return (trackIndexRef.current + 1) % len;
   }, []);
 
-  // Pre-fetch oEmbed metadata for current playlist items
+  // Pre-fetch oEmbed metadata for all playlist items
   useEffect(() => {
     playlist.forEach((track) => {
       if (track?.id && !metaCache[track.id]) {
@@ -275,6 +277,19 @@ export function useYouTubePlayer(playlist) {
     }
   }, []);
 
+  const setVolume = useCallback((val) => {
+    if (!playerRef.current) return;
+    playerRef.current.setVolume(val);
+    setVolumeState(val);
+    if (val === 0) {
+      playerRef.current.mute();
+      setIsMuted(true);
+    } else if (playerRef.current.isMuted()) {
+      playerRef.current.unMute();
+      setIsMuted(false);
+    }
+  }, []);
+
   const toggleShuffle = useCallback(() => {
     setIsShuffle((prev) => !prev);
   }, []);
@@ -308,10 +323,17 @@ export function useYouTubePlayer(playlist) {
   const currentTrack = rawTrack
     ? {
         ...rawTrack,
-        title: fetched?.title || rawTrack.title || 'YouTube Song',
+        title: fetched?.title || rawTrack.title || 'Rajasthani Song',
         artist: fetched?.artist || rawTrack.artist || 'Apna Culturez',
       }
     : null;
+
+  // Resolved playlist with 100% real fetched titles for every song
+  const resolvedPlaylist = playlist.map((track) => ({
+    ...track,
+    title: metaCache[track.id]?.title || track.title,
+    artist: metaCache[track.id]?.artist || track.artist,
+  }));
 
   return {
     containerRef,
@@ -320,15 +342,18 @@ export function useYouTubePlayer(playlist) {
     isBuffering,
     isMuted,
     isShuffle,
+    volume,
     currentTime,
     duration,
     currentTrack,
     currentTrackIndex,
+    resolvedPlaylist,
     play,
     pause,
     togglePlay,
     toggleMute,
     toggleShuffle,
+    setVolume,
     nextTrack,
     prevTrack,
     seekTo,
