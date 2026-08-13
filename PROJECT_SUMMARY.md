@@ -23,17 +23,27 @@
 
 ---
 
-## 🏰 2. Royal Jharokha Glass Arch Music Player
+## 🏰 2. Glassmorphic Square Dock Music Player
 
-- **Architectural Frame**: Shaped like a sculpted **Rajasthani Jharokha (Archway)** in ultra-clear frosted glass (`backdrop-filter: blur(48px)`), accented with subtle 1px metallic brass/gold borders.
-- **Carved Brass Medallion Album Art**: Spinning vinyl disc encased in a **carved brass medallion ring** with active sound-pulse ring animations during playback.
-- **Golden Gota-Patti Seek Line**: Progress bar styled as a **glowing golden silk Gota-Patti thread**.
-- **Custom Hand-Painted Vibe Pointers**:
-  - 💒 **Byaav**: Royal Groom with Varmala (`groom.png`) moving along the golden line towards the Bride (`bride.png`) sitting at the 100% end point!
+- **Outer Box**: A premium rounded corner box (`border-radius: 20px`) with frosted glass (`backdrop-filter: blur(48px)`), thin border highlights, and ambient glow.
+- **Square Album Art**: Sized to fit and align perfectly with the vertical column (`116px` square on desktop / `92px` on mobile) with custom drop shadow.
+- **Inner Layout Stack**:
+  - Left: Square Album Art
+  - Right: Vertical column containing:
+    1. **Track Title** (with auto-truncation)
+    2. **Artist Name**
+    3. **Golden Gota-Patti Seek Line** (glowing golden silk thread progress line)
+    4. **Time Indicators** (current time / total duration)
+    5. **5-Button Controls Row**: Mute, Previous, Play/Pause, Next, and Shuffle centered at the bottom of the column.
+- **Custom Vibe Seek Pointers**:
+  - 💒 **Byaav**: Royal Groom with Varmala (`groom.png`) moving towards the stationary Bride (`bride.png`) sitting at 100% end.
   - 🪕 **Lok**: Traditional hand-painted **Rajasthani Dhol** (`dhol.png`).
-  - 🔥 **Trend**: Resized vibrant **Fire Flame** (`fire.png`).
-  - 🙏 **Bhakti**: Glowing traditional **Diya 🪔** with flickering flame pulse.
-- **Controls**: Minimalist Mute, Previous, Golden Play/Pause, Next, and Shuffle buttons.
+  - 🔥 **Trend**: Custom Fire Flame (`fire.png`).
+  - 🙏 **Bhakti**: Glowing traditional **Diya 🪔** with flickering flame.
+  - **Size Integrity**: Pointer sizes remain constant and never shrink when approaching the end of the song.
+- **Desktop & Mobile Interactive Drag**:
+  - Tap-to-seek support on the progress track.
+  - **Smooth Sliding Drag**: Full drag-and-seek support for both mouse events and mobile touch interfaces (`onTouchStart`, `onTouchMove`, `onTouchEnd`) with `touch-action: none` to prevent screen scroll while seeking.
 
 ---
 
