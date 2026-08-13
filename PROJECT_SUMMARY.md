@@ -33,17 +33,18 @@
 
 - **Capsule Dock Container**: Capsule glass container (`border-radius: 9999px`) with dark frosted glass (`backdrop-filter: blur(48px)`), gold border accents, and ambient glow.
 - **Spinning Vinyl Disc Art**: Circular vinyl disc (`art-disc spin`) with center hole on the far left.
-- **Controls & Expandable Volume Slider**:
+- **Controls & Pill-Shaped Dhun Button**:
+  - **Pill-Shaped Dhun Button (`[ Icon /dhun-button.png ] Dhun`)**: Replaced the old Patrika icon button with a sleek glass pill button featuring your custom **`dhun button.png`** icon (`public/dhun-button.png`) and **"Dhun"** text! Styled in the exact dark shade (`rgba(20, 18, 24, 0.85)`) matching the player dock. Clicking opens the Patrika card as usual.
+  - **Mobile & iPad Shake Phone Gesture (`src/hooks/useShake.js`)**: Automatically detects phone/iPad shake movements (`devicemotion` accelerometer API threshold) and instantly opens the Dhun card modal with haptic vibration feedback (`navigator.vibrate`)!
+  - **Removed Shuffle Button**: Removed the shuffle toggle button from the player controls dock.
   - `Previous (⏮)`
   - **Big Solid White Play Circle Button** (`▶ / ⏸`)
   - `Next (⏭)`
   - **Smooth Expandable Hover Volume Bar (`🔊`)**: Hovering over the volume icon smoothly expands a horizontal volume slider (`width: 65px`). Mouse leave collapses it back.
-  - `Shuffle Toggle (🔀)`
-  - `Royal Patrika Card (📜)`
   - `Geet Maala Queue (≡)`
-- **Mobile Controls Order & Larger Button Sizes**:
-  - Mobile Controls Order: `[ Patrika ]  [ Shuffle ]  [ Prev ]  [ Play ]  [ Next ]  [ Volume ]  [ Queue ]`
-  - Desktop Controls Order: `[ Patrika ]  [ Shuffle ]  [ Prev ]  [ Play ]  [ Next ]  [ Volume ]  [ Queue ]`
+- **Mobile Controls Order**:
+  - Mobile Controls Order: `[ Pill Dhun Button ]  [ Prev ]  [ Play ]  [ Next ]  [ Volume ]  [ Queue ]`
+  - Desktop Controls Order: `[ Pill Dhun Button ]  [ Prev ]  [ Play ]  [ Next ]  [ Volume ]  [ Queue ]`
   - **Larger Mobile Play & Prev/Next Buttons**: Solid white play button increased to `50px`, Prev/Next buttons increased to `38px` for tap comfort.
 - **Exact busdriver.wtf Queue Card Layout, Real Titles & Interactive Share Button**:
   - Exact typography, font sizes, active track pill highlights (`background: rgba(255,255,255,0.12)`), 3 orange/gold vertical dots (`⋮⋮⋮`).
@@ -53,7 +54,7 @@
   - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
 - **Pixel-Perfect html2canvas Patrika Export (`PatrikaModal.jsx`)**:
   - Uses **`html2canvas`** to capture the exact rendered `.patrika-card-blank-bg` DOM node at 3x scale (~1037x1516), ensuring the saved image is **100% IDENTICAL to what is shown in preview** with zero text misalignments or baseline shifts!
-  - **Full Uncropped Thumbnail Display**: Displays the original video thumbnail 100% full with zero scale zoom, ensuring no text or artwork is cut off!
+  - **Background-Image Cover Container**: Uses a `background-image` container with `background-size: cover; background-position: center;` so `html2canvas` renders the thumbnail **100% full without black bars** and without scaling/zooming distortion!
   - **Centered Red Thin Serif Title**: Slightly reduced title font size (`0.91rem`) with reduced vertical gap (`margin-top: -3px`) between title and artist name in muted red thin font below the thumbnail.
 - **Mobile & iPad Top-Left Bebas Neue Clock & Responsive Date**:
   - **iPad Mode**: Increased Bebas Neue clock size to **`42px`** with full date format (`13th August, 2026`).

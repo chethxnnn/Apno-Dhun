@@ -12,6 +12,7 @@ import InstallPwaBanner from './components/InstallPwaBanner';
 import KeycapLegendBar from './components/KeycapLegendBar';
 import { useYouTubePlayer } from './hooks/useYouTubePlayer';
 import { useLiveListeners } from './hooks/useLiveListeners';
+import { useShake } from './hooks/useShake';
 import { playlists as initialPlaylists, modeConfig } from './data/playlists';
 import { fetchAllLivePlaylists } from './services/youtubeApi';
 
@@ -24,6 +25,11 @@ export default function App() {
 
   const listenerCount = useLiveListeners();
   const currentPlaylist = activePlaylists[currentMode] || initialPlaylists[currentMode];
+
+  // Mobile / iPad Shake Phone Gesture: Open Dhun Card on shake!
+  useShake(() => {
+    setIsPatrikaOpen(true);
+  }, true);
 
   const {
     containerRef,

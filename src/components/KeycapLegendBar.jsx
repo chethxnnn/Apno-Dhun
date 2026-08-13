@@ -22,7 +22,7 @@ export default function KeycapLegendBar() {
       </div>
       <div className="keycap-item">
         <span className="keycap">P</span>
-        <span className="keycap-label">PATRIKA</span>
+        <span className="keycap-label">DHUN CARD</span>
       </div>
       <div className="keycap-item">
         <span className="keycap">G</span>

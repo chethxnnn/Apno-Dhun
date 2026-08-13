@@ -75,9 +75,11 @@ export default function PatrikaModal({
         <div className="patrika-card-blank-bg" ref={cardRef}>
           {/* Centered Clean Content (Positioned in middle blank space) */}
           <div className="blank-clean-content-lower">
-            <div className="clean-thumb-wrap-larger">
-              <img src={thumbUrl} alt="" className="clean-thumb-img" crossOrigin="anonymous" />
-            </div>
+            {/* Background Image Container for 100% perfect cover scaling in html2canvas */}
+            <div
+              className="clean-thumb-wrap-larger"
+              style={{ backgroundImage: `url(${thumbUrl})` }}
+            />
 
             <h3 className="clean-song-title-compact">{currentTrack.title}</h3>
             <p className="clean-artist-name-red">{currentTrack.artist}</p>

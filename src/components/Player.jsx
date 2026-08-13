@@ -14,21 +14,18 @@ export default function Player({
   isPlaying,
   isBuffering,
   isMuted,
-  isShuffle,
   volume = 100,
   currentTime,
   duration,
   isQueueOpen,
   onTogglePlay,
   onToggleMute,
-  onToggleShuffle,
   onNext,
   onPrev,
   onSeek,
   onVolumeChange,
   onToggleQueue,
   onOpenPatrika,
-  onPlayGhungroo,
 }) {
   const seekRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -182,31 +179,18 @@ export default function Player({
           </div>
         </div>
 
-        {/* Bottom Block / Controls Row: Patrika - Shuffle - Prev - Play - Next - Vol - Queue */}
+        {/* Bottom Block / Controls Row: Pill-Shaped Dhun Button - Prev - Play - Next - Vol - Queue */}
         <div className="player-bottom-block">
           <div className="ctrl-row capsule-ctrls">
-            {/* Royal Patrika Button (Far Left / Swapped) */}
+            {/* Pill-Shaped Dhun Button (Icon + Dhun Text) */}
             <button
-              className="ctrl patrika-btn"
+              className="dhun-pill-btn"
               onClick={onOpenPatrika}
-              aria-label="Royal Patrika"
-              title="Royal Patrika (P)"
+              aria-label="Dhun Card"
+              title="Dhun Card (P)"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" />
-              </svg>
-            </button>
-
-            {/* Shuffle Toggle */}
-            <button
-              className={`ctrl shuffle ${isShuffle ? 'active' : ''}`}
-              onClick={onToggleShuffle}
-              aria-label={isShuffle ? 'Disable Shuffle' : 'Enable Shuffle'}
-              title={isShuffle ? 'Shuffle ON (S)' : 'Shuffle OFF (S)'}
-            >
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.45 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
-              </svg>
+              <img src="/dhun-button.png" alt="" className="dhun-pill-icon" />
+              <span className="dhun-pill-text">Dhun</span>
             </button>
 
             {/* Previous */}
@@ -284,7 +268,7 @@ export default function Player({
               </div>
             </div>
 
-            {/* Queue Toggle Button (Far Right / Swapped) */}
+            {/* Queue Toggle Button */}
             <button
               className={`ctrl queue-btn ${isQueueOpen ? 'open-close-active' : ''}`}
               onClick={onToggleQueue}
