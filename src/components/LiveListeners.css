@@ -56,23 +56,23 @@
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* Mobile & iPad View: In the exact same top header line as the time display */
+/* Mobile & iPad View (max-width: 900px): Sleek, smaller online counter in header line */
 @media (max-width: 900px) {
   .live-listeners-bare {
-    top: 16px; /* Aligned vertically in the exact same line as top-left time display */
+    top: 15px; /* Aligned vertically in top header line */
     left: 50%;
     right: auto;
     transform: translateX(-50%);
-    gap: 6px;
+    gap: 5px;
   }
   .listeners-text-clean {
-    font-size: 11px; /* Reduced label size for compact mobile/iPad header line */
+    font-size: 10px; /* Reduced compact font size */
   }
   .listeners-num-bold {
-    font-size: 11.5px;
+    font-size: 10.5px;
   }
   .safa-icon-big {
-    width: 20px; /* Reduced compact Safa icon size on mobile/iPad */
-    height: 20px;
+    width: 16px; /* Sleeker, smaller Safa icon size for mobile/iPad */
+    height: 16px;
   }
 }

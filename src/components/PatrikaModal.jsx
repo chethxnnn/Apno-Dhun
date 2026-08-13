@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import './PatrikaModal.css';
 
 export default function PatrikaModal({
@@ -8,6 +8,7 @@ export default function PatrikaModal({
   currentMode = 'wedding',
 }) {
   const cardRef = useRef(null);
+  const [isSharing, setIsSharing] = useState(false);
 
   if (!isOpen || !currentTrack) return null;
 
@@ -18,8 +19,10 @@ export default function PatrikaModal({
     trending: 'नवो ट्रेंड (Modern Hits)',
   };
 
-  const handleDownloadImage = async () => {
-    if (!cardRef.current) return;
+  const handleSharePatrika = async () => {
+    if (!cardRef.current || isSharing) return;
+    setIsSharing(true);
+
     try {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
@@ -103,12 +106,41 @@ export default function PatrikaModal({
       ctx.font = '32px sans-serif';
       ctx.fillText('apno-dhun.vercel.app  •  @apna.culturez', canvas.width / 2, 1720);
 
-      const link = document.createElement('a');
-      link.download = `apno-dhun-patrika-${Date.now()}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+      // Convert Canvas to PNG File and Share Image
+      canvas.toBlob(async (blob) => {
+        setIsSharing(false);
+        if (!blob) return;
+
+        const file = new File([blob], `apno-dhun-patrika-${Date.now()}.png`, { type: 'image/png' });
+
+        // 1. Try Native Web Share API with image file attached
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              title: 'Apno Dhun Royal Patrika',
+              text: `शाही निमंत्रण — Apno Dhun (${currentTrack.title})`,
+              files: [file],
+            });
+            return;
+          } catch (err) {
+            if (err.name !== 'AbortError') {
+              console.warn('Native image share failed, triggering download:', err);
+            } else {
+              return;
+            }
+          }
+        }
+
+        // 2. Fallback: Trigger browser image download
+        const link = document.createElement('a');
+        link.download = file.name;
+        link.href = URL.createObjectURL(blob);
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+      }, 'image/png');
     } catch (e) {
-      console.warn('Canvas download error:', e);
+      console.warn('Canvas share error:', e);
+      setIsSharing(false);
     }
   };
 
@@ -163,8 +195,8 @@ export default function PatrikaModal({
 
         {/* 2 Full-Width Pill Buttons */}
         <div className="patrika-actions">
-          <button className="patrika-pill-btn share-pill" onClick={handleDownloadImage}>
-            Share your Patrika
+          <button className="patrika-pill-btn share-pill" onClick={handleSharePatrika} disabled={isSharing}>
+            {isSharing ? 'Generating Image...' : 'Share your Patrika'}
           </button>
           <button className="patrika-pill-btn notnow-pill" onClick={onClose}>
             Not now

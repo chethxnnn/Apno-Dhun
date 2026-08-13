@@ -9,13 +9,17 @@ const YT_MUSIC_URL = 'https://music.youtube.com';
 const leftModes = ['folk', 'wedding'];
 const rightModes = ['trending', 'devotional'];
 
-function getOrdinalDate(date = new Date()) {
+function getOrdinalDate(date = new Date(), shortMonth = false) {
   const day = date.getDate();
-  const monthNames = [
+  const fullMonths = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
-  const month = monthNames[date.getMonth()];
+  const shortMonths = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  const month = shortMonth ? shortMonths[date.getMonth()] : fullMonths[date.getMonth()];
   const year = date.getFullYear();
 
   let suffix = 'th';
@@ -31,7 +35,7 @@ export default function Header({ currentMode, onModeChange }) {
   const [secStr, setSecStr] = useState('');
   const [ampmStr, setAmpmStr] = useState('');
   const [dateStr, setDateStr] = useState('');
-  const [compactTime, setCompactTime] = useState('');
+  const [simpleMobileTime, setSimpleMobileTime] = useState('');
 
   useEffect(() => {
     const tick = () => {
@@ -45,8 +49,8 @@ export default function Header({ currentMode, onModeChange }) {
       setTimeStr(`${h12.toString().padStart(2, '0')}:${m}`);
       setSecStr(s);
       setAmpmStr(ampm);
-      setDateStr(getOrdinalDate(now));
-      setCompactTime(`${h12}:${m} ${ampm}`);
+      setDateStr(getOrdinalDate(now, false));
+      setSimpleMobileTime(`${h12}:${m} ${ampm}`);
     };
     tick();
     const id = setInterval(tick, 1000);
@@ -90,11 +94,13 @@ export default function Header({ currentMode, onModeChange }) {
   return (
     <>
       <header className="hdr">
-        {/* Desktop Top-Left: Giant Stretched Time & Aligned Date Block */}
+        {/* Top-Left: Simple Time on Mobile, Bebas Neue Clock & Date on Desktop/iPad */}
         <div className="hdr-left">
-          <span className="compact-time-mobile">{compactTime}</span>
+          {/* Simple time display for Mobile View */}
+          <span className="simple-mobile-time">{simpleMobileTime}</span>
 
-          <div className="desktop-clock-block">
+          {/* Stretched Bebas Neue Clock Block for Desktop and iPad */}
+          <div className="clock-block-responsive">
             <div className="clock-time-main">
               <span className="time-digits">{timeStr}</span>
               <div className="time-sub-stack">
@@ -113,7 +119,7 @@ export default function Header({ currentMode, onModeChange }) {
           {renderNav()}
         </nav>
 
-        {/* Desktop Top-Right: Social Links (Spotify + YT Music) */}
+        {/* Top-Right: Social Links (Spotify + YT Music) */}
         <div className="hdr-right-links">
           <a href={SPOTIFY_URL} target="_blank" rel="noopener noreferrer" className="hdr-link" aria-label="Spotify">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/></svg>
@@ -129,7 +135,7 @@ export default function Header({ currentMode, onModeChange }) {
         </div>
       </header>
 
-      {/* Mobile Footer Navigation */}
+      {/* Mobile & iPad Footer Navigation */}
       <footer className="mobile-footer">
         <nav className="hdr-nav mobile-only-nav">
           {renderNav()}

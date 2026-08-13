@@ -9,9 +9,18 @@
   animation: backdropFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+.queue-backdrop-fade.closing {
+  animation: backdropFadeOut 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 @keyframes backdropFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes backdropFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
 
 .queue-fixed-attached {
@@ -25,9 +34,18 @@
   animation: queueSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
+.queue-fixed-attached.closing {
+  animation: queueSlideDown 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 @keyframes queueSlideUp {
-  from { opacity: 0; transform: translateX(-50%) translateY(20px) scale(0.97); }
+  from { opacity: 0; transform: translateX(-50%) translateY(24px) scale(0.96); }
   to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+
+@keyframes queueSlideDown {
+  from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  to { opacity: 0; transform: translateX(-50%) translateY(24px) scale(0.96); }
 }
 
 .queue-card {

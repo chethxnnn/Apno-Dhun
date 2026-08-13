@@ -45,8 +45,13 @@
   - Exact typography, font sizes, active track pill highlights (`background: rgba(255,255,255,0.12)`), 3 orange/gold vertical dots (`⋮⋮⋮`).
   - Automatically fetches 100% real YouTube video titles and channel names for every song in the queue.
   - **Interactive Website Share Button**: Bottom card `[ ⬆ ] Share Apno Dhun` triggers native Web Share API on supported devices or copies `apno-dhun.vercel.app` URL to clipboard with visual green checkmark feedback!
-- **100% Bright Player Dock above Soft Backdrop Fade (Desktop & Mobile)**:
-  - Player dock stays 100% bright, crisp, and fully visible (`z-index: 50`) above the soft backdrop fade (`z-index: 40`, `rgba(0,0,0,0.42)` with `backdrop-filter: blur(8px)`).
+- **Smooth Opening & Closing Animations Both Ways**:
+  - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
+- **Native Royal Patrika Image File Sharing**:
+  - Clicking `Share your Patrika` renders a high-res Royal Invitation Card (`1080x1920`) canvas PNG file and opens the device native Web Share API with image attachment (WhatsApp, Instagram Stories, Twitter, Messages) or fallback image download.
+- **Mobile & iPad Top-Left Bebas Neue Clock & Responsive Date**:
+  - **iPad Mode**: Increased Bebas Neue clock size to **`42px`** with full date format (`13th August, 2026`).
+  - **Mobile Mode**: Compact `26px` clock with abbreviated short month format (**`13th Aug, 2026`**) spanning the exact width of the time block above it.
 - **Clean Queue List View**:
   - Removed language pills from queue list header.
   - Hidden scrollbar on mobile view for a clean, borderless list experience.
@@ -81,11 +86,15 @@
 
 ---
 
-## 🟢 4. Real-Time Live Listener Counter (Safa Icon & Mehmaan Branding)
-
-- **Positioning & Z-Index Visibility**:
-  - **Desktop**: Top-right (`top: 72px; right: 28px`), `z-index: 55` remaining 100% visible above the queue backdrop fade when open.
-  - **Mobile & iPad**: Positioned at `top: 16px; left: 50%; transform: translateX(-50%)` in the **exact same top header line as the time display**!
+- **Header & Navigation Layout**:
+  - **Desktop Top-Left Block**: Sleek condensed digital clock font (**`Bebas Neue`**, `62px` with `transform: scaleY(1.18)`).
+  - **Stacked Seconds & AM/PM**: Live gold seconds (`28`) on top, with `PM` stacked directly beneath it next to the clock digits!
+  - **Aligned Date Row**: Aligned directly below the clock in top-left in exact format **`13th August, 2026`** (desktop/iPad) and **`13th Aug, 2026`** (mobile) spanning the clock display width!
+  - **Desktop Top-Right**: Spotify ↗ and YT Music ↗ social links.
+  - **Centered Navigation**: `[Lok]  [Byaav]  (🔴 APNA LOGO)  [Trend]  [Bhakti]` on Desktop.
+  - **Mobile & iPad Layout**: Fixed bottom footer navigation bar (`max-width: 440px` mobile / `max-width: 580px` iPad).
+- **Real-Time Live Listener Counter (Safa Icon & Mehmaan Branding)**:
+  - **Positioning**: Fixed at `top: 16px; left: 50%; transform: translateX(-50%)` in top header bar across all Mobile and iPad views!
 - **Visuals & Animations**:
   - Replaced standard dot with a custom **Rajasthani Safa Icon** (`safa-icon.png`, `34px` desktop / `20px` compact mobile/iPad).
   - **Typography**: **Bold count number** (`42`) + Normal weight label (**Mehmaan**) scaled to compact `11px` in mobile/iPad header line.

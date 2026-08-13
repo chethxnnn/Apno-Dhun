@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './GeetMaalaModal.css';
 
 export default function GeetMaalaModal({
@@ -11,9 +11,30 @@ export default function GeetMaalaModal({
   onSelectTrack,
   onModeChange,
 }) {
+  const [isMounted, setIsMounted] = useState(isOpen);
+  const [isClosing, setIsClosing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const closeTimer = useRef(null);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (isOpen) {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+      setIsMounted(true);
+      setIsClosing(false);
+    } else if (isMounted && !isClosing) {
+      setIsClosing(true);
+      closeTimer.current = setTimeout(() => {
+        setIsMounted(false);
+        setIsClosing(false);
+      }, 280);
+    }
+
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, [isOpen, isMounted, isClosing]);
+
+  if (!isMounted) return null;
 
   const modeTabs = [
     { key: 'folk', label: 'LOK' },
@@ -54,8 +75,14 @@ export default function GeetMaalaModal({
   };
 
   return (
-    <div className="queue-backdrop-fade" onClick={onClose}>
-      <div className="queue-fixed-attached" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`queue-backdrop-fade ${isClosing ? 'closing' : ''}`}
+      onClick={onClose}
+    >
+      <div
+        className={`queue-fixed-attached ${isClosing ? 'closing' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="queue-card">
           {/* Top Vibe Navigation Tabs & Meta Header */}
           <div className="queue-tabs-row">
