@@ -29,7 +29,6 @@ export default function PatrikaModal({
         backgroundColor: null,
         logging: false,
         imageTimeout: 0,
-        scale: 4,
       });
 
       // Export as uncompressed 100% quality PNG blob
@@ -40,12 +39,15 @@ export default function PatrikaModal({
         const fullTitle = currentTrack.title || 'Rajasthani Song';
         const file = new File([blob], `apno-dhun-patrika-${Date.now()}.png`, { type: 'image/png' });
 
+        // Custom Hinglish + English multiline WhatsApp Share Message
+        const shareText = `Ram Ram Sa! I am listening to "${fullTitle}" on Apno Dhun.\n\nApne favourite Rajasthani geet yahan suno!\nhttps://apnodhun.in`;
+
         // 1. Try Native Web Share API with image file attached
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({
-              title: 'Apno Dhun Royal Patrika',
-              text: `शाही निमंत्रण — Apno Dhun (${fullTitle}) https://apnodhun.in`,
+              title: 'Apno Dhun',
+              text: shareText,
               files: [file],
             });
             return;

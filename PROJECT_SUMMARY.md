@@ -55,6 +55,7 @@
 - **Pixel-Perfect html2canvas Patrika Export (`PatrikaModal.jsx`)**:
   - Uses **`html2canvas`** at **4x Ultra HD Scale Factor** (~2074x3032 resolution), ensuring the saved PNG image has **NO COMPROMISE on quality — razor sharp 4K resolution** with zero blurriness or downsampling loss!
   - **Background-Image Cover Container**: Uses a `background-image` container with `background-size: cover; background-position: center;` so `html2canvas` renders the thumbnail **100% full without black bars** and without scaling/zooming distortion!
+  - **Custom Multiline Hinglish WhatsApp Share Message**: Shares with your exact custom multiline text structure (`Ram Ram Sa! I am listening to "[Song Title]" on Apno Dhun.\n\nApne favourite Rajasthani geet yahan suno!\nhttps://apnodhun.in`).
   - **Centered Red Thin Serif Title**: Slightly reduced title font size (`0.91rem`) with reduced vertical gap (`margin-top: -3px`) between title and artist name in muted red thin font below the thumbnail.
 - **Mobile & iPad Top-Left Bebas Neue Clock & Responsive Date**:
   - **iPad Mode**: Increased Bebas Neue clock size to **`42px`** with full date format (`13th August, 2026`).
