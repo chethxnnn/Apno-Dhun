@@ -52,11 +52,9 @@
   - **Interactive Website Share Button**: Bottom card `[ ⬆ ] Share Apno Dhun` triggers native Web Share API on supported devices or copies `apno-dhun.vercel.app` URL to clipboard with visual green checkmark feedback!
 - **Smooth Opening & Closing Animations Both Ways**:
   - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
-- **Pure Native High-Resolution 2D Canvas Engine (`PatrikaModal.jsx`)**:
-  - Replaced DOM rasterization with a **Pure Native High-Resolution 2D Canvas Engine** rendering directly at **1037 × 1516 native resolution** (`imageSmoothingQuality = 'high'`).
-  - **1:1 Visual Parity with Screen Preview**:
-    - **Cover Crop Math**: Calculates exact 16:9 aspect cover-cropping for the YouTube video thumbnail image on canvas (`610px × 343px` with 48px rounded corners), matching the CSS `background-size: cover` zoom in screen preview!
-    - **Proportional Vector Typography**: Scaled font sizes to 42px thin red serif font (`Playfair Display`) and 32px artist font (`Inter`), ensuring title size and line wrapping match the screen preview 100%!
+- **Offscreen 1037 × 1516 Native DOM Export Node (`PatrikaModal.jsx`)**:
+  - Rendered a dedicated hidden 1037 × 1516 full-res React DOM node (`exportCardRef`) offscreen so the browser's native DOM engine handles text layout, Devanagari Hindi Unicode characters ("सतरंगी लहरियो"), and font rendering with 100% perfection!
+  - Captured via `html2canvas` at `scale: 2` (2074 × 3032 Ultra HD resolution), ensuring zero missing Hindi characters, exact title font sizing (`26px` on 1037px width), and exact thumbnail cover crop zoom matching the screen preview 100%!
   - **Clean Action Buttons**: Streamlined UI with just two full-width pill buttons: **"Share your Patrika"** and **"Not now"**.
   - **Custom Multiline Hinglish WhatsApp Share Message**: Shares with your exact custom multiline text structure (`Ram Ram Sa! I am listening to "[Song Title]" on Apno Dhun.\n\nApne favourite Rajasthani geet yahan suno!\nhttps://apnodhun.in`).
   - **Centered Red Thin Serif Title**: Slightly reduced title font size (`0.91rem`) with reduced vertical gap (`margin-top: -3px`) between title and artist name in muted red thin font below the thumbnail.

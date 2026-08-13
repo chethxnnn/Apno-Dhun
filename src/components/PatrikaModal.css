@@ -149,3 +149,65 @@
 .patrika-pill-btn:active {
   transform: scale(0.98);
 }
+
+/* ─── Offscreen 1037x1516 Native Export Card Styles (100% Preview Parity) ─── */
+.patrika-card-blank-bg-export {
+  width: 1037px;
+  height: 1516px;
+  border-radius: 40px;
+  background: url('/dhun-card-blank.png') center / cover no-repeat;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.blank-clean-content-lower-export {
+  position: absolute;
+  top: 34.5%; /* 523px */
+  left: 6%;
+  right: 6%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+}
+
+.clean-thumb-wrap-larger-export {
+  width: 560px;
+  height: 314px;
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(122, 14, 19, 0.35);
+  flex-shrink: 0;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.clean-song-title-compact-export {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 26px; /* Scaled proportionately to 0.91rem on 1037px width */
+  font-weight: 300;
+  color: #7A0E13;
+  margin: 6px 0 0;
+  line-height: 1.26;
+  width: 100%;
+  max-width: 90%;
+  word-wrap: break-word;
+  text-shadow: 0 2px 4px rgba(122, 14, 19, 0.1);
+}
+
+.clean-artist-name-red-export {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: #802025;
+  margin: -8px 0 0;
+  line-height: 1.25;
+  width: 100%;
+}
