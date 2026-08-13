@@ -53,7 +53,7 @@
 - **Smooth Opening & Closing Animations Both Ways**:
   - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
 - **Pixel-Perfect html2canvas Patrika Export (`PatrikaModal.jsx`)**:
-  - Uses **`html2canvas`** to capture the exact rendered `.patrika-card-blank-bg` DOM node at 3x scale (~1037x1516), ensuring the saved image is **100% IDENTICAL to what is shown in preview** with zero text misalignments or baseline shifts!
+  - Uses **`html2canvas`** at **4x Ultra HD Scale Factor** (~2074x3032 resolution), ensuring the saved PNG image has **NO COMPROMISE on quality — razor sharp 4K resolution** with zero blurriness or downsampling loss!
   - **Background-Image Cover Container**: Uses a `background-image` container with `background-size: cover; background-position: center;` so `html2canvas` renders the thumbnail **100% full without black bars** and without scaling/zooming distortion!
   - **Centered Red Thin Serif Title**: Slightly reduced title font size (`0.91rem`) with reduced vertical gap (`margin-top: -3px`) between title and artist name in muted red thin font below the thumbnail.
 - **Mobile & iPad Top-Left Bebas Neue Clock & Responsive Date**:

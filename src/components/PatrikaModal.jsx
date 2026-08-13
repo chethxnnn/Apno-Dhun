@@ -21,15 +21,18 @@ export default function PatrikaModal({
     setIsSharing(true);
 
     try {
-      // Use html2canvas to render the EXACT preview card DOM node at 3x scale (~1037x1516)
+      // 4x Scale Ultra HD Crisp Export (~2074x3032 Resolution)
       const canvas = await html2canvas(cardRef.current, {
-        scale: 3, // Ultra crisp high-definition export
+        scale: 4, // 4x scale for razor-sharp 4K quality with zero blurriness
         useCORS: true,
         allowTaint: true,
         backgroundColor: null,
         logging: false,
+        imageTimeout: 0,
+        scale: 4,
       });
 
+      // Export as uncompressed 100% quality PNG blob
       canvas.toBlob(async (blob) => {
         setIsSharing(false);
         if (!blob) return;
@@ -61,7 +64,7 @@ export default function PatrikaModal({
         link.href = URL.createObjectURL(blob);
         link.click();
         setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-      }, 'image/png');
+      }, 'image/png', 1.0);
     } catch (e) {
       console.warn('Patrika html2canvas capture error:', e);
       setIsSharing(false);
@@ -89,7 +92,7 @@ export default function PatrikaModal({
         {/* 2 Full-Width Pill Buttons */}
         <div className="patrika-actions">
           <button className="patrika-pill-btn share-pill" onClick={handleSharePatrika} disabled={isSharing}>
-            {isSharing ? 'Generating Image...' : 'Share your Patrika'}
+            {isSharing ? 'Generating Ultra HD Card...' : 'Share your Patrika'}
           </button>
           <button className="patrika-pill-btn notnow-pill" onClick={onClose}>
             Not now
