@@ -248,6 +248,7 @@ export default function App() {
         onClose={() => setIsPatrikaOpen(false)}
         currentTrack={currentTrack}
         currentMode={currentMode}
+        listenerCount={listenerCount}
       />
     </main>
   );

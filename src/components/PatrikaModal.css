@@ -2,7 +2,7 @@
   position: fixed;
   inset: 0;
   z-index: 120;
-  background: rgba(0, 0, 0, 0.78);
+  background: rgba(0, 0, 0, 0.84);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
   display: flex;
@@ -20,7 +20,7 @@
 
 .patrika-modal-center {
   width: 100%;
-  max-width: 360px;
+  max-width: 380px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -34,155 +34,76 @@
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-.patrika-card {
+/* Card Container with dhun-card-blank.png Background Template */
+.patrika-card-blank-bg {
   width: 100%;
-  aspect-ratio: 9 / 15;
-  border-radius: 24px;
-  background: linear-gradient(160deg, #181216 0%, #0e0a0d 100%);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85);
-  padding: 10px;
+  aspect-ratio: 1037 / 1516;
+  border-radius: 20px;
+  background: url('/dhun-card-blank.png') center / cover no-repeat;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.88);
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.patrika-border-outer {
-  width: 100%;
-  height: 100%;
-  border: 1.5px solid rgba(212, 175, 55, 0.5);
-  border-radius: 18px;
-  padding: 5px;
-}
-
-.patrika-border-inner {
-  width: 100%;
-  height: 100%;
-  border: 1px dashed rgba(255, 223, 115, 0.3);
-  border-radius: 14px;
-  padding: 16px 14px;
+/* Centered Clean Content Container (Positioned Lower Down Below Top Template Lines) */
+.blank-clean-content-lower {
+  position: absolute;
+  top: 34%; /* Shifted lower down as requested */
+  left: 8%;
+  right: 8%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   text-align: center;
-}
-
-.patrika-brand {
-  font-family: 'Inter', sans-serif;
-  font-size: 9.5px;
-  font-weight: 700;
-  color: #D4AF37;
-  letter-spacing: 3px;
-  display: block;
-}
-
-.patrika-title {
-  font-family: 'Yatra One', cursive;
-  font-size: 1.65rem;
-  color: #FFFFFF;
-  margin: 4px 0 2px;
-  text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
-}
-
-.patrika-subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: 10.5px;
-  color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 1px;
-}
-
-.patrika-divider {
-  width: 60%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent);
-  margin: 10px auto;
-}
-
-.patrika-body {
-  display: flex;
-  flex-direction: column;
   gap: 10px;
 }
 
-.section-tag {
-  font-family: 'Inter', sans-serif;
-  font-size: 8.5px;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 1.5px;
+/* Larger Thumbnail Size Wrapper (Width 205px, Height 115px) */
+.clean-thumb-wrap-larger {
+  width: 205px;
+  height: 115px; /* Larger sleek height */
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(122, 14, 19, 0.3);
+  flex-shrink: 0;
+}
+
+.clean-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 
-.section-value {
+/* Full Song Title in Rich Red Thin Serif Font (Less Extended, Compact Width) */
+.clean-song-title-compact {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.98rem;
+  font-weight: 300; /* Thin elegant non-bold font */
+  color: #7A0E13; /* Crimson red matching template color scheme */
   margin: 2px 0 0;
+  line-height: 1.25;
+  width: 100%;
+  max-width: 92%; /* Less extended width */
+  word-wrap: break-word;
+  text-shadow: 0 1px 2px rgba(122, 14, 19, 0.1);
+}
+
+/* Artist Name in Muted Red Thin Font */
+.clean-artist-name-red {
   font-family: 'Inter', sans-serif;
-  color: white;
+  font-size: 11px;
+  font-weight: 300; /* Thin non-bold font */
+  color: #802025;
+  margin: 0;
+  line-height: 1.25;
+  width: 100%;
 }
 
-.vibe-value {
-  font-family: 'Yatra One', cursive;
-  font-size: 1.05rem;
-  color: #FFDF73;
-}
-
-.song-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-
-.section-subvalue {
-  margin: 2px 0 0;
-  font-family: 'Inter', sans-serif;
-  font-size: 11.5px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.patrika-grid-box {
-  display: flex;
-  justify-content: space-around;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(212, 175, 55, 0.2);
-  border-radius: 12px;
-  padding: 8px;
-  margin-top: 2px;
-}
-
-.grid-cell {
-  display: flex;
-  flex-direction: column;
-}
-
-.cell-label {
-  font-size: 8px;
-  color: #D4AF37;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.cell-val {
-  font-size: 10.5px;
-  font-weight: 600;
-  color: white;
-  margin-top: 2px;
-}
-
-.patrika-quote {
-  font-family: 'Inter', sans-serif;
-  font-size: 10.5px;
-  font-style: italic;
-  color: #FFDF73;
-  margin: 4px 0 0;
-}
-
-.patrika-footer {
-  display: flex;
-  justify-content: space-between;
-  font-family: 'Inter', sans-serif;
-  font-size: 8.5px;
-  color: rgba(255, 255, 255, 0.4);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 6px;
-}
-
-/* 2 Full-Width Pill Buttons (Extended to Card Width) */
+/* 2 Full-Width Pill Buttons */
 .patrika-actions {
   margin-top: 14px;
   width: 100%;

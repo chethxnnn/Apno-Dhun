@@ -51,8 +51,11 @@
   - **Interactive Website Share Button**: Bottom card `[ ⬆ ] Share Apno Dhun` triggers native Web Share API on supported devices or copies `apno-dhun.vercel.app` URL to clipboard with visual green checkmark feedback!
 - **Smooth Opening & Closing Animations Both Ways**:
   - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
-- **Native Royal Patrika Image File Sharing**:
-  - Clicking `Share your Patrika` renders a high-res Royal Invitation Card (`1080x1920`) canvas PNG file and opens the device native Web Share API with image attachment (WhatsApp, Instagram Stories, Twitter, Messages) or fallback image download.
+- **Sleek Refined Patrika Template (`PatrikaModal.jsx`)**:
+  - Uses your custom **`dhun card blank.png`** (`public/dhun-card-blank.png`, `1037x1516` resolution) as the native card template!
+  - **Lower Thumbnail Position**: Shifted larger thumbnail lower down (`Y = 515px` on Canvas, `34%` top offset in UI preview) for ideal vertical centering.
+  - **Narrower Compact Title Width**: Title width constrained (`maxTextWidth = 760px` on Canvas, `max-width: 92%` in UI preview) for a less extended, perfectly centered multi-line serif title in rich red font (`#7A0E13`).
+  - Displays centered thumbnail + full song name + artist name, exporting 100% natural 1037x1516 PNG canvas image.
 - **Mobile & iPad Top-Left Bebas Neue Clock & Responsive Date**:
   - **iPad Mode**: Increased Bebas Neue clock size to **`42px`** with full date format (`13th August, 2026`).
   - **Mobile Mode**: Compact `26px` clock with abbreviated short month format (**`13th Aug, 2026`**) spanning the exact width of the time block above it.
