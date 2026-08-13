@@ -106,6 +106,7 @@ export default function Player({
 
   const pointerImg = modeSeekPointerImages[currentMode];
   const isWedding = currentMode === 'wedding';
+  const showLoading = isPlaying && isBuffering;
 
   return (
     <div className="player-dock capsule-dock">
@@ -217,12 +218,12 @@ export default function Player({
 
             {/* Solid White Circle Play/Pause Button */}
             <button
-              className={`ctrl play solid-white-play ${isBuffering ? 'loading' : ''}`}
+              className={`ctrl play solid-white-play ${showLoading ? 'loading' : ''}`}
               onClick={onTogglePlay}
               aria-label={isPlaying ? 'Pause' : 'Play'}
               title={isPlaying ? 'Pause (Space)' : 'Play (Space)'}
             >
-              {isBuffering ? (
+              {showLoading ? (
                 <div className="spinner-dark" />
               ) : (
                 <svg

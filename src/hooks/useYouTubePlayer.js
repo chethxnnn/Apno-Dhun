@@ -200,6 +200,7 @@ export function useYouTubePlayer(playlist) {
           onReady: () => {
             if (mounted) {
               setIsReady(true);
+              setIsBuffering(false);
               updateMetaFromPlayer();
             }
           },
@@ -207,28 +208,30 @@ export function useYouTubePlayer(playlist) {
             if (!mounted) return;
             updateMetaFromPlayer();
             switch (e.data) {
+              case -1: // UNSTARTED
+              case window.YT.PlayerState.PAUSED:
+                setIsPlaying(false);
+                setIsBuffering(false);
+                break;
               case window.YT.PlayerState.PLAYING:
                 setIsPlaying(true);
                 setIsBuffering(false);
                 startPolling();
                 break;
-              case window.YT.PlayerState.PAUSED:
-                setIsPlaying(false);
-                setIsBuffering(false);
-                break;
               case window.YT.PlayerState.BUFFERING:
                 setIsBuffering(true);
                 break;
-              case window.YT.PlayerState.ENDED: {
+              case window.YT.PlayerState.ENDED:
                 setIsPlaying(false);
+                setIsBuffering(false);
                 stopPolling();
                 const nextIdx = getNextTrackIndex();
                 loadTrack(nextIdx);
                 break;
-              }
             }
           },
           onError: () => {
+            setIsBuffering(false);
             const nextIdx = getNextTrackIndex();
             loadTrack(nextIdx);
           },
@@ -252,6 +255,7 @@ export function useYouTubePlayer(playlist) {
       setCurrentTrackIndex(initialIdx);
       setCurrentTime(0);
       setDuration(0);
+      setIsBuffering(false);
       if (newPl[initialIdx]?.id) {
         fetchTrackMeta(newPl[initialIdx].id);
       }
