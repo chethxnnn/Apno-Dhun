@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import './App.css';
 import Header from './components/Header';
 import BackgroundLayer from './components/BackgroundLayer';
@@ -16,12 +16,19 @@ import { useShake } from './hooks/useShake';
 import { playlists as initialPlaylists, modeConfig } from './data/playlists';
 import { fetchAllLivePlaylists } from './services/youtubeApi';
 
+const GHUNGROO_VIDEO_ID = 'CvCD8ZEoIes';
+
 export default function App() {
   const [currentMode, setCurrentMode] = useState('wedding');
   const [activePlaylists, setActivePlaylists] = useState(initialPlaylists);
   const [cinemaMode, setCinemaMode] = useState(false);
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isPatrikaOpen, setIsPatrikaOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const ghungrooContainerRef = useRef(null);
+  const ghungrooPlayerRef = useRef(null);
+  const toastTimerRef = useRef(null);
 
   const listenerCount = useLiveListeners();
   const currentPlaylist = activePlaylists[currentMode] || initialPlaylists[currentMode];
@@ -54,6 +61,71 @@ export default function App() {
     loadNewPlaylist,
   } = useYouTubePlayer(currentPlaylist);
 
+  // Initialize dedicated Ghungroo YouTube audio player instance
+  useEffect(() => {
+    let mounted = true;
+
+    const initGhungroo = () => {
+      if (
+        mounted &&
+        window.YT &&
+        window.YT.Player &&
+        ghungrooContainerRef.current &&
+        !ghungrooPlayerRef.current
+      ) {
+        try {
+          ghungrooPlayerRef.current = new window.YT.Player(ghungrooContainerRef.current, {
+            height: '1',
+            width: '1',
+            videoId: GHUNGROO_VIDEO_ID,
+            playerVars: {
+              autoplay: 0,
+              controls: 0,
+              disablekb: 1,
+              fs: 0,
+              modestbranding: 1,
+              rel: 0,
+              showinfo: 0,
+              iv_load_policy: 3,
+            },
+            events: {
+              onError: (err) => console.warn('Ghungroo sound player error:', err),
+            },
+          });
+        } catch (e) {
+          console.warn('Ghungroo player init error:', e);
+        }
+      }
+    };
+
+    if (window.YT && window.YT.Player) {
+      initGhungroo();
+    } else {
+      const interval = setInterval(() => {
+        if (window.YT && window.YT.Player) {
+          clearInterval(interval);
+          initGhungroo();
+        }
+      }, 500);
+      return () => {
+        mounted = false;
+        clearInterval(interval);
+      };
+    }
+
+    return () => {
+      mounted = false;
+      if (ghungrooPlayerRef.current) {
+        try {
+          ghungrooPlayerRef.current.destroy();
+        } catch (e) {
+          /* ignore */
+        }
+        ghungrooPlayerRef.current = null;
+      }
+    };
+  }, []);
+
   // Fetch live YouTube Data API playlists on mount and update activePlaylists state
   useEffect(() => {
     fetchAllLivePlaylists().then((livePlaylists) => {
@@ -66,6 +138,14 @@ export default function App() {
     });
   }, []);
 
+  const showToast = useCallback((msg) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    setToastMessage(msg);
+    toastTimerRef.current = setTimeout(() => {
+      setToastMessage(null);
+    }, 2200);
+  }, []);
+
   const handleModeChange = useCallback(
     (mode) => {
       if (mode === currentMode) return;
@@ -76,33 +156,28 @@ export default function App() {
     [currentMode, activePlaylists, loadNewPlaylist]
   );
 
-  // Web Audio Synthesized Ghungroo Chime sound effect
+  const ghungrooTimeoutRef = useRef(null);
+
+  // Play Ghungroo Audio from YouTube video ID CvCD8ZEoIes from 1.0s to 5.0s
   const playGhungrooSound = useCallback(() => {
-    try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-      const ctx = new AudioCtx();
+    if (ghungrooPlayerRef.current && typeof ghungrooPlayerRef.current.seekTo === 'function') {
+      try {
+        if (ghungrooTimeoutRef.current) {
+          clearTimeout(ghungrooTimeoutRef.current);
+        }
+        ghungrooPlayerRef.current.seekTo(1.0, true);
+        ghungrooPlayerRef.current.playVideo();
 
-      // Shimmering brass metallic bell notes
-      const freqs = [1760, 2637, 3520, 4400];
-      freqs.forEach((freq, idx) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.05);
-
-        gain.gain.setValueAtTime(0.15, ctx.currentTime + idx * 0.05);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.05 + 0.6);
-
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        osc.start(ctx.currentTime + idx * 0.05);
-        osc.stop(ctx.currentTime + idx * 0.05 + 0.6);
-      });
-    } catch (e) {
-      /* ignore audio error */
+        // Automatically pause and reset at 5.0 seconds (4-second duration from 1.0s)
+        ghungrooTimeoutRef.current = setTimeout(() => {
+          if (ghungrooPlayerRef.current && typeof ghungrooPlayerRef.current.pauseVideo === 'function') {
+            ghungrooPlayerRef.current.pauseVideo();
+            ghungrooPlayerRef.current.seekTo(1.0, true);
+          }
+        }, 4000);
+      } catch (e) {
+        console.warn('Ghungroo playback error:', e);
+      }
     }
   }, []);
 
@@ -193,7 +268,7 @@ export default function App() {
 
   return (
     <main className={`app ${cinemaMode ? 'cinema-active' : ''} ${isQueueOpen ? 'queue-active' : ''}`}>
-      <YouTubeEmbed containerRef={containerRef} />
+      <YouTubeEmbed containerRef={containerRef} ghungrooRef={ghungrooContainerRef} />
       <BackgroundLayer src={config.bg} bgPosition={config.bgPosition} />
 
       <Header currentMode={currentMode} onModeChange={handleModeChange} />
@@ -243,7 +318,7 @@ export default function App() {
       />
 
       {/* Desktop Floating Keycap Legend Bar */}
-      <KeycapLegendBar />
+      <KeycapLegendBar onPlayGhungroo={playGhungrooSound} />
 
       {/* Add to Home Screen PWA Install Banner */}
       <InstallPwaBanner />
@@ -256,6 +331,9 @@ export default function App() {
         currentMode={currentMode}
         listenerCount={listenerCount}
       />
+
+      {/* Floating Glassmorphic Toast Notification */}
+      {toastMessage && <div className="shortcut-toast">{toastMessage}</div>}
     </main>
   );
 }

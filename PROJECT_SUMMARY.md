@@ -96,7 +96,7 @@
 | `[ S ]` | Toggle **Shuffle Mode** | Golden Glow Button + Toast |
 | `[ Q ]` | Open **Geet Maala Queue** | Frosted Glass Modal |
 | `[ P ]` | Open **Royal Patrika Card** | Vertical Card Modal |
-| `[ G ]` | Play **Ghungroo Chime** | Web Audio Bell + Toast |
+| `[ G ]` | Play **Authentic Ghungroo Sound** (YouTube: `CvCD8ZEoIes` from 1.0s to 5.0s) | Interactive Keycap Click |
 | `[ → ]` / `[ N ]` | Next Track | Toast Notification |
 | `[ ← ]` | Previous Track / Restart | Toast Notification |
 | `[ F ]` / `[ Esc ]` | **Cinema Mode** / Close Modals | Toast Notification |

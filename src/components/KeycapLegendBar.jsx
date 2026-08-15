@@ -1,6 +1,6 @@
 import './KeycapLegendBar.css';
 
-export default function KeycapLegendBar() {
+export default function KeycapLegendBar({ onPlayGhungroo }) {
   return (
     <div className="keycap-legend-bar">
       <div className="keycap-item">
@@ -24,7 +24,14 @@ export default function KeycapLegendBar() {
         <span className="keycap">P</span>
         <span className="keycap-label">DHUN CARD</span>
       </div>
-      <div className="keycap-item">
+      <div
+        className="keycap-item keycap-interactive"
+        onClick={onPlayGhungroo}
+        role="button"
+        tabIndex={0}
+        title="Play Ghungroo (G)"
+        style={{ cursor: 'pointer' }}
+      >
         <span className="keycap">G</span>
         <span className="keycap-label">GHUNGROO</span>
       </div>
