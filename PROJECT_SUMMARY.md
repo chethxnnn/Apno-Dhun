@@ -126,6 +126,10 @@
   - **Smart LocalStorage Caching**: 15-minute TTL cache protects your free 10,000 daily API quota while serving instant zero-latency song lists to visitors.
   - **Offline Fallback**: Automatically falls back to static playlists if no API key is set or if YouTube API fails.
 - **Hidden Player Engine**: Operates inside a 1×1 hidden `div` via YouTube IFrame API.
+- **Lock Screen & Control Center Integration (MediaSession API)**:
+  - Synchronizes live song metadata (Title, Artist, and High-Resolution YouTube Artwork) directly with **iOS Control Center / Lock Screen** and **Android Media Notification Tray**.
+  - Provides full native lock screen hardware controls: `Play`, `Pause`, `Next Track`, `Previous Track`, and dynamic seekbar position updates (`seekto`).
+  - **Background Playback Keep-Alive**: Uses a lightweight silent audio loop to register the browser tab as an active system audio player, maintaining audio daemon persistence when switching tabs, apps, or locking the phone.
 - **Dynamic Metadata Fetching**: Automatically fetches live video title and channel name via public `noembed` oEmbed API + `getVideoData()`, caching metadata in React state.
 - **Random Initial Track Order**: Automatically picks a random song upon opening the site or switching vibes.
 

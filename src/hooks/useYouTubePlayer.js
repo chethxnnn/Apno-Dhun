@@ -24,10 +24,14 @@ function loadYouTubeAPI() {
   return apiLoadPromise;
 }
 
+// 1-second tiny silent audio loop to register web app as active audio output in mobile OS
+const SILENT_AUDIO_DATA_URI = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+
 export function useYouTubePlayer(playlist) {
   const playerRef = useRef(null);
   const containerRef = useRef(null);
   const intervalRef = useRef(null);
+  const silentAudioRef = useRef(null);
 
   const getRandomIndex = (len) => (len > 0 ? Math.floor(Math.random() * len) : 0);
 
@@ -45,6 +49,7 @@ export function useYouTubePlayer(playlist) {
   const playlistRef = useRef(playlist);
   const trackIndexRef = useRef(currentTrackIndex);
   const shuffleRef = useRef(isShuffle);
+  const currentTrackRef = useRef(null);
 
   useEffect(() => {
     playlistRef.current = playlist;
@@ -57,6 +62,27 @@ export function useYouTubePlayer(playlist) {
   useEffect(() => {
     shuffleRef.current = isShuffle;
   }, [isShuffle]);
+
+  // Keep-alive silent audio to keep mobile OS audio daemon active when browser is minimized
+  const startSilentAudio = useCallback(() => {
+    try {
+      if (!silentAudioRef.current) {
+        const audio = new Audio(SILENT_AUDIO_DATA_URI);
+        audio.loop = true;
+        audio.volume = 0.01;
+        silentAudioRef.current = audio;
+      }
+      silentAudioRef.current.play().catch(() => {});
+    } catch (e) {}
+  }, []);
+
+  const stopSilentAudio = useCallback(() => {
+    try {
+      if (silentAudioRef.current) {
+        silentAudioRef.current.pause();
+      }
+    } catch (e) {}
+  }, []);
 
   // Fetch YouTube Title & Artist using noembed (CORS-enabled public oEmbed)
   const fetchTrackMeta = useCallback((videoId) => {
@@ -106,13 +132,26 @@ export function useYouTubePlayer(playlist) {
     intervalRef.current = setInterval(() => {
       if (playerRef.current && typeof playerRef.current.getCurrentTime === 'function') {
         try {
-          setCurrentTime(playerRef.current.getCurrentTime() || 0);
-          setDuration(playerRef.current.getDuration() || 0);
+          const cur = playerRef.current.getCurrentTime() || 0;
+          const dur = playerRef.current.getDuration() || 0;
+          setCurrentTime(cur);
+          setDuration(dur);
           if (typeof playerRef.current.isMuted === 'function') {
             setIsMuted(playerRef.current.isMuted());
           }
           if (typeof playerRef.current.getVolume === 'function') {
             setVolumeState(playerRef.current.getVolume());
+          }
+
+          // Sync lock screen seekbar position state
+          if ('mediaSession' in navigator && dur > 0 && typeof navigator.mediaSession.setPositionState === 'function') {
+            try {
+              navigator.mediaSession.setPositionState({
+                duration: Math.max(dur, 0),
+                playbackRate: 1,
+                position: Math.min(Math.max(cur, 0), dur),
+              });
+            } catch (e) {}
           }
         } catch (e) {}
       }
@@ -212,11 +251,19 @@ export function useYouTubePlayer(playlist) {
               case window.YT.PlayerState.PAUSED:
                 setIsPlaying(false);
                 setIsBuffering(false);
+                stopSilentAudio();
+                if ('mediaSession' in navigator) {
+                  navigator.mediaSession.playbackState = 'paused';
+                }
                 break;
               case window.YT.PlayerState.PLAYING:
                 setIsPlaying(true);
                 setIsBuffering(false);
                 startPolling();
+                startSilentAudio();
+                if ('mediaSession' in navigator) {
+                  navigator.mediaSession.playbackState = 'playing';
+                }
                 break;
               case window.YT.PlayerState.BUFFERING:
                 setIsBuffering(true);
@@ -241,6 +288,7 @@ export function useYouTubePlayer(playlist) {
     return () => {
       mounted = false;
       stopPolling();
+      stopSilentAudio();
       if (playerRef.current && typeof playerRef.current.destroy === 'function') {
         try { playerRef.current.destroy(); } catch (e) {}
       }
@@ -271,16 +319,18 @@ export function useYouTubePlayer(playlist) {
   );
 
   const play = useCallback(() => {
+    startSilentAudio();
     if (playerRef.current && typeof playerRef.current.playVideo === 'function') {
       try { playerRef.current.playVideo(); } catch (e) {}
     }
-  }, []);
+  }, [startSilentAudio]);
 
   const pause = useCallback(() => {
+    stopSilentAudio();
     if (playerRef.current && typeof playerRef.current.pauseVideo === 'function') {
       try { playerRef.current.pauseVideo(); } catch (e) {}
     }
-  }, []);
+  }, [stopSilentAudio]);
 
   const togglePlay = useCallback(() => {
     isPlaying ? pause() : play();
@@ -357,6 +407,73 @@ export function useYouTubePlayer(playlist) {
         artist: fetched?.artist || rawTrack.artist || 'Apna Culturez',
       }
     : null;
+
+  useEffect(() => {
+    currentTrackRef.current = currentTrack;
+  }, [currentTrack]);
+
+  // Sync with OS Lock Screen & Notification Center via MediaSession API
+  useEffect(() => {
+    if (!('mediaSession' in navigator) || !currentTrack) return;
+
+    try {
+      navigator.mediaSession.metadata = new window.MediaMetadata({
+        title: currentTrack.title || 'Apno Dhun',
+        artist: currentTrack.artist || 'Apna Culturez',
+        album: 'Apno Dhun • Rajasthan Ri Dhun',
+        artwork: [
+          {
+            src: `https://img.youtube.com/vi/${currentTrack.id}/hqdefault.jpg`,
+            sizes: '480x360',
+            type: 'image/jpeg',
+          },
+          {
+            src: `https://img.youtube.com/vi/${currentTrack.id}/mqdefault.jpg`,
+            sizes: '320x180',
+            type: 'image/jpeg',
+          },
+          {
+            src: '/favicon.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      });
+    } catch (e) {
+      console.warn('Failed to set mediaSession metadata:', e);
+    }
+  }, [currentTrack]);
+
+  // Hook Lock Screen Control Buttons (Play, Pause, Next, Prev, Seek)
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return;
+
+    const actionHandlers = [
+      ['play', play],
+      ['pause', pause],
+      ['previoustrack', prevTrack],
+      ['nexttrack', nextTrack],
+      ['seekto', (details) => {
+        if (details.seekTime !== undefined) {
+          seekTo(details.seekTime);
+        }
+      }],
+    ];
+
+    for (const [action, handler] of actionHandlers) {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch (e) {}
+    }
+
+    return () => {
+      for (const [action] of actionHandlers) {
+        try {
+          navigator.mediaSession.setActionHandler(action, null);
+        } catch (e) {}
+      }
+    };
+  }, [play, pause, nextTrack, prevTrack, seekTo]);
 
   // Resolved playlist with 100% real fetched titles for every song
   const resolvedPlaylist = playlist.map((track) => ({
