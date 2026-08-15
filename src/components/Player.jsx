@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useCallback, useState, useEffect } from 'react';
 import './Player.css';
 
 const modeSeekPointerImages = {
@@ -30,6 +30,27 @@ export default function Player({
   const seekRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isVolHovered, setIsVolHovered] = useState(false);
+  const [isArtExpanded, setIsArtExpanded] = useState(false);
+  const prevQueueOpenRef = useRef(isQueueOpen);
+
+  // Automatically collapse art when queue list opens from an external trigger
+  useEffect(() => {
+    if (isQueueOpen && !prevQueueOpenRef.current) {
+      setIsArtExpanded(false);
+    }
+    prevQueueOpenRef.current = isQueueOpen;
+  }, [isQueueOpen]);
+
+  // Reset art expansion on window resize if resizing back to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 900 && isArtExpanded) {
+        setIsArtExpanded(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isArtExpanded]);
 
   const fmt = (s) => {
     if (!s || isNaN(s)) return '0:00';
@@ -37,6 +58,28 @@ export default function Player({
   };
 
   const pct = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+  const toggleArtExpanded = useCallback(() => {
+    // Only allow expandable artwork in mobile & iPad views (<= 900px)
+    if (typeof window !== 'undefined' && window.innerWidth > 900) {
+      return;
+    }
+    // If the queue list is currently open, close queue list first and then expand art!
+    if (isQueueOpen && onToggleQueue) {
+      onToggleQueue();
+    }
+    setIsArtExpanded((prev) => !prev);
+  }, [isQueueOpen, onToggleQueue]);
+
+  const handleQueueToggleClick = useCallback(() => {
+    // If art is expanded, close art first and then open queue list!
+    if (isArtExpanded) {
+      setIsArtExpanded(false);
+    }
+    if (onToggleQueue) {
+      onToggleQueue();
+    }
+  }, [isArtExpanded, onToggleQueue]);
 
   const seekFromX = useCallback(
     (clientX) => {
@@ -97,7 +140,7 @@ export default function Player({
   }, []);
 
   const thumb = currentTrack
-    ? `https://img.youtube.com/vi/${currentTrack.id}/mqdefault.jpg`
+    ? `https://img.youtube.com/vi/${currentTrack.id}/hqdefault.jpg`
     : null;
   if (!currentTrack) return null;
 
@@ -106,21 +149,44 @@ export default function Player({
   const showLoading = isPlaying && isBuffering;
 
   return (
-    <div className="player-dock capsule-dock">
+    <div className={`player-dock capsule-dock ${isArtExpanded ? 'dock-expanded' : ''}`}>
       {/* Dynamic Aura Glow */}
       <div className={`player-glow ${isPlaying ? 'on' : ''}`} />
 
-      <div className="player-glass capsule-glass">
-        {/* Top Block: Vinyl Disc + Track Info + Seek Line */}
-        <div className="player-top-block">
-          <div className="art-disc-wrap">
-            <div className={`art-disc ${isPlaying ? 'spin' : ''}`}>
+      <div className={`player-glass capsule-glass ${isArtExpanded ? 'glass-expanded' : ''}`}>
+        {/* Top Block: Vinyl Disc (or Expanded Large Card on Mobile/iPad) + Track Info + Seek Line */}
+        <div className={`player-top-block ${isArtExpanded ? 'top-block-expanded' : ''}`}>
+          <div
+            className={`art-disc-wrap ${isArtExpanded ? 'art-wrap-expanded' : ''}`}
+            onClick={toggleArtExpanded}
+            role="button"
+            tabIndex={0}
+            aria-label={isArtExpanded ? 'Close artwork' : 'Expand artwork'}
+            title={isArtExpanded ? 'Click to close artwork' : 'Click to expand artwork'}
+          >
+            <div className={`art-disc ${isPlaying && !isArtExpanded ? 'spin' : ''} ${isArtExpanded ? 'as-card' : ''}`}>
               {thumb && <img src={thumb} alt="" className="art-disc-img" />}
             </div>
-            <div className="art-hole" />
+            {!isArtExpanded && <div className="art-hole" />}
+            {isArtExpanded && (
+              <button
+                className="art-close-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleArtExpanded();
+                }}
+                aria-label="Close artwork"
+                title="Close"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            )}
           </div>
 
-          <div className="player-content">
+          <div className={`player-content ${isArtExpanded ? 'content-expanded' : ''}`}>
             <div className="info-row">
               <p className="track-name">{currentTrack.title}</p>
               <p className="track-artist">{currentTrack.artist}</p>
@@ -271,7 +337,7 @@ export default function Player({
             {/* Queue Toggle Button */}
             <button
               className={`ctrl queue-btn ${isQueueOpen ? 'open-close-active' : ''}`}
-              onClick={onToggleQueue}
+              onClick={handleQueueToggleClick}
               aria-label={isQueueOpen ? 'Close Queue' : 'Open Queue'}
               title={isQueueOpen ? 'Close Queue (Q)' : 'Geet Maala Queue (Q)'}
             >

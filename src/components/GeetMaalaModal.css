@@ -3,14 +3,14 @@
   position: fixed;
   inset: 0;
   z-index: 40; /* Below player dock (z-index: 50) & Mehmaan (z-index: 55) */
-  background: rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(4px) saturate(120%);
-  -webkit-backdrop-filter: blur(4px) saturate(120%);
-  animation: backdropFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  background: rgba(0, 0, 0, 0.32);
+  backdrop-filter: blur(8px) saturate(130%);
+  -webkit-backdrop-filter: blur(8px) saturate(130%);
+  animation: backdropFadeIn 0.4s cubic-bezier(0.32, 0.72, 0, 1) both;
 }
 
 .queue-backdrop-fade.closing {
-  animation: backdropFadeOut 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: backdropFadeOut 0.32s cubic-bezier(0.32, 0.72, 0, 1) both;
 }
 
 @keyframes backdropFadeIn {
@@ -31,21 +31,39 @@
   z-index: 52;
   width: calc(100% - 32px);
   max-width: 680px; /* Matching exact width of desktop player dock */
-  animation: queueSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: queueSlideUp 0.45s cubic-bezier(0.32, 0.72, 0, 1) both;
+  will-change: transform, opacity, filter;
 }
 
 .queue-fixed-attached.closing {
-  animation: queueSlideDown 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: queueSlideDown 0.32s cubic-bezier(0.32, 0.72, 0, 1) both;
 }
 
+/* Apple iOS Modal Sheet Physics */
 @keyframes queueSlideUp {
-  from { opacity: 0; transform: translateX(-50%) translateY(24px) scale(0.96); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(36px) scale(0.93);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: blur(0px);
+  }
 }
 
 @keyframes queueSlideDown {
-  from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-  to { opacity: 0; transform: translateX(-50%) translateY(24px) scale(0.96); }
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: blur(0px);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(32px) scale(0.93);
+    filter: blur(6px);
+  }
 }
 
 .queue-card {
@@ -92,7 +110,7 @@
   font-weight: 700;
   cursor: pointer;
   letter-spacing: 0.8px;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .queue-tab:hover {
@@ -149,7 +167,7 @@
   padding: 10px 14px;
   border-radius: 16px;
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition: background 0.2s cubic-bezier(0.32, 0.72, 0, 1), transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .queue-item:hover {
@@ -273,7 +291,7 @@
   color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
   text-align: left;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.22s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .queue-share-card:hover {
@@ -300,7 +318,7 @@
   display: grid;
   place-items: center;
   color: white;
-  transition: background 0.2s ease;
+  transition: background 0.2s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .queue-share-card:hover .share-icon-wrap {
@@ -339,7 +357,7 @@
 /* iPad View Specific Width Adjustments (641px - 900px) */
 @media (min-width: 641px) and (max-width: 900px) {
   .queue-fixed-attached {
-    bottom: 230px;
+    bottom: 244px;
     width: calc(100% - 32px);
     max-width: 580px;
   }
@@ -348,7 +366,7 @@
 /* Mobile View Refinements (up to 640px) */
 @media (max-width: 640px) {
   .queue-fixed-attached {
-    bottom: 240px;
+    bottom: 256px;
     width: calc(100% - 24px);
     max-width: 440px;
   }

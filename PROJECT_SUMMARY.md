@@ -32,7 +32,14 @@
 ## 🏰 2. Capsule Glass Music Player & Interactive Features (busdriver.wtf Evolution)
 
 - **Capsule Dock Container**: Capsule glass container (`border-radius: 9999px`) with dark frosted glass (`backdrop-filter: blur(48px)`), gold border accents, and ambient glow.
-- **Spinning Vinyl Disc Art**: Circular vinyl disc (`art-disc spin`) with center hole on the far left.
+- **Interactive Expandable Vinyl Disc / Large Thumbnail (`Player.jsx` & `Player.css`)**:
+  - **Mobile & iPad Exclusive (<= 900px)**: Tapping on the spinning vinyl CD disc in Mobile & iPad views smoothly expands the entire player upward, morphing the compact spinning CD into a **large, high-resolution 16:9 album cover card** (`art-wrap-expanded`). On Desktop (> 900px), it remains a sleek fixed compact dock.
+  - **Apple UI Fluid Animation (`cubic-bezier(0.32, 0.72, 0, 1)`)**: Transitions with native Apple iOS spring-like physics, smooth border-radius morphing, and fluid layout resizing.
+  - **Standalone Clean Close Icon (`✕`)**: Features a clean floating `✕` close icon in the top-right corner of the expanded artwork with zero circle background for an uncluttered look.
+  - **Bidirectional Queue List Mutual Exclusivity**:
+    - If the artwork is expanded and the user opens the Geet Maala Queue list (`≡`), the artwork automatically collapses first, smoothly sliding open the queue list.
+    - If the Geet Maala Queue list is open and the user taps the CD disc, the queue list automatically closes first, smoothly expanding the artwork card!
+  - Tapping anywhere on the expanded thumbnail smoothly collapses the player back down into the compact capsule dock with the spinning CD!
 - **Controls & Pill-Shaped Dhun Button**:
   - **Pill-Shaped Dhun Button (`[ Icon /dhun-button.png ] Dhun`)**: Replaced the old Patrika icon button with a sleek glass pill button featuring your custom **`dhun button.png`** icon (`public/dhun-button.png`) and **"Dhun"** text! Styled in the exact dark shade (`rgba(20, 18, 24, 0.85)`) matching the player dock. Clicking opens the Patrika card as usual.
   - **Mobile & iPad Shake Phone Gesture (`src/hooks/useShake.js`)**: Automatically detects phone/iPad shake movements (`devicemotion` accelerometer API threshold) and instantly opens the Dhun card modal with haptic vibration feedback (`navigator.vibrate`)!
@@ -50,8 +57,8 @@
   - Exact typography, font sizes, active track pill highlights (`background: rgba(255,255,255,0.12)`), 3 orange/gold vertical dots (`⋮⋮⋮`).
   - Automatically fetches 100% real YouTube video titles and channel names for every song in the queue.
   - **Interactive Website Share Button**: Bottom card `[ ⬆ ] Share Apno Dhun` triggers native Web Share API on supported devices or copies `apno-dhun.vercel.app` URL to clipboard with visual green checkmark feedback!
-- **Smooth Opening & Closing Animations Both Ways**:
-  - Queue list modal plays smooth 0.3s slide-up entrance (`queueSlideUp`) and slide-down exit (`queueSlideDown`) with matching backdrop fade transitions both ways.
+- **Smooth Apple UI Opening & Closing Modal Sheet Animations**:
+  - Queue list modal uses Apple iOS sheet physics (`cubic-bezier(0.32, 0.72, 0, 1)`) with scale spring (`scale(0.93) ➔ scale(1)`), subtle blur fade, and backdrop blur transitions both ways.
 - **Offscreen 1037 × 1516 Native DOM Export Node (`PatrikaModal.jsx`)**:
   - Rendered a dedicated hidden 1037 × 1516 full-res React DOM node (`exportCardRef`) offscreen so the browser's native DOM engine handles text layout, Devanagari Hindi Unicode characters ("सतरंगी लहरियो"), and font rendering with 100% perfection!
   - **Exact 1:1 Title Font Size Parity**: Set `font-size: 43px;` on `.clean-song-title-compact-export` (exact mathematical 1:1 ratio matching `0.91rem` on `348px` screen preview card), ensuring title size, margins, and line wrapping match the screen preview 100%!
@@ -65,14 +72,14 @@
 - **Clean Queue List View**:
   - Removed language pills from queue list header.
   - Hidden scrollbar on mobile view for a clean, borderless list experience.
-- **Responsive Dock & Navigation Width Alignment**:
-  - **iPad View**: Footer navigation bar restored to standard layout; player dock and Queue card set to `580px`.
-  - **Mobile View**: Player dock centered with `left: 50% !important; transform: translateX(-50%) !important` with zero rightward shift.
+- **Responsive Dock & Navigation Width & Vertical Positioning**:
+  - **iPad View**: Player dock and Queue card set to `580px` max-width. Player dock elevated to `bottom: 94px` with Queue card elevated to `bottom: 244px`.
+  - **Mobile View**: Player dock centered with `left: 50% !important; transform: translateX(-50%) !important` with zero rightward shift. Player dock elevated to **`bottom: 88px`** (and `84px` expanded) with Queue card elevated to **`bottom: 256px`** for spacious breathing room above bottom navigation.
 - **PWA Add to Home Screen Pill Banner**:
   - Compact width reduced to **`max-width: 320px`** for mobile and iPad views.
   - Displays 2 lines: **Line 1**: `Keep Apno Dhun on your home screen` | **Line 2**: `Tap [ share icon ] then add to home screen`.
   - Subtle unhighlighted close cross icon (`✕`) right next to the text.
-  - Floating cleanly at `bottom: 232px` on mobile/iPad view, fading down to `opacity: 0.3` when Queue list is active.
+  - Floating cleanly at `bottom: 246px` on mobile/iPad view, fading down to `opacity: 0.3` when Queue list is active.
 - **Larger Rajasthani Safa Icon**:
   - Safa icon increased to `34px` on desktop and `26px` on mobile with red pulsing glow (`safaPulseBig`).
 - **Desktop Keycaps Shortcuts Position**:

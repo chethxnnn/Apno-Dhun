@@ -7,7 +7,7 @@
 
 .pwa-banner {
   position: fixed;
-  bottom: 232px; /* Positioned cleanly above the mobile player dock with zero overlap */
+  bottom: 246px; /* Positioned cleanly above the elevated mobile player dock */
   left: 50%;
   transform: translateX(-50%);
   z-index: 45;
