@@ -26,7 +26,7 @@
 
 .queue-fixed-attached {
   position: fixed;
-  bottom: 216px; /* Sits right above desktop player dock with clean breathing room */
+  bottom: 228px; /* Clean floating gap right above desktop player dock */
   left: 50%;
   transform: translateX(-50%);
   z-index: 52;
@@ -529,7 +529,7 @@
 /* iPad View Specific Width Adjustments (641px - 1366px) */
 @media (min-width: 641px) and (max-width: 1366px) {
   .queue-fixed-attached {
-    bottom: 260px;
+    bottom: 232px;
     width: calc(100% - 32px);
     max-width: 650px; /* Matching iPad player dock */
   }
@@ -547,7 +547,7 @@
 /* Mobile View Refinements (up to 640px) */
 @media (max-width: 640px) {
   .queue-fixed-attached {
-    bottom: 236px; /* Moved slightly higher for optimal mobile breathing room */
+    bottom: 222px; /* Clean floating gap above mobile player dock */
     width: calc(100% - 24px);
     max-width: 440px; /* Matching mobile player dock */
   }

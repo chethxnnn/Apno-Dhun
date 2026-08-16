@@ -15,12 +15,25 @@ export default function GeetMaalaModal({
   const [isClosing, setIsClosing] = useState(false);
   const [copied, setCopied] = useState(false);
   const closeTimer = useRef(null);
+  const activeItemRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
       if (closeTimer.current) clearTimeout(closeTimer.current);
       setIsMounted(true);
       setIsClosing(false);
+
+      // Auto-scroll the currently playing song into view smoothly
+      const scrollTimer = setTimeout(() => {
+        if (activeItemRef.current) {
+          activeItemRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+          });
+        }
+      }, 120);
+
+      return () => clearTimeout(scrollTimer);
     } else if (isMounted && !isClosing) {
       setIsClosing(true);
       closeTimer.current = setTimeout(() => {
@@ -34,7 +47,7 @@ export default function GeetMaalaModal({
     return () => {
       if (closeTimer.current) clearTimeout(closeTimer.current);
     };
-  }, [isOpen, isMounted, isClosing]);
+  }, [isOpen, isMounted, isClosing, currentTrackIndex]);
 
   if (!isOpen && !isMounted) return null;
   if (!isMounted) return null;
@@ -122,6 +135,7 @@ export default function GeetMaalaModal({
               return (
                 <div
                   key={`${track.id}-${idx}`}
+                  ref={isCurrent ? activeItemRef : null}
                   className={`queue-item ${isCurrent ? 'active-card' : ''}`}
                   onClick={() => {
                     if (!isOpen || isClosing) return;
