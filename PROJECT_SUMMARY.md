@@ -199,6 +199,7 @@ suno/
 ├── index.html                # Google Fonts (Great Vibes, Sacramento, Caveat, Inter)
 ├── package.json
 ├── README.md
+├── TODO.md                   # Future roadmap & channel monitoring setup
 └── PROJECT_SUMMARY.md        # Comprehensive documentation
 ```
 
