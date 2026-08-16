@@ -2,10 +2,19 @@ import { useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import './PatrikaModal.css';
 
+const vibeCardTemplates = {
+  folk: '/cards/folk.png',
+  wedding: '/cards/wedding.png',
+  dhh: '/cards/dhh.png',
+  trending: '/cards/trending.png',
+  devotional: '/cards/devotional.png',
+};
+
 export default function PatrikaModal({
   isOpen,
   onClose,
   currentTrack,
+  currentMode = 'folk',
 }) {
   const previewCardRef = useRef(null);
   const exportCardRef = useRef(null);
@@ -13,6 +22,7 @@ export default function PatrikaModal({
 
   if (!isOpen || !currentTrack) return null;
 
+  const cardTemplateUrl = vibeCardTemplates[currentMode] || '/cards/folk.png';
   const thumbUrl = currentTrack
     ? `https://img.youtube.com/vi/${currentTrack.id}/hqdefault.jpg`
     : '/logo.png';
@@ -83,9 +93,13 @@ export default function PatrikaModal({
 
   return (
     <div className="patrika-backdrop" onClick={onClose}>
-      <div className="patrika-modal-center" onClick={(e) => e.stopPropagation()}>
+      <div className={`patrika-modal-center patrika-mode-${currentMode}`} onClick={(e) => e.stopPropagation()}>
         {/* Royal Patrika Card Screen Preview */}
-        <div className="patrika-card-blank-bg" ref={previewCardRef}>
+        <div
+          className="patrika-card-blank-bg"
+          ref={previewCardRef}
+          style={{ backgroundImage: `url(${cardTemplateUrl})` }}
+        >
           {/* Centered Clean Content */}
           <div className="blank-clean-content-lower">
             <div
@@ -110,6 +124,7 @@ export default function PatrikaModal({
         {/* Hidden 1037x1516 Native Export Node (100% Identical Parity with Screen Preview) */}
         <div
           ref={exportCardRef}
+          className={`patrika-mode-${currentMode}`}
           style={{
             position: 'fixed',
             left: '-9999px',
@@ -120,7 +135,10 @@ export default function PatrikaModal({
             zIndex: -999,
           }}
         >
-          <div className="patrika-card-blank-bg-export">
+          <div
+            className="patrika-card-blank-bg-export"
+            style={{ backgroundImage: `url(${cardTemplateUrl})` }}
+          >
             <div className="blank-clean-content-lower-export">
               <div
                 className="clean-thumb-wrap-larger-export"

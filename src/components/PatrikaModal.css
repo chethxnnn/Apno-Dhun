@@ -39,13 +39,49 @@
   width: 100%;
   aspect-ratio: 1037 / 1516;
   border-radius: 20px;
-  background: url('/dhun-card-blank.png') center / cover no-repeat;
+  background: url('/cards/folk.png') center / cover no-repeat;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.88);
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* ─── 5 Curated Theme Color Rules (Matching Player Palettes) ─── */
+.patrika-mode-wedding {
+  --card-title-color: #7A0E13;
+  --card-artist-color: #8C2228;
+  --card-thumb-glow: rgba(185, 93, 67, 0.35);
+  --card-pill-glow: rgba(185, 93, 67, 0.4);
+}
+
+.patrika-mode-folk {
+  --card-title-color: #843E10;
+  --card-artist-color: #9E531D;
+  --card-thumb-glow: rgba(216, 137, 62, 0.35);
+  --card-pill-glow: rgba(216, 137, 62, 0.4);
+}
+
+.patrika-mode-dhh {
+  --card-title-color: #6E490D;
+  --card-artist-color: #875E19;
+  --card-thumb-glow: rgba(201, 154, 75, 0.35);
+  --card-pill-glow: rgba(201, 154, 75, 0.4);
+}
+
+.patrika-mode-trending {
+  --card-title-color: #8F3408;
+  --card-artist-color: #AB4715;
+  --card-thumb-glow: rgba(230, 110, 40, 0.35);
+  --card-pill-glow: rgba(230, 110, 40, 0.4);
+}
+
+.patrika-mode-devotional {
+  --card-title-color: #243654;
+  --card-artist-color: #3A527A;
+  --card-thumb-glow: rgba(64, 90, 135, 0.35);
+  --card-pill-glow: rgba(64, 90, 135, 0.4);
 }
 
 /* Centered Clean Content Container (Positioned Lower Down Below Top Template Lines) */
@@ -67,7 +103,7 @@
   height: 115px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(122, 14, 19, 0.3);
+  box-shadow: 0 8px 24px var(--card-thumb-glow, rgba(122, 14, 19, 0.3));
   flex-shrink: 0;
   position: relative;
   background-size: cover;
@@ -75,26 +111,26 @@
   background-repeat: no-repeat;
 }
 
-/* Full Song Title in Rich Red Thin Serif Font (Slightly Reduced Size) */
+/* Full Song Title in Theme Thin Serif Font */
 .clean-song-title-compact {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 0.91rem;
   font-weight: 300; /* Thin elegant non-bold font */
-  color: #7A0E13; /* Crimson red matching template color scheme */
+  color: var(--card-title-color, #7A0E13);
   margin: 2px 0 0;
   line-height: 1.26;
   width: 100%;
   max-width: 90%;
   word-wrap: break-word;
-  text-shadow: 0 1px 2px rgba(122, 14, 19, 0.1);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
-/* Artist Name in Muted Red Thin Font (Tighter gap with title) */
+/* Artist Name in Theme Muted Thin Font (Tighter gap with title) */
 .clean-artist-name-red {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 300; /* Thin non-bold font */
-  color: #802025;
+  color: var(--card-artist-color, #802025);
   margin: -3px 0 0; /* Reduced gap between artist and title by a bit */
   line-height: 1.25;
   width: 100%;
@@ -155,7 +191,7 @@
   width: 1037px;
   height: 1516px;
   border-radius: 40px;
-  background: url('/dhun-card-blank.png') center / cover no-repeat;
+  background: url('/cards/folk.png') center / cover no-repeat;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -181,7 +217,7 @@
   height: 314px;
   border-radius: 44px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(122, 14, 19, 0.35);
+  box-shadow: 0 20px 60px var(--card-thumb-glow, rgba(122, 14, 19, 0.35));
   flex-shrink: 0;
   position: relative;
   background-size: cover;
@@ -193,21 +229,97 @@
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 43px; /* Exact 1:1 mathematical ratio with 0.91rem (14.56px) on 348px screen preview */
   font-weight: 300;
-  color: #7A0E13;
+  color: var(--card-title-color, #7A0E13);
   margin: 6px 0 0;
   line-height: 1.26;
   width: 100%;
   max-width: 90%;
   word-wrap: break-word;
-  text-shadow: 0 2px 4px rgba(122, 14, 19, 0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .clean-artist-name-red-export {
   font-family: 'Inter', sans-serif;
   font-size: 33px; /* Exact 1:1 mathematical ratio with 11px on 348px screen preview */
   font-weight: 300;
-  color: #802025;
+  color: var(--card-artist-color, #802025);
   margin: -8px 0 0;
   line-height: 1.25;
   width: 100%;
+}
+
+/* ─── Vibe-Specific Card Fine-Tuning ─── */
+
+/* 1. Bhakti: Move thumbnail and text slightly up, expand text width symmetrically with equal line justification for title and left-justified artist */
+.patrika-mode-devotional .blank-clean-content-lower {
+  top: 36%;
+  align-items: center;
+  gap: 7px;
+}
+.patrika-mode-devotional .clean-song-title-compact {
+  font-size: 0.83rem;
+  text-align: justify;
+  text-align-last: center;
+  text-justify: inter-word;
+  width: 275px;
+  max-width: 96%;
+  margin: 1px 0 0;
+}
+.patrika-mode-devotional .clean-artist-name-red {
+  font-size: 10px;
+  text-align: left;
+  text-align-last: left;
+  width: 275px;
+  max-width: 96%;
+  margin: -4px 0 0;
+}
+.patrika-mode-devotional .blank-clean-content-lower-export {
+  top: 36%;
+  align-items: center;
+  gap: 16px;
+}
+.patrika-mode-devotional .clean-song-title-compact-export {
+  font-size: 38px;
+  text-align: justify;
+  text-align-last: center;
+  text-justify: inter-word;
+  width: 740px;
+  max-width: 96%;
+  margin: 3px 0 0;
+}
+.patrika-mode-devotional .clean-artist-name-red-export {
+  font-size: 28px;
+  text-align: left;
+  text-align-last: left;
+  width: 740px;
+  max-width: 96%;
+  margin: -10px 0 0;
+}
+
+/* 2. DHH: Move thumbnail very slightly lower & text size slightly smaller */
+.patrika-mode-dhh .blank-clean-content-lower {
+  top: 36%;
+}
+.patrika-mode-dhh .clean-song-title-compact {
+  font-size: 0.86rem;
+}
+.patrika-mode-dhh .clean-artist-name-red {
+  font-size: 10.5px;
+}
+.patrika-mode-dhh .blank-clean-content-lower-export {
+  top: 36%;
+}
+.patrika-mode-dhh .clean-song-title-compact-export {
+  font-size: 40px;
+}
+.patrika-mode-dhh .clean-artist-name-red-export {
+  font-size: 30px;
+}
+
+/* 3. Trend: Move thumbnail a bit lower */
+.patrika-mode-trending .blank-clean-content-lower {
+  top: 37.5%;
+}
+.patrika-mode-trending .blank-clean-content-lower-export {
+  top: 37.5%;
 }

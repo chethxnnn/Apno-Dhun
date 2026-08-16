@@ -150,6 +150,14 @@
     - **Right-Click Interception**: Global and element-level `onContextMenu={(e) => e.preventDefault()}` blocks context-menu popup ("Save Image As", "Copy Image Address") across all backgrounds, titles, logos, and artwork cards.
     - **Anti-Drag & Anti-Select**: Applied `-webkit-user-drag: none; user-drag: none;` and `user-select: none;` globally on all `<img>` tags and visual containers to stop click-and-drag downloads.
     - **iOS & Android Long-Press Protection**: Applied `-webkit-touch-callout: none;` across all views to suppress native mobile "Save to Photos" and "Share Image" callout sheets.
+- **5 Vibe-Specific Royal Dhun Card Templates (`PatrikaModal`)**:
+  - Automatically loads the custom card template matching the active vibe:
+    - **लोक (Folk)**: `/cards/folk.png`
+    - **ब्याव (Wedding)**: `/cards/wedding.png`
+    - **DHH (Rap)**: `/cards/dhh.png`
+    - **ट्रेंड (Trending)**: `/cards/trending.png`
+    - **भक्ति (Devotional)**: `/cards/devotional.png`
+  - **100% Unchanged Text & Thumbnail Placement**: The song title, artist typography, larger thumbnail window, and high-definition 4K export engine (`2074x3032`) maintain exact pixel-perfect positioning across all 5 card templates.
 - **Hidden Player Engine**: Operates inside a 1×1 hidden `div` via YouTube IFrame API.
 - **Lock Screen & Control Center Integration (MediaSession API)**:
   - Synchronizes live song metadata (Title, Artist, and High-Resolution YouTube Artwork) directly with **iOS Control Center / Lock Screen** and **Android Media Notification Tray**.
