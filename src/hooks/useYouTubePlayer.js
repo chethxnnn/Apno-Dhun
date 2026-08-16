@@ -229,6 +229,8 @@ export function useYouTubePlayer(playlist) {
           controls: 0,
           disablekb: 1,
           fs: 0,
+          playsinline: 1,
+          enablejsapi: 1,
           modestbranding: 1,
           rel: 0,
           showinfo: 0,
@@ -321,7 +323,18 @@ export function useYouTubePlayer(playlist) {
   const play = useCallback(() => {
     startSilentAudio();
     if (playerRef.current && typeof playerRef.current.playVideo === 'function') {
-      try { playerRef.current.playVideo(); } catch (e) {}
+      try {
+        const state = typeof playerRef.current.getPlayerState === 'function' ? playerRef.current.getPlayerState() : -1;
+        // If unstarted (-1), cued (5), or undefined, trigger immediate stream loading
+        if (state === -1 || state === 5 || state === undefined) {
+          const curId = playlistRef.current[trackIndexRef.current]?.id;
+          if (curId && typeof playerRef.current.loadVideoById === 'function') {
+            playerRef.current.loadVideoById(curId);
+            return;
+          }
+        }
+        playerRef.current.playVideo();
+      } catch (e) {}
     }
   }, [startSilentAudio]);
 
