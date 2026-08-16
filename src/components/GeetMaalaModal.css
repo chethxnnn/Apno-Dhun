@@ -529,7 +529,7 @@
 /* iPad View Specific Width Adjustments (641px - 1366px) */
 @media (min-width: 641px) and (max-width: 1366px) {
   .queue-fixed-attached {
-    bottom: 232px;
+    bottom: 238px;
     width: calc(100% - 32px);
     max-width: 650px; /* Matching iPad player dock */
   }
@@ -547,7 +547,7 @@
 /* Mobile View Refinements (up to 640px) */
 @media (max-width: 640px) {
   .queue-fixed-attached {
-    bottom: 222px; /* Clean floating gap above mobile player dock */
+    bottom: 238px; /* Elevated slightly higher for an optimal floating gap above mobile player dock */
     width: calc(100% - 24px);
     max-width: 440px; /* Matching mobile player dock */
   }
