@@ -101,12 +101,20 @@ export default function Player({
     }
   }, [isArtExpanded, onToggleQueue]);
 
+  const isDraggingRef = useRef(false);
+
   const seekFromX = useCallback(
-    (clientX) => {
+    (clientX, isDirectClick = false) => {
       if (typeof clientX !== 'number' || isNaN(clientX)) return;
       if (!seekRef.current || !duration || duration <= 0) return;
       const r = seekRef.current.getBoundingClientRect();
       if (!r.width || r.width <= 0) return;
+
+      // If it's a direct click (not an active continuous drag), ensure the tap/click was actually on or adjacent to the seekbar
+      if (isDirectClick) {
+        if (clientX < r.left - 12 || clientX > r.right + 12) return;
+      }
+
       const ratio = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
       if (isNaN(ratio)) return;
       onSeek(ratio * duration);
@@ -116,28 +124,34 @@ export default function Player({
 
   const handleSeekClick = useCallback(
     (e) => {
-      if (isDragging) return;
+      if (isDraggingRef.current) return;
       if (e && typeof e.clientX === 'number' && !isNaN(e.clientX)) {
-        seekFromX(e.clientX);
+        seekFromX(e.clientX, true);
       }
     },
-    [isDragging, seekFromX]
+    [seekFromX]
   );
 
   const handleMouseDown = useCallback(
     (e) => {
+      if (e.button !== 0) return; // Only left-click drag
       e.preventDefault();
+      e.stopPropagation();
+      isDraggingRef.current = true;
       setIsDragging(true);
       if (e && typeof e.clientX === 'number' && !isNaN(e.clientX)) {
-        seekFromX(e.clientX);
+        seekFromX(e.clientX, true);
       }
 
       const onMouseMove = (ev) => {
+        if (!isDraggingRef.current) return;
         if (ev && typeof ev.clientX === 'number' && !isNaN(ev.clientX)) {
-          seekFromX(ev.clientX);
+          seekFromX(ev.clientX, false);
         }
       };
+
       const onMouseUp = () => {
+        isDraggingRef.current = false;
         setIsDragging(false);
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
@@ -153,24 +167,27 @@ export default function Player({
     (e) => {
       if (!e.touches || !e.touches[0]) return;
       e.stopPropagation();
+      isDraggingRef.current = true;
       setIsDragging(true);
       const touch = e.touches[0];
       if (touch && typeof touch.clientX === 'number' && !isNaN(touch.clientX)) {
-        seekFromX(touch.clientX);
+        seekFromX(touch.clientX, true);
       }
 
       const onTouchMove = (ev) => {
+        if (!isDraggingRef.current) return;
         if (ev.cancelable) ev.preventDefault();
         ev.stopPropagation();
         if (ev.touches && ev.touches[0]) {
           const t = ev.touches[0];
           if (t && typeof t.clientX === 'number' && !isNaN(t.clientX)) {
-            seekFromX(t.clientX);
+            seekFromX(t.clientX, false);
           }
         }
       };
 
       const onTouchEnd = () => {
+        isDraggingRef.current = false;
         setIsDragging(false);
         window.removeEventListener('touchmove', onTouchMove);
         window.removeEventListener('touchend', onTouchEnd);

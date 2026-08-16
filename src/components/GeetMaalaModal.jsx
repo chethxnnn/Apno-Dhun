@@ -26,7 +26,9 @@ export default function GeetMaalaModal({
       closeTimer.current = setTimeout(() => {
         setIsMounted(false);
         setIsClosing(false);
-      }, 280);
+      }, 260);
+    } else if (!isOpen && !isMounted) {
+      setIsClosing(false);
     }
 
     return () => {
@@ -34,6 +36,7 @@ export default function GeetMaalaModal({
     };
   }, [isOpen, isMounted, isClosing]);
 
+  if (!isOpen && !isMounted) return null;
   if (!isMounted) return null;
 
   const modeTabs = [
@@ -94,7 +97,10 @@ export default function GeetMaalaModal({
                   <button
                     key={tab.key}
                     className={`queue-tab ${isActive ? 'active' : ''}`}
-                    onClick={() => onModeChange && onModeChange(tab.key)}
+                    onClick={() => {
+                      if (!isOpen || isClosing) return;
+                      onModeChange && onModeChange(tab.key);
+                    }}
                   >
                     {tab.label}
                   </button>
@@ -117,7 +123,10 @@ export default function GeetMaalaModal({
                 <div
                   key={`${track.id}-${idx}`}
                   className={`queue-item ${isCurrent ? 'active-card' : ''}`}
-                  onClick={() => onSelectTrack(idx)}
+                  onClick={() => {
+                    if (!isOpen || isClosing) return;
+                    onSelectTrack(idx);
+                  }}
                 >
                   <div className="queue-left-lead">
                     {isCurrent ? (

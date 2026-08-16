@@ -11,6 +11,7 @@
 
 .queue-backdrop-fade.closing {
   animation: backdropFadeOut 0.32s cubic-bezier(0.32, 0.72, 0, 1) both;
+  pointer-events: none !important;
 }
 
 @keyframes backdropFadeIn {
@@ -25,7 +26,7 @@
 
 .queue-fixed-attached {
   position: fixed;
-  bottom: 232px; /* Elevated higher up above desktop player dock */
+  bottom: 256px; /* Elevated higher up above desktop player dock */
   left: 50%;
   transform: translateX(-50%);
   z-index: 52;
@@ -37,6 +38,7 @@
 
 .queue-fixed-attached.closing {
   animation: queueSlideDown 0.32s cubic-bezier(0.32, 0.72, 0, 1) both;
+  pointer-events: none !important;
 }
 
 /* Apple iOS Modal Sheet Physics */
@@ -527,7 +529,7 @@
 /* iPad View Specific Width Adjustments (641px - 1366px) */
 @media (min-width: 641px) and (max-width: 1366px) {
   .queue-fixed-attached {
-    bottom: 236px;
+    bottom: 260px;
     width: calc(100% - 32px);
     max-width: 650px; /* Matching iPad player dock */
   }
