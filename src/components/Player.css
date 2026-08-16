@@ -190,12 +190,14 @@
 /* Golden Gota-Patti Seek Line */
 .seek-bar {
   position: relative;
-  height: 16px;
+  height: 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
   flex: 1;
   touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .seek-bar.dragging {

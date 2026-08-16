@@ -52,12 +52,13 @@ export default function Player({
     return () => window.removeEventListener('resize', handleResize);
   }, [isArtExpanded]);
 
-  // When art is expanded, touching or clicking anywhere outside collapses it
+  // When art is expanded, touching or clicking anywhere outside the player dock collapses it
   useEffect(() => {
     if (!isArtExpanded) return;
 
     const handleOutsideClick = (e) => {
-      if (e.target.closest && e.target.closest('.art-disc-wrap')) {
+      // Do not collapse if tapping/clicking anywhere inside the player dock
+      if (e.target.closest && e.target.closest('.player-dock')) {
         return;
       }
       setIsArtExpanded(false);
@@ -138,25 +139,33 @@ export default function Player({
 
   const handleTouchStart = useCallback(
     (e) => {
+      if (!e.touches || !e.touches[0]) return;
+      e.stopPropagation();
       setIsDragging(true);
       const touch = e.touches[0];
       seekFromX(touch.clientX);
+
+      const onTouchMove = (ev) => {
+        if (ev.cancelable) ev.preventDefault();
+        ev.stopPropagation();
+        if (ev.touches && ev.touches[0]) {
+          seekFromX(ev.touches[0].clientX);
+        }
+      };
+
+      const onTouchEnd = () => {
+        setIsDragging(false);
+        window.removeEventListener('touchmove', onTouchMove);
+        window.removeEventListener('touchend', onTouchEnd);
+        window.removeEventListener('touchcancel', onTouchEnd);
+      };
+
+      window.addEventListener('touchmove', onTouchMove, { passive: false });
+      window.addEventListener('touchend', onTouchEnd, { passive: true });
+      window.addEventListener('touchcancel', onTouchEnd, { passive: true });
     },
     [seekFromX]
   );
-
-  const handleTouchMove = useCallback(
-    (e) => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      seekFromX(touch.clientX);
-    },
-    [seekFromX]
-  );
-
-  const handleTouchEnd = useCallback(() => {
-    setIsDragging(false);
-  }, []);
 
   const thumb = currentTrack
     ? `https://img.youtube.com/vi/${currentTrack.id}/hqdefault.jpg`
