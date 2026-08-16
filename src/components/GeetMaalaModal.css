@@ -26,7 +26,7 @@
 
 .queue-fixed-attached {
   position: fixed;
-  bottom: 228px; /* Clean floating gap right above desktop player dock */
+  bottom: 240px; /* Elevated slightly higher for a generous floating gap above desktop player dock */
   left: 50%;
   transform: translateX(-50%);
   z-index: 52;
