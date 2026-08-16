@@ -355,8 +355,6 @@ export default function Player({
               onClick={handleSeekClick}
               onMouseDown={handleMouseDown}
               onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
               role="slider"
               aria-label="Seek"
               aria-valuemin={0}
