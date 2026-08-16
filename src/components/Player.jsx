@@ -103,9 +103,12 @@ export default function Player({
 
   const seekFromX = useCallback(
     (clientX) => {
-      if (!seekRef.current || !duration) return;
+      if (typeof clientX !== 'number' || isNaN(clientX)) return;
+      if (!seekRef.current || !duration || duration <= 0) return;
       const r = seekRef.current.getBoundingClientRect();
+      if (!r.width || r.width <= 0) return;
       const ratio = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
+      if (isNaN(ratio)) return;
       onSeek(ratio * duration);
     },
     [duration, onSeek]
@@ -113,18 +116,27 @@ export default function Player({
 
   const handleSeekClick = useCallback(
     (e) => {
-      seekFromX(e.clientX);
+      if (isDragging) return;
+      if (e && typeof e.clientX === 'number' && !isNaN(e.clientX)) {
+        seekFromX(e.clientX);
+      }
     },
-    [seekFromX]
+    [isDragging, seekFromX]
   );
 
   const handleMouseDown = useCallback(
     (e) => {
       e.preventDefault();
       setIsDragging(true);
-      seekFromX(e.clientX);
+      if (e && typeof e.clientX === 'number' && !isNaN(e.clientX)) {
+        seekFromX(e.clientX);
+      }
 
-      const onMouseMove = (ev) => seekFromX(ev.clientX);
+      const onMouseMove = (ev) => {
+        if (ev && typeof ev.clientX === 'number' && !isNaN(ev.clientX)) {
+          seekFromX(ev.clientX);
+        }
+      };
       const onMouseUp = () => {
         setIsDragging(false);
         window.removeEventListener('mousemove', onMouseMove);
@@ -143,13 +155,18 @@ export default function Player({
       e.stopPropagation();
       setIsDragging(true);
       const touch = e.touches[0];
-      seekFromX(touch.clientX);
+      if (touch && typeof touch.clientX === 'number' && !isNaN(touch.clientX)) {
+        seekFromX(touch.clientX);
+      }
 
       const onTouchMove = (ev) => {
         if (ev.cancelable) ev.preventDefault();
         ev.stopPropagation();
         if (ev.touches && ev.touches[0]) {
-          seekFromX(ev.touches[0].clientX);
+          const t = ev.touches[0];
+          if (t && typeof t.clientX === 'number' && !isNaN(t.clientX)) {
+            seekFromX(t.clientX);
+          }
         }
       };
 

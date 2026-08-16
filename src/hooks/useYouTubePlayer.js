@@ -391,6 +391,7 @@ export function useYouTubePlayer(playlist) {
   }, [loadTrack]);
 
   const seekTo = useCallback((s) => {
+    if (typeof s !== 'number' || isNaN(s) || s < 0) return;
     if (playerRef.current && typeof playerRef.current.seekTo === 'function') {
       try { playerRef.current.seekTo(s, true); } catch (e) {}
     }
