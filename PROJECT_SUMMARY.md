@@ -104,34 +104,52 @@
 ---
 
 - **Header & Navigation Layout**:
-  - **Desktop Top-Left Block**: Sleek condensed digital clock font (**`Bebas Neue`**, `62px` with `transform: scaleY(1.18)`).
-  - **Stacked Seconds & AM/PM**: Live gold seconds (`28`) on top, with `PM` stacked directly beneath it next to the clock digits!
-  - **Aligned Date Row**: Aligned directly below the clock in top-left in exact format **`13th August, 2026`** (desktop/iPad) and **`13th Aug, 2026`** (mobile) spanning the clock display width!
-  - **Desktop Top-Right**: Spotify ↗ and YT Music ↗ social links.
-  - **Centered Navigation**: `[Lok]  [Byaav]  (🔴 APNA LOGO)  [Trend]  [Bhakti]` on Desktop.
-  - **Mobile & iPad Layout**: Fixed bottom footer navigation bar (`max-width: 440px` mobile / `max-width: 580px` iPad).
-- **Real-Time Live Listener Counter (Safa Icon & Mehmaan Branding)**:
-  - **Positioning**: Fixed at `top: 16px; left: 50%; transform: translateX(-50%)` in top header bar across all Mobile and iPad views!
-- **Visuals & Animations**:
-  - Replaced standard dot with a custom **Rajasthani Safa Icon** (`safa-icon.png`, `34px` desktop / `20px` compact mobile/iPad).
-  - **Typography**: **Bold count number** (`42`) + Normal weight label (**Mehmaan**) scaled to compact `11px` in mobile/iPad header line.
-- **Ably Realtime Presence Integration**:
-  - Subscribes to realtime presence events for 100% accurate active visitor counting with automatic fallback.
-
----
-
-## 🎧 5. YouTube Player Engine & Realtime Data API v3 Sync
-
-- **Realtime Playlist Auto-Sync (YouTube Data API v3)**:
-  - Connected directly to YouTube Data API v3 endpoints via `src/services/youtubeApi.js`.
-  - Mapped 4 Live Playlist IDs:
+  - **Desktop Top-Left Collab Branding**: Displays **`[Apno Dhun Logo] ✕ [Apna Culturez Logo]`** in their natural uncropped shapes as a sleek brand collaboration badge.
+  - **Infinite 5-Vibe Circular Ring Carousel Navigation (`CircularVibeNav`)**:
+    - **Continuous Infinite Loop**: Seamlessly loops through all 5 vibes (`... - Bhakti - Lok - Byaav - DHH - Trend - Bhakti - ...`).
+    - **Always Centered & Enlarged Active Vibe**: Active vibe is centered and enlarged (`scale(1.22)`, glowing white text shadow), with adjacent vibes medium (`scale(0.98)`), and outer vibes subtle (`scale(0.82)`).
+    - **Physical Ring Sliding Animation**: Clicking any adjacent or edge vibe smoothly slides the ring left/right with spring easing (`cubic-bezier(0.32, 0.72, 0, 1)`) and recenters the newly selected vibe.
+    - **Desktop & Mobile Interactive Navigation**: Supports touch swipe gestures on mobile, and mouse drag (`cursor: grab`) + wheel/trackpad scrolling on desktop with **zero scrollbars**.
+    - **Crisp 5-Vibe Visibility**: Outer leftmost and rightmost vibes (`slot-far`) are clearly visible with enhanced legibility and balanced spacing.
+  - **Refined Desktop Title Scaling**: Hero calligraphy title sizes scaled to a clean, well-proportioned desktop max dimension (`max-width: ~44vw`, `max-height: 35vh`).
+  - **Desktop Top-Right Block**: Stretched condensed digital clock font (**`Bebas Neue`**, `62px` with `transform: scaleY(1.18)`) with live seconds and aligned date row.
+  - **Mobile & iPad Header Layout**:
+    - **Top-Left**: Apno Dhun logo.
+    - **Top-Center**: Compact, elegant time on top (`11.5px`) with **prominent, larger Live Mehmaan counter (`13.5px`) & 22px pulsing Safa icon** directly below it with comfortable top vertical padding!
+    - **Top-Right**: Apna Culturez logo in its natural uncropped shape.
+    - **Bottom Footer**: Clean Infinite Circular Ring navigation bar (`max-width: 440px` mobile / `max-width: 580px` iPad).
+- **5 Curated Soundscapes & Responsive Multi-Device Backgrounds**:
+  - **DHH (Rajasthani Hip-Hop & Rap)**:
+    - **Desktop / iPad Background**: Uses `public/backgrounds/rap-desktop.png` with zoomed-out framing and subtle micro-drift on iPad Air & iPad Pro.
+    - **Mobile Background**: Uses `public/backgrounds/rap-mobile.png` with standard immersive full-cover viewport background rendering.
+    - **Title Artwork**: Uses authentic Rajasthani rap calligraphy title image (`public/titles/dhh.png` / `rap title.png`), scaled up specifically for iPad Air & iPad Pro (`max-width: 62vw`).
+    - **Live Playlist**: `PLIR61cB-oARA` (Initial track: `ewxyXyq4R9A`).
+  - Connected directly to YouTube Data API v3 endpoints via `src/services/youtubeApi.js`:
     - **Folk (`folk`)**: `PLYAOxVEAP3bs`
     - **Wedding (`wedding`)**: `PLEsCBM7K03Bk`
+    - **Rajasthani DHH (`dhh`)**: `PLIR61cB-oARA` (Initial track: `ewxyXyq4R9A`, with DHH tab in Geet Maala Queue).
     - **Trending (`trending`)**: `PLeiQ7CPbnew8`
     - **Devotional (`devotional`)**: `PLDM_wzSW7hoc`
+  - **5 Harmonious Vibe Player Color Palettes**:
+    - **Devotional**: `#405A87` (Muted royal/navy blue)
+    - **Lok**: `#D8893E` (Warm light orange)
+    - **Trending (Nayo Trend)**: `#E66E28` (Warm vibrant orangish with coral highlights)
+    - **DHH**: `#C99A4B` (Warm ochre/golden with modern minimalist glowing circle seek pointer)
+    - **Wedding**: `#B95D43` (Soft terracotta red)
+    - Seamlessly harmonizes the entire player dock: Play/Pause button, Previous/Next/Mute/Queue buttons, Dhun pill button, aura glow, seekbar progress fill, volume slider, **desktop keyboard shortcut keycaps (cleanly hidden on iPad Pro, iPad Air, tablets & mobile)**, and the **Geet Maala Queue List Drawer** (with anti-collision tab layout, zero mobile scrollbars, **matching exact player width (`660px` on desktop, `650px` on iPad, `440px` on mobile) and elevated vertical positioning**, **sleek pill capsule shape (`border-radius: 9999px`) on Desktop & iPad with sleek reduced height, 58px vinyl CD, track title & artist placed directly on top of justified control buttons, and duration seekbar extending full-width below from CD to right edge**, and **justified fluidly animated controls on expanded artwork across Mobile, iPad Air & iPad Pro**) for every vibe!
+  - **Authentic Hero Title Sizing**: Preserved original large calligraphy hero title dimensions for Lok, Byaav, Trend, and Bhakti, with a dedicated refined proportion applied strictly to DHH.
+  - **Fluid Continuous Circular Vibe Nav Scroller**:
+    - **Apple-Physics Continuous Gliding**: Engineered a 7-slot continuous track (`[-3, -2, -1, 0, 1, 2, 3]`) that measures exact pixel offsets between items (`offsetLeft`) and performs smooth inertial horizontal translations (`cubic-bezier(0.25, 1, 0.5, 1)`).
+    - **Active Vibe Frosted Glass Capsule Highlight**: Prominently highlights the currently selected vibe inside a frosted glass capsule pill (`background: rgba(255, 255, 255, 0.16); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 9999px;`) with zero blurry halo box lines.
+    - **Universal Live Mehmaan Presence**: Integrated live presence counter with glowing Safa icon across **Desktop & iPad** (positioned right under the top-left collab logo at `top: 72px–96px; left: 20px–34px`) and **Mobile** (centered in top header block).
+    - **Refined Desktop & iPad Proportions**: Scaled desktop header elements (`56px` Apno Dhun logo, `50px` Apna Culturez logo, `68px` clock display, and **`19px` bold center vibe pill with `16.5px` and `15px` adjacent vibes**) and iPad header logos (**`50px` Apno Dhun logo, `46px` Apna Culturez logo**).
   - **Live Auto-Update**: Whenever you add, delete, or reorder tracks in your YouTube playlists, the site updates automatically on refresh/visit with **zero code changes**!
   - **Smart LocalStorage Caching**: 15-minute TTL cache protects your free 10,000 daily API quota while serving instant zero-latency song lists to visitors.
-  - **Offline Fallback**: Automatically falls back to static playlists if no API key is set or if YouTube API fails.
+  - **Artwork & Image Copy Protection Layer**:
+    - **Invisible Security Shield**: Added an unclickable transparent glass shield directly over background visual layers (`.bg-shield`).
+    - **Right-Click Interception**: Global and element-level `onContextMenu={(e) => e.preventDefault()}` blocks context-menu popup ("Save Image As", "Copy Image Address") across all backgrounds, titles, logos, and artwork cards.
+    - **Anti-Drag & Anti-Select**: Applied `-webkit-user-drag: none; user-drag: none;` and `user-select: none;` globally on all `<img>` tags and visual containers to stop click-and-drag downloads.
+    - **iOS & Android Long-Press Protection**: Applied `-webkit-touch-callout: none;` across all views to suppress native mobile "Save to Photos" and "Share Image" callout sheets.
 - **Hidden Player Engine**: Operates inside a 1×1 hidden `div` via YouTube IFrame API.
 - **Lock Screen & Control Center Integration (MediaSession API)**:
   - Synchronizes live song metadata (Title, Artist, and High-Resolution YouTube Artwork) directly with **iOS Control Center / Lock Screen** and **Android Media Notification Tray**.

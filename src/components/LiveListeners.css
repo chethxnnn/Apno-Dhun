@@ -1,8 +1,8 @@
-/* Desktop View (min-width: 901px): Mehmaan positioned directly under Apno Dhun top-left logo */
+/* Desktop & iPad View: Mehmaan positioned directly under Apno Dhun top-left logo */
 .live-listeners-bare {
   position: fixed;
-  top: 84px;
-  left: 28px;
+  top: 96px;
+  left: 34px;
   right: auto;
   transform: none;
   z-index: 55; /* Above queue backdrop fade (z-index: 40) so it remains 100% visible */
@@ -16,8 +16,8 @@
 }
 
 .safa-icon-big {
-  width: 32px; /* Desktop Safa Icon size */
-  height: 32px;
+  width: 26px; /* Desktop Safa Icon size */
+  height: 26px;
   object-fit: contain;
   filter: drop-shadow(0 0 12px rgba(229, 9, 20, 0.9)) drop-shadow(0 0 4px rgba(229, 9, 20, 0.95));
   animation: safaPulseBig 2.5s ease-in-out infinite alternate;
@@ -36,7 +36,7 @@
 
 .listeners-text-clean {
   font-family: 'Inter', sans-serif;
-  font-size: 13.5px;
+  font-size: 12.5px;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.92);
   letter-spacing: 0.3px;
@@ -59,23 +59,25 @@
   100% { opacity: 1; transform: scale(1); }
 }
 
-/* Mobile & iPad View (max-width: 900px): Sleek, smaller online counter in top-center header line */
-@media (max-width: 900px) {
+/* iPad View (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
   .live-listeners-bare {
-    top: 15px; /* Aligned vertically in top header line */
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    gap: 5px;
-  }
-  .listeners-text-clean {
-    font-size: 10px; /* Reduced compact font size */
-  }
-  .listeners-num-bold {
-    font-size: 10.5px;
+    top: 80px;
+    left: 22px;
+    display: flex !important;
   }
   .safa-icon-big {
-    width: 16px; /* Sleeker, smaller Safa icon size for mobile/iPad */
-    height: 16px;
+    width: 21px;
+    height: 21px;
+  }
+  .listeners-text-clean {
+    font-size: 11.5px;
+  }
+}
+
+/* Mobile View Only (max-width: 640px): Hidden here because it is integrated directly inside Header center block */
+@media (max-width: 640px) {
+  .live-listeners-bare {
+    display: none !important;
   }
 }

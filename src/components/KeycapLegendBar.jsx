@@ -1,8 +1,8 @@
 import './KeycapLegendBar.css';
 
-export default function KeycapLegendBar({ onPlayGhungroo }) {
+export default function KeycapLegendBar({ currentMode = 'wedding', onPlayGhungroo }) {
   return (
-    <div className="keycap-legend-bar">
+    <div className={`keycap-legend-bar legend-mode-${currentMode}`}>
       <div className="keycap-item">
         <span className="keycap">Space</span>
         <span className="keycap-label">PLAY / PAUSE</span>

@@ -25,12 +25,12 @@
 
 .queue-fixed-attached {
   position: fixed;
-  bottom: 215px; /* Directly above elevated desktop player dock */
+  bottom: 232px; /* Elevated higher up above desktop player dock */
   left: 50%;
   transform: translateX(-50%);
   z-index: 52;
   width: calc(100% - 32px);
-  max-width: 680px; /* Matching exact width of desktop player dock */
+  max-width: 660px; /* Exact matching max-width as Desktop Player Dock */
   animation: queueSlideUp 0.45s cubic-bezier(0.32, 0.72, 0, 1) both;
   will-change: transform, opacity, filter;
 }
@@ -88,28 +88,42 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  min-width: 0;
 }
 
 .queue-tabs {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   overflow-x: auto;
+  flex: 1;
+  min-width: 0;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.queue-tabs::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .queue-tab {
-  padding: 5px 12px;
+  padding: 4px 8px;
   border-radius: 9999px;
   border: 1px solid transparent;
   background: none;
   color: rgba(255, 255, 255, 0.55);
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   cursor: pointer;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
@@ -127,15 +141,17 @@
 .queue-meta-right {
   display: flex;
   align-items: center;
-  gap: 12px;
   flex-shrink: 0;
+  padding-left: 4px;
 }
 
 .tracks-count {
   font-family: 'Inter', sans-serif;
-  font-size: 11px;
+  font-size: 10.5px;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.45);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 /* Queue List Container matching busdriver.wtf list items */
@@ -354,29 +370,217 @@
   color: rgba(255, 255, 255, 0.45);
 }
 
-/* iPad View Specific Width Adjustments (641px - 900px) */
-@media (min-width: 641px) and (max-width: 900px) {
+/* ═══════════════════════════════════════════════════════════════════
+   ─── 5 Vibe Dynamic Color Themes for Geet Maala / Queue Drawer ───
+   1. Devotional : #405A87 (Muted royal/navy blue)
+   2. Lok (Folk) : #D8893E (Warm light orange)
+   3. Trending   : #E66E28 (Warm vibrant orangish)
+   4. DHH        : #C99A4B (Warm ochre/golden)
+   5. Wedding    : #B95D43 (Soft terracotta red)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Devotional (#405A87) ── */
+.queue-mode-devotional .queue-card {
+  background: rgba(14, 20, 32, 0.95);
+  border-color: rgba(64, 90, 135, 0.4);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9), 0 0 32px rgba(64, 90, 135, 0.25);
+}
+.queue-mode-devotional .queue-tab.active {
+  background: rgba(64, 90, 135, 0.35);
+  border-color: rgba(107, 142, 196, 0.55);
+  color: #B2CCF5;
+}
+.queue-mode-devotional .queue-item.active-card {
+  background: rgba(64, 90, 135, 0.22);
+  border-color: rgba(107, 142, 196, 0.4);
+}
+.queue-mode-devotional .active-card .queue-title-bold {
+  color: #B2CCF5;
+}
+.queue-mode-devotional .eq-orange-dots span {
+  background: #405A87;
+}
+.queue-mode-devotional .queue-share-card:hover {
+  border-color: rgba(107, 142, 196, 0.4);
+}
+.queue-mode-devotional .queue-share-card:hover .share-icon-wrap {
+  background: rgba(64, 90, 135, 0.35);
+  color: #B2CCF5;
+}
+
+/* ── 2. Lok (#D8893E) ── */
+.queue-mode-folk .queue-card {
+  background: rgba(26, 18, 12, 0.95);
+  border-color: rgba(216, 137, 62, 0.4);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9), 0 0 32px rgba(216, 137, 62, 0.25);
+}
+.queue-mode-folk .queue-tab.active {
+  background: rgba(216, 137, 62, 0.35);
+  border-color: rgba(245, 171, 100, 0.55);
+  color: #FFD2A0;
+}
+.queue-mode-folk .queue-item.active-card {
+  background: rgba(216, 137, 62, 0.22);
+  border-color: rgba(245, 171, 100, 0.4);
+}
+.queue-mode-folk .active-card .queue-title-bold {
+  color: #FFD2A0;
+}
+.queue-mode-folk .eq-orange-dots span {
+  background: #D8893E;
+}
+.queue-mode-folk .queue-share-card:hover {
+  border-color: rgba(245, 171, 100, 0.4);
+}
+.queue-mode-folk .queue-share-card:hover .share-icon-wrap {
+  background: rgba(216, 137, 62, 0.35);
+  color: #FFD2A0;
+}
+
+/* ── 3. Trending (#E66E28) ── */
+.queue-mode-trending .queue-card {
+  background: rgba(28, 16, 12, 0.95);
+  border-color: rgba(230, 110, 40, 0.4);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9), 0 0 32px rgba(230, 110, 40, 0.25);
+}
+.queue-mode-trending .queue-tab.active {
+  background: rgba(230, 110, 40, 0.35);
+  border-color: rgba(255, 160, 102, 0.55);
+  color: #FFC096;
+}
+.queue-mode-trending .queue-item.active-card {
+  background: rgba(230, 110, 40, 0.22);
+  border-color: rgba(255, 160, 102, 0.4);
+}
+.queue-mode-trending .active-card .queue-title-bold {
+  color: #FFC096;
+}
+.queue-mode-trending .eq-orange-dots span {
+  background: #E66E28;
+}
+.queue-mode-trending .queue-share-card:hover {
+  border-color: rgba(255, 160, 102, 0.4);
+}
+.queue-mode-trending .queue-share-card:hover .share-icon-wrap {
+  background: rgba(230, 110, 40, 0.35);
+  color: #FFC096;
+}
+
+/* ── 4. DHH (#C99A4B) ── */
+.queue-mode-dhh .queue-card {
+  background: rgba(24, 19, 12, 0.95);
+  border-color: rgba(201, 154, 75, 0.4);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9), 0 0 32px rgba(201, 154, 75, 0.25);
+}
+.queue-mode-dhh .queue-tab.active {
+  background: rgba(201, 154, 75, 0.35);
+  border-color: rgba(232, 186, 107, 0.55);
+  color: #FFE0A6;
+}
+.queue-mode-dhh .queue-item.active-card {
+  background: rgba(201, 154, 75, 0.22);
+  border-color: rgba(232, 186, 107, 0.4);
+}
+.queue-mode-dhh .active-card .queue-title-bold {
+  color: #FFE0A6;
+}
+.queue-mode-dhh .eq-orange-dots span {
+  background: #C99A4B;
+}
+.queue-mode-dhh .queue-share-card:hover {
+  border-color: rgba(232, 186, 107, 0.4);
+}
+.queue-mode-dhh .queue-share-card:hover .share-icon-wrap {
+  background: rgba(201, 154, 75, 0.35);
+  color: #FFE0A6;
+}
+
+/* ── 5. Wedding (#B95D43) ── */
+.queue-mode-wedding .queue-card {
+  background: rgba(26, 14, 14, 0.95);
+  border-color: rgba(185, 93, 67, 0.4);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9), 0 0 32px rgba(185, 93, 67, 0.25);
+}
+.queue-mode-wedding .queue-tab.active {
+  background: rgba(185, 93, 67, 0.35);
+  border-color: rgba(222, 127, 100, 0.55);
+  color: #FFC2B2;
+}
+.queue-mode-wedding .queue-item.active-card {
+  background: rgba(185, 93, 67, 0.22);
+  border-color: rgba(222, 127, 100, 0.4);
+}
+.queue-mode-wedding .active-card .queue-title-bold {
+  color: #FFC2B2;
+}
+.queue-mode-wedding .eq-orange-dots span {
+  background: #B95D43;
+}
+.queue-mode-wedding .queue-share-card:hover {
+  border-color: rgba(222, 127, 100, 0.4);
+}
+.queue-mode-wedding .queue-share-card:hover .share-icon-wrap {
+  background: rgba(185, 93, 67, 0.35);
+  color: #FFC2B2;
+}
+
+/* iPad View Specific Width Adjustments (641px - 1366px) */
+@media (min-width: 641px) and (max-width: 1366px) {
   .queue-fixed-attached {
-    bottom: 244px;
+    bottom: 236px;
     width: calc(100% - 32px);
-    max-width: 580px;
+    max-width: 650px; /* Matching iPad player dock */
+  }
+  .queue-list {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  .queue-list::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 }
 
 /* Mobile View Refinements (up to 640px) */
 @media (max-width: 640px) {
   .queue-fixed-attached {
-    bottom: 256px;
+    bottom: 236px; /* Moved slightly higher for optimal mobile breathing room */
     width: calc(100% - 24px);
-    max-width: 440px;
+    max-width: 440px; /* Matching mobile player dock */
+  }
+  .queue-card {
+    padding: 14px 14px;
+    border-radius: 22px;
+  }
+  .queue-tab {
+    padding: 3.5px 7px;
+    font-size: 10px;
+    letter-spacing: 0.4px;
+  }
+  .tracks-count {
+    font-size: 10px;
   }
   .queue-list {
     max-height: 220px;
     padding-right: 0;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
   }
   .queue-list::-webkit-scrollbar {
-    display: none;
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+  .queue-tabs {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  .queue-tabs::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 }
+
+

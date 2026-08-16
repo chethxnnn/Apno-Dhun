@@ -30,5 +30,9 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-# Temporary downloads
+# Temporary downloads & scratch
 *.crdownload
+scratch/
+rap desktop.png
+rap mobile.png
+rap title.png

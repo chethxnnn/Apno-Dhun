@@ -1,0 +1,218 @@
+.circular-ring-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 8px;
+  max-width: 100%;
+}
+
+.circular-ring-container:active {
+  cursor: grabbing;
+}
+
+.circular-ring-container::-webkit-scrollbar {
+  display: none !important;
+}
+
+.circular-ring-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  will-change: transform;
+}
+
+/* Nav Item Pill Button */
+.ring-nav-item {
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  font-family: 'Inter', sans-serif;
+  transition:
+    transform 0.34s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.34s cubic-bezier(0.25, 1, 0.5, 1),
+    background 0.34s ease,
+    border-color 0.34s ease,
+    box-shadow 0.34s ease,
+    color 0.34s ease,
+    text-shadow 0.34s ease,
+    font-size 0.34s cubic-bezier(0.25, 1, 0.5, 1);
+  white-space: nowrap;
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity, background;
+}
+
+/* Center Active Slot - Slightly Bigger Prominent Glass Capsule */
+.ring-nav-item.slot-center {
+  font-size: 19px;
+  font-weight: 700;
+  color: #FFFFFF;
+  opacity: 1;
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  padding: 8px 22px;
+}
+
+/* Near Adjacent Slots (-1 and +1) */
+.ring-nav-item.slot-near {
+  font-size: 16.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.74);
+  opacity: 0.8;
+  transform: scale(1.0);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  padding: 7px 14px;
+}
+
+/* Far Edge Slots (-2 and +2) */
+.ring-nav-item.slot-far {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.58);
+  opacity: 0.68;
+  transform: scale(0.94);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  padding: 7px 12px;
+}
+
+/* Outer Buffer Slots (-3 and +3) - Silky Edge Fade */
+.ring-nav-item.slot-edge-buffer {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.3);
+  opacity: 0;
+  transform: scale(0.72);
+  pointer-events: none;
+}
+
+.ring-nav-item:hover {
+  opacity: 1 !important;
+  color: #FFFFFF !important;
+  transform: scale(1.08);
+}
+
+.ring-nav-label {
+  display: block;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ─── Mobile View Refinements (max-width: 640px) ─── */
+@media (max-width: 640px) {
+  .circular-ring-container.mobile-ring {
+    width: 100%;
+    max-width: 480px;
+    padding: 4px 10px;
+  }
+
+  .circular-ring-container.mobile-ring .circular-ring-track {
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .circular-ring-container.mobile-ring .ring-nav-item {
+    padding: 5px 8px;
+  }
+
+  .circular-ring-container.mobile-ring .ring-nav-item.slot-center {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #FFFFFF;
+    opacity: 1;
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+    padding: 5px 14px;
+  }
+
+  .circular-ring-container.mobile-ring .ring-nav-item.slot-near {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    opacity: 0.75;
+    transform: scale(0.98);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  }
+
+  .circular-ring-container.mobile-ring .ring-nav-item.slot-far {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.55);
+    opacity: 0.62;
+    transform: scale(0.9);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .circular-ring-container.mobile-ring .ring-nav-item.slot-edge-buffer {
+    opacity: 0;
+    transform: scale(0.65);
+  }
+}
+
+/* ─── iPad View Refinements (641px - 1366px) ─── */
+@media (min-width: 641px) and (max-width: 1366px) {
+  .circular-ring-container.mobile-ring {
+    width: 100%;
+    max-width: 620px;
+  }
+
+  .circular-ring-container.mobile-ring .circular-ring-track {
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .circular-ring-container.mobile-ring .ring-nav-item.slot-center {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #FFFFFF;
+    opacity: 1;
+    transform: scale(1.06);
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    padding: 6px 15px;
+  }
+
+  .circular-ring-container.mobile-ring .ring-nav-item.slot-near {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.72);
+    opacity: 0.78;
+    transform: scale(1.0);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  }
+
+  .circular-ring-container.mobile-ring .ring-nav-item.slot-far {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.55);
+    opacity: 0.65;
+    transform: scale(0.92);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+}

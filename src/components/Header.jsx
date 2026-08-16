@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import './Header.css';
-import { modeConfig } from '../data/playlists';
+import CircularVibeNav from './CircularVibeNav';
 
 const INSTAGRAM_URL = 'https://instagram.com/apna.culturez';
-
-const leftModes = ['folk', 'wedding'];
-const rightModes = ['trending', 'devotional'];
 
 function getOrdinalDate(date = new Date()) {
   const day = date.getDate();
   const fullMonths = [
     'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'July', 'August', 'September', 'October', 'November', 'December',
   ];
   const month = fullMonths[date.getMonth()];
   const year = date.getFullYear();
@@ -24,7 +21,7 @@ function getOrdinalDate(date = new Date()) {
   return `${day}${suffix} ${month}, ${year}`;
 }
 
-export default function Header({ currentMode, onModeChange }) {
+export default function Header({ currentMode, onModeChange, listenerCount = 42 }) {
   const [timeStr, setTimeStr] = useState('');
   const [secStr, setSecStr] = useState('');
   const [ampmStr, setAmpmStr] = useState('');
@@ -51,65 +48,86 @@ export default function Header({ currentMode, onModeChange }) {
     return () => clearInterval(id);
   }, []);
 
-  const renderNav = () => (
-    <>
-      {leftModes.map((m) => (
-        <button
-          key={m}
-          className={`nav-btn ${currentMode === m ? 'active' : ''}`}
-          onClick={() => onModeChange(m)}
-        >
-          {modeConfig[m].label}
-        </button>
-      ))}
-
-      <a
-        href={INSTAGRAM_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="nav-logo"
-        aria-label="Apna Culturez on Instagram"
-      >
-        <img src="/logo.png" alt="Apna Culturez" className="nav-logo-img" />
-      </a>
-
-      {rightModes.map((m) => (
-        <button
-          key={m}
-          className={`nav-btn ${currentMode === m ? 'active' : ''}`}
-          onClick={() => onModeChange(m)}
-        >
-          {modeConfig[m].label}
-        </button>
-      ))}
-    </>
-  );
-
   return (
     <>
       <header className="hdr">
-        {/* Top-Left Corner: Exact "Apno Dhun Logo" (apno dhun logo.png) */}
+        {/* Top-Left Corner: Apno Dhun ✕ Apna Culturez Collab Branding */}
         <div className="hdr-left">
+          <div className="collab-brand-wrap">
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hdr-logo-link"
+              aria-label="Apno Dhun"
+            >
+              <img
+                src="/apno-dhun-logo.png"
+                alt="Apno Dhun"
+                className="hdr-top-logo"
+                draggable="false"
+                onContextMenu={(e) => e.preventDefault()}
+              />
+            </a>
+            <span className="brand-cross">✕</span>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hdr-logo-link"
+              aria-label="Apna Culturez"
+            >
+              <img
+                src="/logo.png"
+                alt="Apna Culturez"
+                className="hdr-apna-logo"
+                draggable="false"
+                onContextMenu={(e) => e.preventDefault()}
+              />
+            </a>
+          </div>
+        </div>
+
+        {/* Desktop Center Infinite Circular Ring Nav */}
+        <nav className="hdr-nav desktop-only-nav">
+          <CircularVibeNav currentMode={currentMode} onModeChange={onModeChange} isMobile={false} />
+        </nav>
+
+        {/* Mobile Top-Center Block: Time on top + Mehmaan directly below */}
+        <div className="mobile-header-center">
+          <span className="mobile-center-time">{simpleMobileTime}</span>
+          <div className="mobile-center-listeners">
+            <img
+              src="/safa-icon.png"
+              alt="Safa"
+              className="mobile-safa-icon"
+              draggable="false"
+              onContextMenu={(e) => e.preventDefault()}
+            />
+            <span className="mobile-listeners-text">
+              <strong className="mobile-listeners-bold">{listenerCount}</strong> Mehmaan
+            </span>
+          </div>
+        </div>
+
+        {/* Top-Right Corner: Clock (Desktop/iPad) OR Apna Culturez Logo (Mobile) */}
+        <div className="hdr-right">
+          {/* Mobile Top-Right: Apna Culturez Logo */}
           <a
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="hdr-logo-link"
-            aria-label="Apno Dhun Instagram"
+            className="mobile-top-apna-logo"
+            aria-label="Apna Culturez on Instagram"
           >
-            <img src="/apno-dhun-logo.png" alt="Apno Dhun" className="hdr-top-logo" />
+            <img
+              src="/logo.png"
+              alt="Apna Culturez"
+              className="mobile-apna-logo-img"
+              draggable="false"
+              onContextMenu={(e) => e.preventDefault()}
+            />
           </a>
-        </div>
-
-        {/* Desktop Center Nav */}
-        <nav className="hdr-nav desktop-only-nav">
-          {renderNav()}
-        </nav>
-
-        {/* Top-Right Corner: Clock & Date Block */}
-        <div className="hdr-right">
-          {/* Simple time display for Mobile View */}
-          <span className="simple-mobile-time">{simpleMobileTime}</span>
 
           {/* Stretched Bebas Neue Clock Block for Desktop and iPad */}
           <div className="clock-block-responsive">
@@ -127,10 +145,10 @@ export default function Header({ currentMode, onModeChange }) {
         </div>
       </header>
 
-      {/* Mobile & iPad Footer Navigation */}
+      {/* Mobile & iPad Footer Infinite Circular Ring Navigation */}
       <footer className="mobile-footer">
         <nav className="hdr-nav mobile-only-nav">
-          {renderNav()}
+          <CircularVibeNav currentMode={currentMode} onModeChange={onModeChange} isMobile={true} />
         </nav>
       </footer>
     </>

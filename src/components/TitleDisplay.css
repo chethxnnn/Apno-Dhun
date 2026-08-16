@@ -66,6 +66,18 @@
   max-height: 55vh;
 }
 
+/* DHH Specific Position (Reduced desktop title size) */
+.title-block.pos-dhh-pos {
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 10vh;
+}
+
+.title-block.pos-dhh-pos .title-img {
+  max-width: 44vw;
+  max-height: 35vh;
+}
+
 /* Left position (Byaav: desktop left side) */
 .title-block.pos-left {
   align-items: center;
@@ -116,39 +128,39 @@
   }
 }
 
-/* Mobile View Adjustments (max-width: 768px):
-   1. All text images centered horizontally
-   2. Lok text image slightly lower (padding-top: 22vh)
-   3. Byaav text image moved UP to top (padding-top: 12vh)
-   4. Trend text image moved UP (padding-top: 10vh)
-   5. Bhakti text image moved UP (padding-top: 13vh)
-*/
-@media (max-width: 768px) {
+/* Mobile Phone Adjustments (max-width: 640px) */
+@media (max-width: 640px) {
   .title-block {
     align-items: center !important;
     justify-content: center !important;
     padding: 0 12px !important;
   }
 
-  /* Lok text image slightly lower on mobile */
+  /* Lok title image moved lower on mobile only */
   .title-block.pos-center-right-up {
     align-items: flex-start !important;
-    padding-top: 22vh !important;
+    padding-top: 18vh !important;
   }
 
-  /* Byaav text image moved UP to top on mobile */
+  /* Byaav text image */
   .title-block.pos-left {
     align-items: flex-start !important;
     padding-top: 12vh !important;
   }
 
-  /* Nayo trend text image moved UP on mobile */
+  /* Nayo trend text image */
   .title-block.pos-center-up {
     align-items: flex-start !important;
     padding-top: 10vh !important;
   }
 
-  /* Bhakti text image moved UP on mobile */
+  /* DHH text image */
+  .title-block.pos-dhh-pos {
+    align-items: flex-start !important;
+    padding-top: 10vh !important;
+  }
+
+  /* Bhakti text image on mobile */
   .title-block.pos-left-up {
     align-items: flex-start !important;
     padding-top: 13vh !important;
@@ -159,3 +171,39 @@
     max-height: 48vh !important;
   }
 }
+
+/* iPad Air & iPad Pro Specific Title Positioning (641px - 1366px) */
+@media (min-width: 641px) and (max-width: 1366px) {
+  /* Lok title image moved UP and centered matching Nayo Trend on iPad */
+  .title-block.pos-center-right-up {
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding-top: 10vh !important;
+    padding-left: 0 !important;
+  }
+
+  /* Bhakti title image centered, moved UP, and slightly bigger in iPad view */
+  .title-block.pos-left-up {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-top: 6vh !important;
+  }
+
+  .title-block.pos-left-up .title-img {
+    max-width: 68vw !important;
+    max-height: 56vh !important;
+  }
+
+  /* DHH title sizing */
+  .title-block.pos-dhh-pos {
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding-top: 11vh !important;
+  }
+
+  .title-block.pos-dhh-pos .title-img {
+    max-width: 62vw !important;
+    max-height: 46vh !important;
+  }
+}
+

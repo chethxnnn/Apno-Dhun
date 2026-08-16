@@ -39,6 +39,7 @@ export default function GeetMaalaModal({
   const modeTabs = [
     { key: 'folk', label: 'LOK' },
     { key: 'wedding', label: 'BYAAV' },
+    { key: 'dhh', label: 'DHH' },
     { key: 'trending', label: 'TREND' },
     { key: 'devotional', label: 'BHAKTI' },
   ];
@@ -48,7 +49,7 @@ export default function GeetMaalaModal({
     const shareData = {
       title: 'Apno Dhun | अपणो धुन',
       text: 'Listen to authentic Rajasthani music on Apno Dhun',
-      url: window.location.origin || 'https://apno-dhun.vercel.app',
+      url: window.location.origin || 'https://apnodhun.in',
     };
 
     if (navigator.share) {
@@ -80,7 +81,7 @@ export default function GeetMaalaModal({
       onClick={onClose}
     >
       <div
-        className={`queue-fixed-attached ${isClosing ? 'closing' : ''}`}
+        className={`queue-fixed-attached queue-mode-${currentMode} ${isClosing ? 'closing' : ''}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="queue-card">
@@ -129,7 +130,13 @@ export default function GeetMaalaModal({
                       <span className="queue-num-idx">{idx + 1}</span>
                     )}
 
-                    <img src={thumb} alt="" className="queue-thumb-art" />
+                    <img
+                      src={thumb}
+                      alt=""
+                      className="queue-thumb-art"
+                      draggable="false"
+                      onContextMenu={(e) => e.preventDefault()}
+                    />
                   </div>
 
                   <div className="queue-info-col">
@@ -163,7 +170,7 @@ export default function GeetMaalaModal({
                 <span className="share-heading">
                   {copied ? 'Link Copied to Clipboard!' : 'Share Apno Dhun'}
                 </span>
-                <span className="share-subdomain">apno-dhun.vercel.app</span>
+                <span className="share-subdomain">apnodhun.in</span>
               </div>
             </button>
           </div>

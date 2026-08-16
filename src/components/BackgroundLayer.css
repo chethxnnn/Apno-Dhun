@@ -4,6 +4,12 @@
   z-index: 0;
   overflow: hidden;
   background: #08080A;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
 }
 
 .bg-layer {
@@ -13,6 +19,11 @@
   background-position: center;
   background-repeat: no-repeat;
   will-change: opacity, transform;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
 }
 
 .bg-out {
@@ -24,18 +35,32 @@
 }
 
 @keyframes bgIn {
-  from { opacity: 0; transform: scale(1.06); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes bgOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes kenBurns {
-  from { transform: scale(1); }
-  to { transform: scale(1.05); }
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
 }
 
 .bg-overlay {
@@ -51,3 +76,33 @@
   );
   pointer-events: none;
 }
+
+/* Invisible protective shield to block inspect / right-click image saves */
+.bg-shield {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: transparent;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* ─── iPad Air & iPad Pro DHH Zoom Out Background Framing (641px - 1366px) ─── */
+@media (min-width: 641px) and (max-width: 1366px) {
+  .bg-mode-dhh .bg-layer {
+    background-size: cover;
+    background-position: center 30%;
+    transform: scale(0.94);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1366px) and (orientation: portrait) {
+  .bg-mode-dhh .bg-layer {
+    background-size: cover;
+    background-position: center 32%;
+    transform: scale(0.91);
+  }
+}
+

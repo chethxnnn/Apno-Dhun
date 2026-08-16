@@ -268,11 +268,20 @@ export default function App() {
   const config = modeConfig[currentMode];
 
   return (
-    <main className={`app ${cinemaMode ? 'cinema-active' : ''} ${isQueueOpen ? 'queue-active' : ''}`}>
+    <main
+      className={`app ${cinemaMode ? 'cinema-active' : ''} ${isQueueOpen ? 'queue-active' : ''}`}
+      onContextMenu={(e) => e.preventDefault()}
+    >
       <YouTubeEmbed containerRef={containerRef} ghungrooRef={ghungrooContainerRef} />
-      <BackgroundLayer src={config.bg} bgPosition={config.bgPosition} />
+      {/* Background Visual Layer */}
+      <BackgroundLayer
+        src={config.bg}
+        srcMobile={config.bgMobile}
+        bgPosition={config.bgPosition}
+        currentMode={currentMode}
+      />
 
-      <Header currentMode={currentMode} onModeChange={handleModeChange} />
+      <Header currentMode={currentMode} onModeChange={handleModeChange} listenerCount={listenerCount} />
 
       {/* Live Listeners Counter below Header (Mehmaan with Safa Icon) */}
       <LiveListeners count={listenerCount} />
@@ -319,7 +328,7 @@ export default function App() {
       />
 
       {/* Desktop Floating Keycap Legend Bar */}
-      <KeycapLegendBar onPlayGhungroo={playGhungrooSound} />
+      <KeycapLegendBar currentMode={currentMode} onPlayGhungroo={playGhungrooSound} />
 
       {/* Add to Home Screen PWA Install Banner */}
       <InstallPwaBanner />

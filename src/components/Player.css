@@ -6,10 +6,11 @@
   transform: translateX(-50%);
   z-index: 50; /* Above queue backdrop fade z-index: 40 */
   width: calc(100% - 32px);
-  max-width: 680px; /* Exact matching max-width as Queue Card */
+  max-width: 660px; /* Spacious width on desktop */
   margin: 0 auto;
   box-sizing: border-box;
   animation: dockUp 0.6s cubic-bezier(0.32, 0.72, 0, 1) both;
+  transition: max-width 0.48s cubic-bezier(0.32, 0.72, 0, 1), bottom 0.48s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @keyframes dockUp {
@@ -44,39 +45,28 @@
 .capsule-glass {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 15px;
   width: 100%;
-  max-width: 680px;
-  padding: 18px 26px 18px 18px;
-  border-radius: 9999px;
-  background: rgba(14, 12, 16, 0.88);
+  padding: 12px 24px 12px 16px;
+  border-radius: 9999px; /* Iconic Pill Design */
+  background: rgba(14, 12, 16, 0.90);
   backdrop-filter: blur(48px) saturate(190%);
   -webkit-backdrop-filter: blur(48px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.72),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
-}
-
-.player-top-block {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex: 1;
-  min-width: 0;
-}
-
-.player-bottom-block {
-  display: flex;
-  align-items: center;
+  transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 /* ─── Circular Vinyl Disc Art Thumbnail ─── */
 .art-disc-wrap {
   position: relative;
-  width: 76px;
-  height: 76px;
+  width: 58px;
+  height: 58px;
   flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .art-disc {
@@ -120,24 +110,48 @@
   display: none;
 }
 
-/* ─── Center Content Column ─── */
-.player-content {
+/* ─── Main Body Column ─── */
+.player-body-wrap {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 5px;
+  transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Name of Song & Artist on TOP of the Control Buttons */
+.player-top-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .info-row {
   min-width: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.player-ctrls-wrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .track-name {
   margin: 0;
   font-family: 'Inter', sans-serif;
   font-size: 14.5px;
-  font-weight: 600;
+  font-weight: 700;
   color: white;
   white-space: nowrap;
   overflow: hidden;
@@ -146,10 +160,10 @@
 }
 
 .track-artist {
-  margin: 2px 0 0;
+  margin: 1px 0 0;
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.55);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -162,7 +176,7 @@
   align-items: center;
   gap: 8px;
   width: 100%;
-  margin-top: 6px;
+  margin-top: 1px;
 }
 
 .time-inline {
@@ -285,10 +299,30 @@
   }
 }
 
-@media (min-width: 901px) {
-  .time-inline {
-    display: none;
-  }
+/* Default Circle Pointer (DHH) */
+.default-circle-pointer {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2.5px solid #C99A4B;
+  box-shadow:
+    0 0 10px rgba(201, 154, 75, 0.9),
+    0 2px 6px rgba(0, 0, 0, 0.6);
+  display: inline-block;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  pointer-events: none;
+}
+
+.seek-bar:hover .default-circle-pointer,
+.seek-bar.dragging .default-circle-pointer {
+  transform: scale(1.25);
+  box-shadow:
+    0 0 16px rgba(232, 186, 107, 1),
+    0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+@media (min-width: 1367px) and (hover: hover) and (pointer: fine) {
   .art-disc-wrap {
     cursor: default;
   }
@@ -298,6 +332,8 @@
 .capsule-ctrls {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
   gap: 8px;
   flex-shrink: 0;
 }
@@ -313,8 +349,8 @@
 }
 
 .ctrl.prev, .ctrl.next, .ctrl.mute, .ctrl.queue-btn {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   color: rgba(255, 255, 255, 0.75);
 }
@@ -328,8 +364,8 @@
 .dhun-pill-btn {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 15px 7px 11px;
+  gap: 6px;
+  padding: 6px 13px 6px 10px;
   border-radius: 9999px;
   background: rgba(20, 18, 24, 0.85); /* Exact same dark shade as player dock */
   backdrop-filter: blur(24px);
@@ -337,7 +373,7 @@
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
@@ -357,15 +393,15 @@
 }
 
 .dhun-pill-icon {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
   filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.5));
 }
 
 .dhun-pill-text {
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #FFFFFF;
   line-height: 1;
@@ -374,8 +410,8 @@
 
 /* Solid White Circle Play Button */
 .ctrl.play.solid-white-play {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: #FFFFFF;
   color: #0c0c10;
@@ -479,8 +515,8 @@
   to { transform: rotate(360deg); }
 }
 
-/* ─── Apple UI Smooth Motion for Mobile & iPad Views (<= 900px) ─── */
-@media (max-width: 900px) {
+/* ─── Apple UI Smooth Motion for Mobile & iPad Views (<= 1366px / Touchscreens) ─── */
+@media (max-width: 1366px), (hover: none), (pointer: coarse) {
   .player-dock {
     transition: max-width 0.48s cubic-bezier(0.32, 0.72, 0, 1), bottom 0.48s cubic-bezier(0.32, 0.72, 0, 1);
     will-change: max-width, bottom;
@@ -489,10 +525,6 @@
   .capsule-glass {
     transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
     will-change: padding, border-radius, background, box-shadow;
-  }
-
-  .player-top-block {
-    transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
   }
 
   .art-disc-wrap {
@@ -506,9 +538,42 @@
     will-change: border-radius, border, box-shadow;
   }
 
+  .player-body-wrap {
+    transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .player-top-row {
+    transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .player-ctrls-wrap {
+    transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .capsule-ctrls {
+    transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  .ctrl {
+    transition: all 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+
+  /* ─── Expanded State on iPad & Mobile ─── */
+  .capsule-glass.glass-expanded {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    border-radius: 30px !important;
+    padding: 18px 20px 16px 20px !important;
+    gap: 12px !important;
+    background: rgba(16, 13, 19, 0.95);
+    box-shadow:
+      0 32px 80px rgba(0, 0, 0, 0.85),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+
   .art-disc-wrap.art-wrap-expanded {
     width: 100% !important;
-    height: 230px !important;
+    height: 250px !important;
     border-radius: 20px !important;
     margin-bottom: 2px;
   }
@@ -521,7 +586,7 @@
     transform: none !important;
   }
 
-  /* Standalone Clean X Close Icon (No circle, no background) */
+  /* Standalone Clean X Close Icon */
   .art-close-btn {
     position: absolute;
     top: 10px;
@@ -557,55 +622,94 @@
     to { opacity: 1; transform: scale(1) translateY(0); }
   }
 
-  .capsule-glass.glass-expanded {
+  .player-body-wrap.body-expanded {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .player-top-row.top-row-expanded {
     flex-direction: column !important;
     align-items: stretch !important;
-    border-radius: 30px !important;
-    padding: 18px 18px 16px 18px !important;
-    gap: 14px !important;
-    background: rgba(16, 13, 19, 0.95);
-    box-shadow:
-      0 32px 80px rgba(0, 0, 0, 0.85),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    gap: 10px !important;
   }
 
-  .player-top-block.top-block-expanded {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 12px !important;
+  .player-top-row.top-row-expanded .info-row {
+    width: 100% !important;
   }
 
-  .player-content.content-expanded {
-    width: 100%;
-    transition: all 0.48s cubic-bezier(0.32, 0.72, 0, 1);
+  .player-top-row.top-row-expanded .track-name {
+    font-size: 16px !important;
+    font-weight: 700 !important;
   }
 
-  .player-content.content-expanded .track-name {
-    font-size: 15.5px;
-    font-weight: 700;
+  .player-top-row.top-row-expanded .track-artist {
+    font-size: 13px !important;
+    color: rgba(255, 255, 255, 0.65) !important;
   }
 
-  .player-content.content-expanded .track-artist {
-    font-size: 12.5px;
-    color: rgba(255, 255, 255, 0.65);
+  .player-ctrls-wrap.ctrls-expanded {
+    width: 100% !important;
+    margin-top: 4px !important;
+  }
+
+  .player-ctrls-wrap.ctrls-expanded .capsule-ctrls {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .player-ctrls-wrap.ctrls-expanded .ctrl.play.solid-white-play {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .player-ctrls-wrap.ctrls-expanded .ctrl.prev,
+  .player-ctrls-wrap.ctrls-expanded .ctrl.next {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .player-ctrls-wrap.ctrls-expanded .ctrl.mute,
+  .player-ctrls-wrap.ctrls-expanded .ctrl.queue-btn {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .player-ctrls-wrap.ctrls-expanded .dhun-pill-btn {
+    order: -1;
+    padding: 7px 14px 7px 10px;
+    font-size: 13px;
+  }
+
+  .player-ctrls-wrap.ctrls-expanded .ctrl.queue-btn {
+    order: 10;
   }
 }
 
-/* ─── iPad View Specific Width Adjustments (641px - 900px) ─── */
-@media (min-width: 641px) and (max-width: 900px) {
+/* ─── iPad Air & iPad Pro Specific Width Adjustments (641px - 1366px) ─── */
+@media (min-width: 641px) and (max-width: 1366px) {
   .player-dock {
     bottom: 94px;
     left: 50% !important;
     right: auto !important;
     transform: translateX(-50%) !important;
     width: calc(100% - 32px) !important;
-    max-width: 580px !important;
+    max-width: 650px !important;
     margin: 0 auto !important;
   }
 
   .player-dock.dock-expanded {
     max-width: 540px !important;
-    bottom: 90px !important;
+    bottom: 88px !important;
+  }
+
+  .art-disc-wrap {
+    width: 64px;
+    height: 64px;
   }
 
   .art-disc-wrap.art-wrap-expanded {
@@ -613,8 +717,11 @@
   }
 
   .capsule-glass {
-    max-width: 580px;
+    max-width: 650px;
     width: 100%;
+    padding: 12px 24px 12px 14px;
+    border-radius: 9999px;
+    gap: 14px;
   }
 }
 
@@ -632,53 +739,62 @@
 
   .player-dock.dock-expanded {
     bottom: 84px !important;
-    max-width: 440px !important;
+    max-width: 420px !important;
   }
 
   .capsule-glass {
-    min-width: auto;
     width: 100%;
     max-width: 440px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    padding: 14px 16px;
-    border-radius: 26px;
+    padding: 11px 14px 11px 12px;
+    border-radius: 28px;
     margin: 0 auto;
+    gap: 11px;
+    align-items: center;
   }
 
   .capsule-glass.glass-expanded {
     padding: 16px 16px 14px 16px !important;
     border-radius: 28px !important;
-    gap: 12px !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  .art-disc-wrap {
+    width: 48px;
+    height: 48px;
+    margin-top: 0;
   }
 
   .art-disc-wrap.art-wrap-expanded {
-    height: 200px !important;
+    width: 100% !important;
+    height: 195px !important;
     border-radius: 18px !important;
+    margin-top: 0;
   }
 
   .art-disc.as-card {
     border-radius: 18px !important;
   }
 
-  .time-row {
-    display: none;
-  }
-
-  .player-top-block {
+  .player-body-wrap {
     width: 100%;
-    align-items: center;
-    gap: 12px;
+    gap: 8px;
   }
 
-  .art-disc-wrap {
-    width: 48px;
-    height: 48px;
+  /* On mobile: Name of song & artist directly on top of the buttons */
+  .player-top-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .info-row {
+    width: 100%;
   }
 
   .track-name {
-    font-size: 13.5px;
+    font-size: 14px;
     font-weight: 700;
   }
 
@@ -686,54 +802,400 @@
     font-size: 11.5px;
   }
 
-  .player-bottom-block {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .player-ctrls-wrap {
     width: 100%;
-    padding-top: 2px;
   }
 
   .capsule-ctrls {
     width: 100%;
+    display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 4px;
   }
 
-  /* Dhun Pill Button on Mobile Far Left */
+  .seek-with-time-wrap {
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .ctrl.play.solid-white-play {
+    width: 44px;
+    height: 44px;
+  }
+
+  .ctrl.prev, .ctrl.next {
+    width: 34px;
+    height: 34px;
+  }
+
+  .ctrl.mute, .ctrl.queue-btn {
+    width: 32px;
+    height: 32px;
+  }
+
   .dhun-pill-btn {
     order: -1;
-    padding: 6px 12px 6px 9px;
+    padding: 6px 11px 6px 8px;
     font-size: 12px;
-    background: rgba(20, 18, 24, 0.85);
   }
 
   .dhun-pill-icon {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
   }
 
   .ctrl.queue-btn {
     order: 10;
   }
 
-  /* Larger Prev - Play - Next Buttons on Mobile */
-  .ctrl.play.solid-white-play {
-    width: 50px;
-    height: 50px;
-  }
-
-  .ctrl.prev, .ctrl.next {
-    width: 38px;
-    height: 38px;
-  }
-
-  .ctrl.mute, .ctrl.queue-btn {
-    width: 35px;
-    height: 35px;
-  }
-
   .vol-container.expanded .vol-slider-wrap {
     display: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ─── 5 Curated Vibe Color Themes (Exact HEX Palette) ───
+   1. Devotional : #405A87 (Muted royal/navy blue)
+   2. Lok (Folk) : #D8893E (Warm light orange)
+   3. Trending   : #C89B55 (Soft mustard/golden)
+   4. DHH        : #C99A4B (Warm ochre/golden)
+   5. Wedding    : #B95D43 (Soft terracotta red)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Devotional (#405A87) ── */
+.mode-devotional .capsule-glass {
+  background: rgba(14, 20, 32, 0.92);
+  border: 1px solid rgba(64, 90, 135, 0.4);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 28px rgba(64, 90, 135, 0.25),
+    inset 0 1px 0 rgba(107, 142, 196, 0.35);
+}
+.mode-devotional .player-glow {
+  background: radial-gradient(ellipse at center, rgba(64, 90, 135, 0.42) 0%, rgba(20, 28, 45, 0.22) 50%, transparent 75%);
+}
+.mode-devotional .gota-track {
+  background: rgba(64, 90, 135, 0.28);
+}
+.mode-devotional .gota-fill {
+  background: linear-gradient(90deg, #405A87 0%, #6B8EC4 60%, #9FB9E2 100%);
+  box-shadow: 0 0 12px rgba(107, 142, 196, 0.8);
+}
+.mode-devotional .ctrl.play.solid-white-play {
+  background: #405A87;
+  color: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(64, 90, 135, 0.65);
+}
+.mode-devotional .ctrl.play.solid-white-play:hover {
+  background: #5070A4;
+  box-shadow: 0 6px 28px rgba(107, 142, 196, 0.75);
+}
+.mode-devotional .ctrl.prev,
+.mode-devotional .ctrl.next,
+.mode-devotional .ctrl.mute,
+.mode-devotional .ctrl.queue-btn {
+  color: #9FB9E2;
+}
+.mode-devotional .ctrl.prev:hover,
+.mode-devotional .ctrl.next:hover,
+.mode-devotional .ctrl.mute:hover,
+.mode-devotional .ctrl.queue-btn:hover {
+  background: rgba(64, 90, 135, 0.28);
+  color: #FFFFFF;
+}
+.mode-devotional .ctrl.queue-btn.open-close-active {
+  background: #405A87;
+  color: #FFFFFF;
+}
+.mode-devotional .dhun-pill-btn {
+  background: rgba(20, 28, 44, 0.92);
+  border-color: rgba(107, 142, 196, 0.45);
+  color: #DCE7F8;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(64, 90, 135, 0.2);
+}
+.mode-devotional .dhun-pill-btn:hover {
+  background: rgba(28, 40, 64, 0.98);
+  border-color: rgba(107, 142, 196, 0.7);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 18px rgba(64, 90, 135, 0.45);
+}
+.mode-devotional .vol-slider {
+  accent-color: #6B8EC4;
+  background: linear-gradient(90deg, #405A87 0%, #6B8EC4 100%);
+  box-shadow: 0 0 8px rgba(64, 90, 135, 0.5);
+}
+.mode-devotional .vol-slider::-webkit-slider-thumb {
+  background: #FFFFFF;
+  border-color: #6B8EC4;
+  box-shadow: 0 0 10px rgba(107, 142, 196, 0.9);
+}
+
+/* ── 2. Lok (#D8893E) ── */
+.mode-folk .capsule-glass {
+  background: rgba(26, 18, 12, 0.92);
+  border: 1px solid rgba(216, 137, 62, 0.4);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 28px rgba(216, 137, 62, 0.25),
+    inset 0 1px 0 rgba(245, 171, 100, 0.35);
+}
+.mode-folk .player-glow {
+  background: radial-gradient(ellipse at center, rgba(216, 137, 62, 0.42) 0%, rgba(45, 25, 12, 0.22) 50%, transparent 75%);
+}
+.mode-folk .gota-track {
+  background: rgba(216, 137, 62, 0.28);
+}
+.mode-folk .gota-fill {
+  background: linear-gradient(90deg, #D8893E 0%, #F5AB64 60%, #FFD2A0 100%);
+  box-shadow: 0 0 12px rgba(245, 171, 100, 0.8);
+}
+.mode-folk .ctrl.play.solid-white-play {
+  background: #D8893E;
+  color: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(216, 137, 62, 0.65);
+}
+.mode-folk .ctrl.play.solid-white-play:hover {
+  background: #EA974B;
+  box-shadow: 0 6px 28px rgba(245, 171, 100, 0.75);
+}
+.mode-folk .ctrl.prev,
+.mode-folk .ctrl.next,
+.mode-folk .ctrl.mute,
+.mode-folk .ctrl.queue-btn {
+  color: #F8CBA0;
+}
+.mode-folk .ctrl.prev:hover,
+.mode-folk .ctrl.next:hover,
+.mode-folk .ctrl.mute:hover,
+.mode-folk .ctrl.queue-btn:hover {
+  background: rgba(216, 137, 62, 0.28);
+  color: #FFFFFF;
+}
+.mode-folk .ctrl.queue-btn.open-close-active {
+  background: #D8893E;
+  color: #FFFFFF;
+}
+.mode-folk .dhun-pill-btn {
+  background: rgba(36, 22, 14, 0.92);
+  border-color: rgba(245, 171, 100, 0.45);
+  color: #FFEADB;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(216, 137, 62, 0.2);
+}
+.mode-folk .dhun-pill-btn:hover {
+  background: rgba(52, 32, 18, 0.98);
+  border-color: rgba(245, 171, 100, 0.7);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 18px rgba(216, 137, 62, 0.45);
+}
+.mode-folk .vol-slider {
+  accent-color: #F5AB64;
+  background: linear-gradient(90deg, #D8893E 0%, #F5AB64 100%);
+  box-shadow: 0 0 8px rgba(216, 137, 62, 0.5);
+}
+.mode-folk .vol-slider::-webkit-slider-thumb {
+  background: #FFFFFF;
+  border-color: #F5AB64;
+  box-shadow: 0 0 10px rgba(245, 171, 100, 0.9);
+}
+
+/* ── 3. Trending (Warm Orangish #E66E28) ── */
+.mode-trending .capsule-glass {
+  background: rgba(28, 16, 12, 0.92);
+  border: 1px solid rgba(230, 110, 40, 0.4);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 28px rgba(230, 110, 40, 0.25),
+    inset 0 1px 0 rgba(255, 160, 102, 0.35);
+}
+.mode-trending .player-glow {
+  background: radial-gradient(ellipse at center, rgba(230, 110, 40, 0.42) 0%, rgba(48, 20, 12, 0.22) 50%, transparent 75%);
+}
+.mode-trending .gota-track {
+  background: rgba(230, 110, 40, 0.28);
+}
+.mode-trending .gota-fill {
+  background: linear-gradient(90deg, #E66E28 0%, #FFA066 60%, #FFE0CC 100%);
+  box-shadow: 0 0 12px rgba(255, 160, 102, 0.8);
+}
+.mode-trending .ctrl.play.solid-white-play {
+  background: #E66E28;
+  color: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(230, 110, 40, 0.65);
+}
+.mode-trending .ctrl.play.solid-white-play:hover {
+  background: #F27C38;
+  box-shadow: 0 6px 28px rgba(255, 160, 102, 0.75);
+}
+.mode-trending .ctrl.prev,
+.mode-trending .ctrl.next,
+.mode-trending .ctrl.mute,
+.mode-trending .ctrl.queue-btn {
+  color: #FFC096;
+}
+.mode-trending .ctrl.prev:hover,
+.mode-trending .ctrl.next:hover,
+.mode-trending .ctrl.mute:hover,
+.mode-trending .ctrl.queue-btn:hover {
+  background: rgba(230, 110, 40, 0.28);
+  color: #FFFFFF;
+}
+.mode-trending .ctrl.queue-btn.open-close-active {
+  background: #E66E28;
+  color: #FFFFFF;
+}
+.mode-trending .dhun-pill-btn {
+  background: rgba(38, 20, 14, 0.92);
+  border-color: rgba(255, 160, 102, 0.45);
+  color: #FFEADB;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(230, 110, 40, 0.2);
+}
+.mode-trending .dhun-pill-btn:hover {
+  background: rgba(54, 28, 18, 0.98);
+  border-color: rgba(255, 160, 102, 0.7);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 18px rgba(230, 110, 40, 0.45);
+}
+.mode-trending .vol-slider {
+  accent-color: #FFA066;
+  background: linear-gradient(90deg, #E66E28 0%, #FFA066 100%);
+  box-shadow: 0 0 8px rgba(230, 110, 40, 0.5);
+}
+.mode-trending .vol-slider::-webkit-slider-thumb {
+  background: #FFFFFF;
+  border-color: #FFA066;
+  box-shadow: 0 0 10px rgba(255, 160, 102, 0.9);
+}
+
+/* ── 4. DHH (#C99A4B) ── */
+.mode-dhh .capsule-glass {
+  background: rgba(24, 19, 12, 0.92);
+  border: 1px solid rgba(201, 154, 75, 0.4);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 28px rgba(201, 154, 75, 0.25),
+    inset 0 1px 0 rgba(232, 186, 107, 0.35);
+}
+.mode-dhh .player-glow {
+  background: radial-gradient(ellipse at center, rgba(201, 154, 75, 0.42) 0%, rgba(45, 32, 14, 0.22) 50%, transparent 75%);
+}
+.mode-dhh .gota-track {
+  background: rgba(201, 154, 75, 0.28);
+}
+.mode-dhh .gota-fill {
+  background: linear-gradient(90deg, #C99A4B 0%, #E8BA6B 60%, #FFE8B0 100%);
+  box-shadow: 0 0 12px rgba(232, 186, 107, 0.8);
+}
+.mode-dhh .ctrl.play.solid-white-play {
+  background: #C99A4B;
+  color: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(201, 154, 75, 0.65);
+}
+.mode-dhh .ctrl.play.solid-white-play:hover {
+  background: #DBA959;
+  box-shadow: 0 6px 28px rgba(232, 186, 107, 0.75);
+}
+.mode-dhh .ctrl.prev,
+.mode-dhh .ctrl.next,
+.mode-dhh .ctrl.mute,
+.mode-dhh .ctrl.queue-btn {
+  color: #F2D8A4;
+}
+.mode-dhh .ctrl.prev:hover,
+.mode-dhh .ctrl.next:hover,
+.mode-dhh .ctrl.mute:hover,
+.mode-dhh .ctrl.queue-btn:hover {
+  background: rgba(201, 154, 75, 0.28);
+  color: #FFFFFF;
+}
+.mode-dhh .ctrl.queue-btn.open-close-active {
+  background: #C99A4B;
+  color: #FFFFFF;
+}
+.mode-dhh .dhun-pill-btn {
+  background: rgba(34, 25, 14, 0.92);
+  border-color: rgba(232, 186, 107, 0.45);
+  color: #FFF2DA;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(201, 154, 75, 0.2);
+}
+.mode-dhh .dhun-pill-btn:hover {
+  background: rgba(48, 36, 18, 0.98);
+  border-color: rgba(232, 186, 107, 0.7);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 18px rgba(201, 154, 75, 0.45);
+}
+.mode-dhh .vol-slider {
+  accent-color: #E8BA6B;
+  background: linear-gradient(90deg, #C99A4B 0%, #E8BA6B 100%);
+  box-shadow: 0 0 8px rgba(201, 154, 75, 0.5);
+}
+.mode-dhh .vol-slider::-webkit-slider-thumb {
+  background: #FFFFFF;
+  border-color: #E8BA6B;
+  box-shadow: 0 0 10px rgba(232, 186, 107, 0.9);
+}
+
+/* ── 5. Wedding (#B95D43) ── */
+.mode-wedding .capsule-glass {
+  background: rgba(26, 14, 14, 0.92);
+  border: 1px solid rgba(185, 93, 67, 0.4);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 28px rgba(185, 93, 67, 0.25),
+    inset 0 1px 0 rgba(222, 127, 100, 0.35);
+}
+.mode-wedding .player-glow {
+  background: radial-gradient(ellipse at center, rgba(185, 93, 67, 0.42) 0%, rgba(45, 18, 16, 0.22) 50%, transparent 75%);
+}
+.mode-wedding .gota-track {
+  background: rgba(185, 93, 67, 0.28);
+}
+.mode-wedding .gota-fill {
+  background: linear-gradient(90deg, #B95D43 0%, #DE7F64 60%, #FFB098 100%);
+  box-shadow: 0 0 12px rgba(222, 127, 100, 0.8);
+}
+.mode-wedding .ctrl.play.solid-white-play {
+  background: #B95D43;
+  color: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(185, 93, 67, 0.65);
+}
+.mode-wedding .ctrl.play.solid-white-play:hover {
+  background: #CA6E54;
+  box-shadow: 0 6px 28px rgba(222, 127, 100, 0.75);
+}
+.mode-wedding .ctrl.prev,
+.mode-wedding .ctrl.next,
+.mode-wedding .ctrl.mute,
+.mode-wedding .ctrl.queue-btn {
+  color: #F5BCAC;
+}
+.mode-wedding .ctrl.prev:hover,
+.mode-wedding .ctrl.next:hover,
+.mode-wedding .ctrl.mute:hover,
+.mode-wedding .ctrl.queue-btn:hover {
+  background: rgba(185, 93, 67, 0.28);
+  color: #FFFFFF;
+}
+.mode-wedding .ctrl.queue-btn.open-close-active {
+  background: #B95D43;
+  color: #FFFFFF;
+}
+.mode-wedding .dhun-pill-btn {
+  background: rgba(36, 18, 16, 0.92);
+  border-color: rgba(222, 127, 100, 0.45);
+  color: #FFE3DC;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(185, 93, 67, 0.2);
+}
+.mode-wedding .dhun-pill-btn:hover {
+  background: rgba(52, 24, 20, 0.98);
+  border-color: rgba(222, 127, 100, 0.7);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 0 18px rgba(185, 93, 67, 0.45);
+}
+.mode-wedding .vol-slider {
+  accent-color: #DE7F64;
+  background: linear-gradient(90deg, #B95D43 0%, #DE7F64 100%);
+  box-shadow: 0 0 8px rgba(185, 93, 67, 0.5);
+}
+.mode-wedding .vol-slider::-webkit-slider-thumb {
+  background: #FFFFFF;
+  border-color: #DE7F64;
+  box-shadow: 0 0 10px rgba(222, 127, 100, 0.9);
+}
+
+

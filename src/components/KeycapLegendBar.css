@@ -1,6 +1,6 @@
 .keycap-legend-bar {
   position: fixed;
-  bottom: 44px; /* Moved closer up towards the desktop player dock (bottom: 96px) */
+  bottom: 44px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 35;
@@ -9,8 +9,8 @@
   gap: 16px;
   padding: 4px 14px;
   pointer-events: none;
-  opacity: 0.75;
-  transition: opacity 0.2s ease;
+  opacity: 0.85;
+  transition: opacity 0.25s ease;
 }
 
 .keycap-legend-bar:hover {
@@ -29,11 +29,12 @@
   border-radius: 5px;
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #FFDF73;
+  color: #FFFFFF;
   font-family: 'Inter', monospace;
   font-size: 10px;
   font-weight: 700;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .keycap-label {
@@ -42,10 +43,78 @@
   font-weight: 600;
   color: rgba(255, 255, 255, 0.55);
   letter-spacing: 0.6px;
+  transition: color 0.3s ease;
 }
 
-@media (max-width: 900px) {
+/* ─── Vibe Color Matched Keycaps ─── */
+/* 1. Devotional (#405A87) */
+.legend-mode-devotional .keycap {
+  color: #B2CCF5;
+  background: rgba(64, 90, 135, 0.3);
+  border-color: rgba(107, 142, 196, 0.45);
+  box-shadow: 0 1px 6px rgba(64, 90, 135, 0.35);
+}
+.legend-mode-devotional .keycap-interactive:hover .keycap {
+  background: #405A87;
+  color: #FFFFFF;
+  border-color: #9FB9E2;
+}
+
+/* 2. Lok (#D8893E) */
+.legend-mode-folk .keycap {
+  color: #FFD2A0;
+  background: rgba(216, 137, 62, 0.3);
+  border-color: rgba(245, 171, 100, 0.45);
+  box-shadow: 0 1px 6px rgba(216, 137, 62, 0.35);
+}
+.legend-mode-folk .keycap-interactive:hover .keycap {
+  background: #D8893E;
+  color: #FFFFFF;
+  border-color: #FFD2A0;
+}
+
+/* 3. Trending (Warm Orangish #E66E28) */
+.legend-mode-trending .keycap {
+  color: #FFC096;
+  background: rgba(230, 110, 40, 0.3);
+  border-color: rgba(255, 160, 102, 0.45);
+  box-shadow: 0 1px 6px rgba(230, 110, 40, 0.35);
+}
+.legend-mode-trending .keycap-interactive:hover .keycap {
+  background: #E66E28;
+  color: #FFFFFF;
+  border-color: #FFC096;
+}
+
+/* 4. DHH (#C99A4B) */
+.legend-mode-dhh .keycap {
+  color: #FFE0A6;
+  background: rgba(201, 154, 75, 0.3);
+  border-color: rgba(232, 186, 107, 0.45);
+  box-shadow: 0 1px 6px rgba(201, 154, 75, 0.35);
+}
+.legend-mode-dhh .keycap-interactive:hover .keycap {
+  background: #C99A4B;
+  color: #FFFFFF;
+  border-color: #FFE0A6;
+}
+
+/* 5. Wedding (#B95D43) */
+.legend-mode-wedding .keycap {
+  color: #FFC2B2;
+  background: rgba(185, 93, 67, 0.3);
+  border-color: rgba(222, 127, 100, 0.45);
+  box-shadow: 0 1px 6px rgba(185, 93, 67, 0.35);
+}
+.legend-mode-wedding .keycap-interactive:hover .keycap {
+  background: #B95D43;
+  color: #FFFFFF;
+  border-color: #FFC2B2;
+}
+
+/* Hide on iPad Air, iPad Pro, tablets, mobile, and touchscreens */
+@media (hover: none), (pointer: coarse), (max-width: 1024px) {
   .keycap-legend-bar {
-    display: none;
+    display: none !important;
   }
 }
