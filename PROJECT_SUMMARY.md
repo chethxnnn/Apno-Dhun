@@ -139,6 +139,8 @@
   - **Background Playback Keep-Alive**: Uses a lightweight silent audio loop to register the browser tab as an active system audio player, maintaining audio daemon persistence when switching tabs, apps, or locking the phone.
 - **Dynamic Metadata Fetching**: Automatically fetches live video title and channel name via public `noembed` oEmbed API + `getVideoData()`, caching metadata in React state.
 - **Random Initial Track Order**: Automatically picks a random song upon opening the site or switching vibes.
+- **Vercel Web Analytics (`@vercel/analytics`)**:
+  - Full privacy-compliant visitor analytics tracking hourly traffic spikes, daily visits, unique vs. returning users, referrers (Instagram, WhatsApp, Twitter), countries/cities, and device breakdown with zero cookie banners.
 
 ---
 

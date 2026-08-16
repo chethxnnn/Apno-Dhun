@@ -15,6 +15,7 @@ import { useLiveListeners } from './hooks/useLiveListeners';
 import { useShake } from './hooks/useShake';
 import { playlists as initialPlaylists, modeConfig } from './data/playlists';
 import { fetchAllLivePlaylists } from './services/youtubeApi';
+import { Analytics } from '@vercel/analytics/react';
 
 const GHUNGROO_VIDEO_ID = 'CvCD8ZEoIes';
 
@@ -334,6 +335,9 @@ export default function App() {
 
       {/* Floating Glassmorphic Toast Notification */}
       {toastMessage && <div className="shortcut-toast">{toastMessage}</div>}
+
+      {/* Vercel Web Analytics */}
+      <Analytics />
     </main>
   );
 }
