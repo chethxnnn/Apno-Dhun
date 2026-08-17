@@ -7,7 +7,9 @@ const vibeCardTemplates = {
   wedding: '/cards/wedding.png',
   dhh: '/cards/dhh.png',
   trending: '/cards/trending.png',
+  trend: '/cards/trending.png',
   devotional: '/cards/devotional.png',
+  bhakti: '/cards/devotional.png',
 };
 
 export default function PatrikaModal({

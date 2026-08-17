@@ -70,14 +70,16 @@
   --card-pill-glow: rgba(201, 154, 75, 0.4);
 }
 
-.patrika-mode-trending {
+.patrika-mode-trending,
+.patrika-mode-trend {
   --card-title-color: #8F3408;
   --card-artist-color: #AB4715;
   --card-thumb-glow: rgba(230, 110, 40, 0.35);
   --card-pill-glow: rgba(230, 110, 40, 0.4);
 }
 
-.patrika-mode-devotional {
+.patrika-mode-devotional,
+.patrika-mode-bhakti {
   --card-title-color: #243654;
   --card-artist-color: #3A527A;
   --card-thumb-glow: rgba(64, 90, 135, 0.35);
@@ -317,9 +319,11 @@
 }
 
 /* 3. Trend: Move thumbnail a bit lower */
-.patrika-mode-trending .blank-clean-content-lower {
+.patrika-mode-trending .blank-clean-content-lower,
+.patrika-mode-trend .blank-clean-content-lower {
   top: 37.5%;
 }
-.patrika-mode-trending .blank-clean-content-lower-export {
+.patrika-mode-trending .blank-clean-content-lower-export,
+.patrika-mode-trend .blank-clean-content-lower-export {
   top: 37.5%;
 }
