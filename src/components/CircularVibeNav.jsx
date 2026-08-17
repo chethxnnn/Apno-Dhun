@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import './CircularVibeNav.css';
 import { modes, modeConfig } from '../data/playlists';
+import { getActiveNewVibeKey } from '../data/newVibeConfig';
 
 export default function CircularVibeNav({ currentMode, onModeChange, isMobile = false }) {
   const [animState, setAnimState] = useState({
@@ -175,19 +176,26 @@ export default function CircularVibeNav({ currentMode, onModeChange, isMobile = 
           else if (isNear) slotClass = 'slot-near';
           else if (isFar) slotClass = 'slot-far';
 
-          return (
-            <button
-              key={`${modeKey}-${offset}`}
-              className={`ring-nav-item ${slotClass} ${isCenter ? 'active' : ''}`}
-              onClick={(e) => {
-                if (Math.abs(dragStartX.current - e.clientX) > 10) return;
-                navigateToOffset(offset);
-              }}
-              aria-label={`Switch to ${config?.label || modeKey} vibe`}
-            >
-              <span className="ring-nav-label">{config?.label || modeKey}</span>
-            </button>
-          );
+              const activeNewVibeKey = getActiveNewVibeKey();
+
+              return (
+                <button
+                  key={`${modeKey}-${offset}`}
+                  className={`ring-nav-item ${slotClass} ${isCenter ? 'active' : ''}`}
+                  onClick={(e) => {
+                    if (Math.abs(dragStartX.current - e.clientX) > 10) return;
+                    navigateToOffset(offset);
+                  }}
+                  aria-label={`Switch to ${config?.label || modeKey} vibe`}
+                >
+                  <span className="ring-nav-label">
+                    {config?.label || modeKey}
+                    {activeNewVibeKey && modeKey === activeNewVibeKey && (
+                      <span className="vibe-new-badge">NEW</span>
+                    )}
+                  </span>
+                </button>
+              );
         })}
       </div>
     </div>

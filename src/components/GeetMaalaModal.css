@@ -114,6 +114,10 @@
 }
 
 .queue-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   padding: 4px 8px;
   border-radius: 9999px;
   border: 1px solid transparent;
@@ -127,6 +131,24 @@
   white-space: nowrap;
   flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Small Red "NEW" text on top-right corner of DHH in Queue */
+.tab-new-badge {
+  position: absolute;
+  top: -4px;
+  right: -5px;
+  background: #FF2B44;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 6.5px;
+  font-weight: 900;
+  line-height: 1;
+  padding: 1.5px 3px;
+  border-radius: 3px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 1px 4px rgba(255, 43, 68, 0.5);
+  pointer-events: none;
 }
 
 .queue-tab:hover {

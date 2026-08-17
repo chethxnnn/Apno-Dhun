@@ -194,6 +194,19 @@
     max-height: 56vh !important;
   }
 
+  /* Byaav title image centered & moved slightly towards the top in iPad view */
+  .title-block.pos-left {
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-top: 8.5vh !important;
+  }
+
+  .title-block.pos-left .title-img {
+    max-width: 68vw !important;
+    max-height: 56vh !important;
+  }
+
   /* DHH title sizing */
   .title-block.pos-dhh-pos {
     align-items: flex-start !important;

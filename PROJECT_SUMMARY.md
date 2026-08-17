@@ -150,12 +150,25 @@
     - **Right-Click Interception**: Global and element-level `onContextMenu={(e) => e.preventDefault()}` blocks context-menu popup ("Save Image As", "Copy Image Address") across all backgrounds, titles, logos, and artwork cards.
     - **Anti-Drag & Anti-Select**: Applied `-webkit-user-drag: none; user-drag: none;` and `user-select: none;` globally on all `<img>` tags and visual containers to stop click-and-drag downloads.
     - **iOS & Android Long-Press Protection**: Applied `-webkit-touch-callout: none;` across all views to suppress native mobile "Save to Photos" and "Share Image" callout sheets.
+- **Automated 7-Day New Vibe Announcement Engine (`newVibeConfig.js` & `VibeAnnouncementModal`)**:
+  - Automatically pops up **6 seconds** after a visitor arrives on the page with a smooth slide-in animation and **100% transparent backdrop** (zero background dimming/fading).
+  - Features the official high-resolution **Announcement Poster** (`public/dhh-poster-popup.png`) with clean small rounded corners (`16px–18px`).
+  - **Embedded UI Controls**:
+    - **Top-Right**: Glassmorphic `✕` cross button with smooth exit animation (also supports `Escape` key & outside clicks).
+    - **Bottom-Centered**: Clean white **"CHECK NOW"** action button (no arrow icon, small rounded corners) that smoothly transitions the active vibe to **DHH** and starts playback immediately.
+  - **Automated 7-Day Expiry Engine**:
+    - Centralized in `src/data/newVibeConfig.js`: simply set `vibeKey`, `posterImg`, and `releaseDate`.
+    - Both the popup modal AND the red **`NEW`** badges on the top header and queue drawer **automatically expire and disappear after 7 days with zero code changes**!
+  - **Layering Hierarchy (Z-Index Protection)**:
+    - Popup is assigned `z-index: 35`, meaning the **Geet Maala Queue drawer (`z-index: 52`)**, **expanded vinyl art (`z-index: 45`)**, and **Player dock (`z-index: 40`)** open cleanly over the popup.
+  - **Smart Independent Navigation Dismissal**:
+    - If a visitor scrolls or taps the new vibe on the header or footer independently while the popup is visible, the announcement automatically closes and marks itself as seen.
 - **5 Vibe-Specific Royal Dhun Card Templates (`PatrikaModal`)**:
   - Automatically loads the custom card template matching the active vibe:
     - **लोक (Folk)**: `/cards/folk.png`
     - **ब्याव (Wedding)**: `/cards/wedding.png`
     - **DHH (Rap)**: `/cards/dhh.png`
-    - **ट्रेंड (Trending)**: `/cards/trending.png`
+    - **ट्रेंड (Trending)**: `/cards/trending.png` & `/cards/trend.png` (synchronized assets)
     - **भक्ति (Devotional)**: `/cards/devotional.png`
   - **100% Unchanged Text & Thumbnail Placement**: The song title, artist typography, larger thumbnail window, and high-definition 4K export engine (`2074x3032`) maintain exact pixel-perfect positioning across all 5 card templates.
 - **Hidden Player Engine**: Operates inside a 1×1 hidden `div` via YouTube IFrame API.

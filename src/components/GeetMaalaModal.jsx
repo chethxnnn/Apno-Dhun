@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import './GeetMaalaModal.css';
+import { getActiveNewVibeKey } from '../data/newVibeConfig';
 
 export default function GeetMaalaModal({
   isOpen,
@@ -106,6 +107,7 @@ export default function GeetMaalaModal({
             <div className="queue-tabs">
               {modeTabs.map((tab) => {
                 const isActive = currentMode === tab.key;
+                const activeNewVibeKey = getActiveNewVibeKey();
                 return (
                   <button
                     key={tab.key}
@@ -115,7 +117,10 @@ export default function GeetMaalaModal({
                       onModeChange && onModeChange(tab.key);
                     }}
                   >
-                    {tab.label}
+                    <span>{tab.label}</span>
+                    {activeNewVibeKey && tab.key === activeNewVibeKey && (
+                      <span className="tab-new-badge">NEW</span>
+                    )}
                   </button>
                 );
               })}

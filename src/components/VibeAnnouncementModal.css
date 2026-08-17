@@ -1,0 +1,207 @@
+.announcement-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 35; /* Sits cleanly behind Queue Viewer (z-40/52) and Player (z-50) */
+  background: transparent; /* No dimming or fading of the background website! */
+  pointer-events: none; /* Let background remain interactive outside card */
+  display: flex;
+  align-items: flex-start; /* Positioned near the top of the screen */
+  justify-content: center;
+  padding: 155px 16px 20px;
+  transition: opacity 0.26s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.announcement-backdrop.closing {
+  pointer-events: none !important;
+  opacity: 0;
+}
+
+.announcement-modal-card {
+  pointer-events: auto !important; /* Card and buttons are interactive */
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  max-height: 74vh;
+  aspect-ratio: 1122 / 1402;
+  border-radius: 18px; /* Small rounded corners */
+  overflow: hidden;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.85),
+    0 0 40px rgba(201, 154, 75, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #120e0a;
+  animation: announcementSlideDown 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+.announcement-modal-card.closing {
+  animation: announcementSlideUpExit 0.26s cubic-bezier(0.32, 0.72, 0, 1) both;
+  pointer-events: none !important;
+}
+
+@keyframes announcementSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes announcementSlideUpExit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.92);
+  }
+}
+
+.announcement-poster-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Top-Right Close Button (Cross Icon) */
+.announcement-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 60 !important;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(14, 10, 8, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+  display: grid;
+  place-items: center;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.announcement-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1) rotate(90deg);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.announcement-close-btn:active {
+  transform: scale(0.92);
+}
+
+/* Bottom-Centered "CHECK NOW" Button with Small Rounded Corners (No Arrow) */
+.announcement-checkout-btn {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 28px;
+  border-radius: 12px; /* Small rounded corners */
+  background: #FFFFFF;
+  color: #0E0C0A;
+  border: none;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    0 0 24px rgba(255, 255, 255, 0.35);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.announcement-checkout-btn:hover {
+  transform: translateX(-50%) translateY(-2px) scale(1.03);
+  background: #FFF8E7;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.7),
+    0 0 32px rgba(201, 154, 75, 0.65);
+  color: #000000;
+}
+
+.announcement-checkout-btn:active {
+  transform: translateX(-50%) scale(0.97);
+}
+
+/* ─── Responsive Viewport Adaptations ─── */
+
+/* Desktop Screens */
+@media (min-width: 1024px) {
+  .announcement-backdrop {
+    padding-top: 155px; /* Clean spacing below desktop header */
+  }
+  .announcement-modal-card {
+    max-width: 360px;
+    border-radius: 18px;
+  }
+  .announcement-checkout-btn {
+    bottom: 20px;
+    padding: 11px 30px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+}
+
+/* iPad / Tablet Screens */
+@media (min-width: 641px) and (max-width: 1023px) {
+  .announcement-backdrop {
+    padding-top: 260px; /* Moved comfortably lower on iPad */
+  }
+  .announcement-modal-card {
+    max-width: 340px;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 640px) {
+  .announcement-backdrop {
+    padding: 16px 14px 14px;
+    padding-top: 135px; /* Positioned nicely below mobile header */
+  }
+  .announcement-modal-card {
+    max-width: min(88vw, 320px);
+    border-radius: 16px; /* Small rounded corners */
+  }
+  .announcement-close-btn {
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+  }
+  .announcement-checkout-btn {
+    bottom: 16px;
+    padding: 9.5px 24px;
+    font-size: 13px;
+    border-radius: 11px;
+  }
+}

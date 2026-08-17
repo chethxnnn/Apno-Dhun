@@ -8,12 +8,14 @@ import YouTubeEmbed from './components/YouTubeEmbed';
 import LiveListeners from './components/LiveListeners';
 import GeetMaalaModal from './components/GeetMaalaModal';
 import PatrikaModal from './components/PatrikaModal';
+import VibeAnnouncementModal from './components/VibeAnnouncementModal';
 import InstallPwaBanner from './components/InstallPwaBanner';
 import KeycapLegendBar from './components/KeycapLegendBar';
 import { useYouTubePlayer } from './hooks/useYouTubePlayer';
 import { useLiveListeners } from './hooks/useLiveListeners';
 import { useShake } from './hooks/useShake';
 import { playlists as initialPlaylists, modeConfig } from './data/playlists';
+import { isNewVibeActive, latestVibeAnnouncement, getActiveNewVibeKey } from './data/newVibeConfig';
 import { fetchAllLivePlaylists } from './services/youtubeApi';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -25,6 +27,7 @@ export default function App() {
   const [cinemaMode, setCinemaMode] = useState(false);
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isPatrikaOpen, setIsPatrikaOpen] = useState(false);
+  const [isAnnouncementOpen, setIsAnnouncementOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
   const ghungrooContainerRef = useRef(null);
@@ -33,6 +36,31 @@ export default function App() {
 
   const listenerCount = useLiveListeners();
   const currentPlaylist = activePlaylists[currentMode] || initialPlaylists[currentMode];
+  const activeNewVibeKey = getActiveNewVibeKey();
+
+  // Auto-show new vibe announcement popup 6 seconds after user visits the page (Automated 7-Day Expiry)
+  useEffect(() => {
+    if (!isNewVibeActive() || !latestVibeAnnouncement?.vibeKey) return;
+    if (currentMode === latestVibeAnnouncement.vibeKey) return;
+
+    const storageKey = `${latestVibeAnnouncement.vibeKey}_announcement_seen`;
+    const alreadyDismissed = sessionStorage.getItem(storageKey);
+    if (alreadyDismissed) return;
+
+    const timer = setTimeout(() => {
+      setIsAnnouncementOpen(true);
+    }, 6000);
+
+    return () => clearTimeout(timer);
+  }, [currentMode]);
+
+  // If user navigates/scrolls to the new vibe independently, automatically close the poster
+  useEffect(() => {
+    if (activeNewVibeKey && currentMode === activeNewVibeKey && isAnnouncementOpen) {
+      sessionStorage.setItem(`${activeNewVibeKey}_announcement_seen`, 'true');
+      setIsAnnouncementOpen(false);
+    }
+  }, [currentMode, activeNewVibeKey, isAnnouncementOpen]);
 
   // Mobile / iPad Shake Phone Gesture: Open Dhun Card on shake!
   useShake(() => {
@@ -182,6 +210,21 @@ export default function App() {
     }
   }, []);
 
+  const handleCheckOutNewVibe = useCallback(() => {
+    if (latestVibeAnnouncement?.vibeKey) {
+      sessionStorage.setItem(`${latestVibeAnnouncement.vibeKey}_announcement_seen`, 'true');
+      setIsAnnouncementOpen(false);
+      handleModeChange(latestVibeAnnouncement.vibeKey);
+    }
+  }, [handleModeChange]);
+
+  const handleCloseAnnouncement = useCallback(() => {
+    if (latestVibeAnnouncement?.vibeKey) {
+      sessionStorage.setItem(`${latestVibeAnnouncement.vibeKey}_announcement_seen`, 'true');
+    }
+    setIsAnnouncementOpen(false);
+  }, []);
+
   // Pro Interactivity Shortcuts: Space, M, S, F, Q, P, G, Escape, Arrows
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -246,6 +289,7 @@ export default function App() {
           e.preventDefault();
           setIsQueueOpen(false);
           setIsPatrikaOpen(false);
+          setIsAnnouncementOpen(false);
           setCinemaMode(false);
           break;
 
@@ -341,6 +385,17 @@ export default function App() {
         currentMode={currentMode}
         listenerCount={listenerCount}
       />
+
+      {/* 6-Second Automated New Vibe Announcement Popup Modal */}
+      {isNewVibeActive() && (
+        <VibeAnnouncementModal
+          isOpen={isAnnouncementOpen}
+          onClose={handleCloseAnnouncement}
+          onCheckOut={handleCheckOutNewVibe}
+          posterImg={latestVibeAnnouncement?.posterImg}
+          vibeTitle={latestVibeAnnouncement?.vibeKey?.toUpperCase()}
+        />
+      )}
 
       {/* Floating Glassmorphic Toast Notification */}
       {toastMessage && <div className="shortcut-toast">{toastMessage}</div>}
