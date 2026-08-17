@@ -602,10 +602,12 @@
   background: transparent;
   color: #FFFFFF;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 13px;
+  font-size: 16px !important; /* Strict 16px prevents iOS Safari and Android Chrome from zooming in */
   font-weight: 400;
   letter-spacing: 0.1px;
   caret-color: rgba(255, 255, 255, 0.7);
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
 }
 
 .queue-search-input::placeholder {
@@ -809,7 +811,7 @@
     gap: 6px;
   }
   .queue-search-input {
-    font-size: 12px;
+    font-size: 16px !important; /* Retain strict 16px on mobile to prevent auto-zoom */
   }
   .search-clear-btn {
     width: 20px;

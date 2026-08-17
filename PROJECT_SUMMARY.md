@@ -53,8 +53,14 @@
   - Mobile Controls Order: `[ Pill Dhun Button ]  [ Prev ]  [ Play ]  [ Next ]  [ Volume ]  [ Queue ]`
   - Desktop Controls Order: `[ Pill Dhun Button ]  [ Prev ]  [ Play ]  [ Next ]  [ Volume ]  [ Queue ]`
   - **Larger Mobile Play & Prev/Next Buttons**: Solid white play button increased to `50px`, Prev/Next buttons increased to `38px` for tap comfort.
-- **Exact busdriver.wtf Queue Card Layout, Real Titles & Interactive Share Button**:
+- **Exact busdriver.wtf Queue Card Layout, Real Titles, Cross-Vibe Search & Interactive Share Button**:
   - Exact typography, font sizes, active track pill highlights (`background: rgba(255,255,255,0.12)`), 3 orange/gold vertical dots (`⋮⋮⋮`).
+  - **Apple-Style Cross-Vibe Search Bar (`GeetMaalaModal.jsx` & `searchAliases.js`)**:
+    - **Real-Time Phonetic Transliteration Engine**: Zero-maintenance phonetic rule engine translating Roman English queries to Devanagari script (e.g. typing `banna` automatically matches `बन्ना रे बागां में` and `Banna Re`).
+    - **Dynamic Random Placeholder**: Picks a random song from a *different* vibe (e.g. `"Search Kesariya Balam..."` when in DHH) on each modal open.
+    - **Cross-Vibe Badges & Navigation**: Shows color-coded source vibe pills on search results from other vibes. Clicking a cross-vibe result smoothly switches the vibe and begins playback!
+    - **Keyboard-Aware Auto-Repositioning**: Uses `visualViewport` to smoothly slide the queue viewer above mobile/iPad virtual keyboards (`0.35s` spring curve).
+    - **Mobile Viewport Zoom Prevention**: Strict `font-size: 16px !important;` on the search input, `maximum-scale=1.0, user-scalable=no, viewport-fit=cover` in `index.html`, and `touch-action: manipulation;` on `html/body` to eliminate automatic browser viewport zoom on mobile touch focus.
   - Automatically fetches 100% real YouTube video titles and channel names for every song in the queue.
   - **Interactive Website Share Button**: Bottom card `[ ⬆ ] Share Apno Dhun` triggers native Web Share API on supported devices or copies `apno-dhun.vercel.app` URL to clipboard with visual green checkmark feedback!
 - **Smooth Apple UI Opening & Closing Modal Sheet Animations**:
