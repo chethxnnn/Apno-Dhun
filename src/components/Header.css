@@ -8,6 +8,7 @@
   align-items: flex-start;
   justify-content: space-between;
   padding: 24px 34px;
+  padding-top: max(24px, env(safe-area-inset-top));
   pointer-events: none;
 }
 
@@ -339,6 +340,7 @@
 @media (max-width: 640px) {
   .hdr {
     padding: 12px 16px;
+    padding-top: max(12px, env(safe-area-inset-top));
     align-items: center;
   }
 
