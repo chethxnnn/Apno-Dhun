@@ -34,6 +34,16 @@
   max-width: 660px; /* Exact matching max-width as Desktop Player Dock */
   animation: queueSlideUp 0.45s cubic-bezier(0.32, 0.72, 0, 1) both;
   will-change: transform, opacity, filter;
+  transition: bottom 0.35s cubic-bezier(0.32, 0.72, 0, 1); /* Smooth keyboard adjustment */
+}
+
+/* When mobile/iPad keyboard is open — compact the list for visibility */
+.queue-fixed-attached.keyboard-open .queue-list {
+  max-height: 140px;
+}
+
+.queue-fixed-attached.keyboard-open .queue-footer {
+  display: none; /* Hide share footer when keyboard is open to save space */
 }
 
 .queue-fixed-attached.closing {
@@ -94,13 +104,14 @@
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   min-width: 0;
+  overflow: visible; /* Allow NEW badge to overflow */
 }
 
 .queue-tabs {
   display: flex;
   align-items: center;
   gap: 4px;
-  overflow-x: auto;
+  overflow: visible; /* Allow NEW badge to overflow and not clip */
   flex: 1;
   min-width: 0;
   scrollbar-width: none !important;
@@ -118,7 +129,7 @@
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  padding: 4px 8px;
+  padding: 4px 10px; /* Slightly wider padding for NEW badge breathing room */
   border-radius: 9999px;
   border: 1px solid transparent;
   background: none;
@@ -130,25 +141,27 @@
   letter-spacing: 0.6px;
   white-space: nowrap;
   flex-shrink: 0;
+  overflow: visible; /* Allow NEW badge to overflow */
   transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 /* Small Red "NEW" text on top-right corner of DHH in Queue */
 .tab-new-badge {
   position: absolute;
-  top: -4px;
-  right: -5px;
+  top: -6px;
+  right: -8px;
   background: #FF2B44;
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
   font-size: 6.5px;
   font-weight: 900;
   line-height: 1;
-  padding: 1.5px 3px;
+  padding: 2px 3.5px;
   border-radius: 3px;
   letter-spacing: 0.3px;
   box-shadow: 0 1px 4px rgba(255, 43, 68, 0.5);
   pointer-events: none;
+  z-index: 2;
 }
 
 .queue-tab:hover {
@@ -548,6 +561,210 @@
   color: #FFC2B2;
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   ─── Apple-Style Search Bar ───
+   ═══════════════════════════════════════════════════════════════════ */
+
+.queue-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  height: 38px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  flex-shrink: 0;
+}
+
+.queue-search-wrap.focused {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+}
+
+.search-icon {
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.35);
+  transition: color 0.25s ease;
+}
+
+.queue-search-wrap.focused .search-icon {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.queue-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #FFFFFF;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+  caret-color: rgba(255, 255, 255, 0.7);
+}
+
+.queue-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+  font-weight: 400;
+  transition: color 0.25s ease;
+}
+
+.queue-search-wrap.focused .queue-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.search-clear-btn {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  animation: searchClearFadeIn 0.2s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+.search-clear-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+@keyframes searchClearFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Cross-Vibe Badge Pill on Search Results */
+.queue-vibe-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1.5px 5px;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  vertical-align: middle;
+  opacity: 0.9;
+}
+
+.vibe-badge-folk {
+  background: rgba(216, 137, 62, 0.3);
+  color: #FFD2A0;
+  border: 1px solid rgba(216, 137, 62, 0.4);
+}
+
+.vibe-badge-wedding {
+  background: rgba(185, 93, 67, 0.3);
+  color: #FFC2B2;
+  border: 1px solid rgba(185, 93, 67, 0.4);
+}
+
+.vibe-badge-dhh {
+  background: rgba(201, 154, 75, 0.3);
+  color: #FFE0A6;
+  border: 1px solid rgba(201, 154, 75, 0.4);
+}
+
+.vibe-badge-trending {
+  background: rgba(230, 110, 40, 0.3);
+  color: #FFC096;
+  border: 1px solid rgba(230, 110, 40, 0.4);
+}
+
+.vibe-badge-devotional {
+  background: rgba(64, 90, 135, 0.3);
+  color: #B2CCF5;
+  border: 1px solid rgba(64, 90, 135, 0.4);
+}
+
+/* Cross-Vibe Result Item Styling */
+.queue-item.cross-vibe-item {
+  opacity: 0.88;
+  transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.queue-item.cross-vibe-item:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* No Results State */
+.queue-no-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  text-align: center;
+  gap: 6px;
+}
+
+.no-results-emoji {
+  font-size: 28px;
+  opacity: 0.6;
+}
+
+.no-results-text {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.4;
+}
+
+.no-results-text strong {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.no-results-hint {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Vibe-Themed Search Bar Focus Colors */
+.queue-mode-folk .queue-search-wrap.focused {
+  border-color: rgba(216, 137, 62, 0.4);
+  box-shadow: 0 0 0 3px rgba(216, 137, 62, 0.08);
+}
+.queue-mode-wedding .queue-search-wrap.focused {
+  border-color: rgba(185, 93, 67, 0.4);
+  box-shadow: 0 0 0 3px rgba(185, 93, 67, 0.08);
+}
+.queue-mode-dhh .queue-search-wrap.focused {
+  border-color: rgba(201, 154, 75, 0.4);
+  box-shadow: 0 0 0 3px rgba(201, 154, 75, 0.08);
+}
+.queue-mode-trending .queue-search-wrap.focused {
+  border-color: rgba(230, 110, 40, 0.4);
+  box-shadow: 0 0 0 3px rgba(230, 110, 40, 0.08);
+}
+.queue-mode-devotional .queue-search-wrap.focused {
+  border-color: rgba(64, 90, 135, 0.4);
+  box-shadow: 0 0 0 3px rgba(64, 90, 135, 0.08);
+}
+
 /* iPad View Specific Width Adjustments (641px - 1366px) */
 @media (min-width: 641px) and (max-width: 1366px) {
   .queue-fixed-attached {
@@ -578,12 +795,25 @@
     border-radius: 22px;
   }
   .queue-tab {
-    padding: 3.5px 7px;
+    padding: 3.5px 8px;
     font-size: 10px;
     letter-spacing: 0.4px;
   }
   .tracks-count {
     font-size: 10px;
+  }
+  .queue-search-wrap {
+    height: 34px;
+    border-radius: 10px;
+    padding: 0 10px;
+    gap: 6px;
+  }
+  .queue-search-input {
+    font-size: 12px;
+  }
+  .search-clear-btn {
+    width: 20px;
+    height: 20px;
   }
   .queue-list {
     max-height: 220px;
@@ -606,5 +836,4 @@
     height: 0 !important;
   }
 }
-
 

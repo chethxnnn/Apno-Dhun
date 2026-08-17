@@ -340,6 +340,7 @@ export default function App() {
         isOpen={isQueueOpen}
         onClose={() => setIsQueueOpen(false)}
         playlist={resolvedPlaylist}
+        allPlaylists={activePlaylists}
         currentTrackIndex={currentTrackIndex}
         isPlaying={isPlaying}
         currentMode={currentMode}
