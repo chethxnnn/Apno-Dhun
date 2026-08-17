@@ -155,20 +155,28 @@
 
 /* ─── Responsive Viewport Adaptations ─── */
 
-/* Desktop Screens */
+/* Desktop Screens (Positioned at right-most side of screen) */
 @media (min-width: 1024px) {
   .announcement-backdrop {
-    padding-top: 155px; /* Clean spacing below desktop header */
+    justify-content: flex-end; /* Positioned at right-most side of the screen */
+    padding-right: 36px;
+    padding-top: 135px; /* Clean floating position below top-right clock */
   }
   .announcement-modal-card {
-    max-width: 360px;
-    border-radius: 18px;
+    max-width: 290px; /* Generous yet sleek desktop size */
+    border-radius: 17px;
+  }
+  .announcement-close-btn {
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
   }
   .announcement-checkout-btn {
-    bottom: 20px;
-    padding: 11px 30px;
-    font-size: 14px;
-    border-radius: 12px;
+    bottom: 16px;
+    padding: 9.5px 24px;
+    font-size: 12.5px;
+    border-radius: 11px;
   }
 }
 
@@ -186,7 +194,7 @@
 @media (max-width: 640px) {
   .announcement-backdrop {
     padding: 16px 14px 14px;
-    padding-top: 135px; /* Positioned nicely below mobile header */
+    padding-top: 154px; /* Gently shifted slightly lower on mobile */
   }
   .announcement-modal-card {
     max-width: min(88vw, 320px);
