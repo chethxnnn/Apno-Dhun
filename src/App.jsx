@@ -84,6 +84,7 @@ export default function App() {
     currentTrack,
     currentTrackIndex,
     resolvedPlaylist,
+    play,
     togglePlay,
     toggleMute,
     toggleShuffle,
