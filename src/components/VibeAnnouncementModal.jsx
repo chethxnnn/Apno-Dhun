@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './VibeAnnouncementModal.css';
 
 export default function VibeAnnouncementModal({
@@ -11,13 +11,30 @@ export default function VibeAnnouncementModal({
   const [render, setRender] = useState(isOpen);
   const [isClosing, setIsClosing] = useState(false);
   const timerRef = useRef(null);
+  const autoHideTimerRef = useRef(null);
+
+  const handleClose = useCallback((e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    if (autoHideTimerRef.current) clearTimeout(autoHideTimerRef.current);
+    onClose && onClose();
+  }, [onClose]);
 
   useEffect(() => {
     if (isOpen) {
       if (timerRef.current) clearTimeout(timerRef.current);
+      if (autoHideTimerRef.current) clearTimeout(autoHideTimerRef.current);
       setRender(true);
       setIsClosing(false);
+
+      // Auto-disappear after 15 seconds
+      autoHideTimerRef.current = setTimeout(() => {
+        handleClose();
+      }, 15000);
     } else if (render && !isClosing) {
+      if (autoHideTimerRef.current) clearTimeout(autoHideTimerRef.current);
       setIsClosing(true);
       timerRef.current = setTimeout(() => {
         setRender(false);
@@ -27,16 +44,9 @@ export default function VibeAnnouncementModal({
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
+      if (autoHideTimerRef.current) clearTimeout(autoHideTimerRef.current);
     };
-  }, [isOpen, render, isClosing]);
-
-  const handleClose = (e) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    onClose && onClose();
-  };
+  }, [isOpen, render, isClosing, handleClose]);
 
   const handleCheckOut = (e) => {
     if (e) {
