@@ -35,6 +35,7 @@ export default function PanchayatDrawer({
   const messagesContainerRef = useRef(null);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const cardRef = useRef(null);
   const lastSendTimeRef = useRef(0);
   const lastMessageRef = useRef('');
 
@@ -52,6 +53,31 @@ export default function PanchayatDrawer({
       return () => clearTimeout(timer);
     }
   }, [isOpen, isMounted]);
+
+  // Click or tap outside chat card to collapse (Desktop, iPad, Mobile)
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const handleOutsideInteraction = (e) => {
+      if (cardRef.current && !cardRef.current.contains(e.target)) {
+        // Skip if tapping on the chat launcher buttons in player
+        if (
+          e.target.closest('.panchayat-circle-btn') ||
+          e.target.closest('.desktop-panchayat-disc')
+        ) {
+          return;
+        }
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideInteraction);
+    document.addEventListener('touchstart', handleOutsideInteraction, { passive: true });
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideInteraction);
+      document.removeEventListener('touchstart', handleOutsideInteraction);
+    };
+  }, [isMounted, onClose]);
 
   const scrollToBottom = useCallback((smooth = false) => {
     if (messagesEndRef.current) {
@@ -92,7 +118,11 @@ export default function PanchayatDrawer({
     const viewport = window.visualViewport;
 
     const handleViewportChange = () => {
-      window.scrollTo(0, 0);
+      if (window.scrollY !== 0 || document.documentElement.scrollTop !== 0 || document.body.scrollTop !== 0) {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
       if (!isInputFocused) {
         setKeyboardOffset(0);
         return;
@@ -201,6 +231,7 @@ export default function PanchayatDrawer({
       onClick={handleBackdropClick}
     >
       <div
+        ref={cardRef}
         className={`panchayat-card panchayat-mode-${currentMode} ${isClosing ? 'closing' : ''} ${keyboardOffset > 0 ? 'keyboard-open' : ''}`}
         style={keyboardOffset > 0 ? { bottom: `${keyboardOffset + 12}px` } : undefined}
         onClick={(e) => e.stopPropagation()}
