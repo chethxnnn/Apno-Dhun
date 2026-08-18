@@ -221,8 +221,8 @@ export function useYouTubePlayer(playlist) {
       }
 
       playerRef.current = new window.YT.Player(containerRef.current, {
-        height: '1',
-        width: '1',
+        height: '240',
+        width: '240',
         videoId: playlist[initialIndex]?.id || playlist[0]?.id || '',
         playerVars: {
           autoplay: 0,
@@ -238,11 +238,19 @@ export function useYouTubePlayer(playlist) {
           origin: window.location.origin,
         },
         events: {
-          onReady: () => {
+          onReady: (event) => {
             if (mounted) {
               setIsReady(true);
               setIsBuffering(false);
               updateMetaFromPlayer();
+
+              try {
+                const iframe = event.target?.getIframe?.() || containerRef.current?.querySelector?.('iframe');
+                if (iframe) {
+                  iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; accelerometer; gyroscope');
+                  iframe.setAttribute('playsinline', '1');
+                }
+              } catch (err) {}
             }
           },
           onStateChange: (e) => {
@@ -353,8 +361,11 @@ export function useYouTubePlayer(playlist) {
 
   const play = useCallback(() => {
     startSilentAudio();
-    if (playerRef.current && typeof playerRef.current.playVideo === 'function') {
+    if (playerRef.current) {
       try {
+        if (typeof playerRef.current.unMute === 'function' && !isMuted) {
+          playerRef.current.unMute();
+        }
         const state = typeof playerRef.current.getPlayerState === 'function' ? playerRef.current.getPlayerState() : -1;
         // If unstarted (-1), cued (5), or undefined, trigger immediate stream loading
         if (state === -1 || state === 5 || state === undefined) {
@@ -364,10 +375,12 @@ export function useYouTubePlayer(playlist) {
             return;
           }
         }
-        playerRef.current.playVideo();
+        if (typeof playerRef.current.playVideo === 'function') {
+          playerRef.current.playVideo();
+        }
       } catch (e) {}
     }
-  }, [startSilentAudio]);
+  }, [startSilentAudio, isMuted]);
 
   const pause = useCallback(() => {
     stopSilentAudio();

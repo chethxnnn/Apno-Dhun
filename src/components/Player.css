@@ -519,10 +519,17 @@
 .ctrl.play.solid-white-play {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
+  min-width: 44px;
+  max-width: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  flex: 0 0 44px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50% !important;
   background: #FFFFFF;
   color: #0c0c10;
   box-shadow: 0 4px 22px rgba(0, 0, 0, 0.45);
+  box-sizing: border-box;
 }
 
 .ctrl.play.solid-white-play:hover {
@@ -939,15 +946,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 4px;
     flex-shrink: 0;
   }
 
   .capsule-glass {
     width: 100%;
     max-width: 440px;
-    padding: 10px 14px 10px 12px;
-    border-radius: 28px;
+    padding: 8px 12px 8px 10px;
+    border-radius: 24px;
     margin: 0 auto;
     gap: 10px;
     align-items: center;
@@ -968,15 +975,17 @@
 
   .panchayat-circle-btn.mobile-only-panchayat {
     display: flex !important;
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
     border-radius: 50%;
   }
 
   .art-disc-wrap {
-    width: 52px; /* Bigger CD art thumbnail on mobile */
-    height: 52px;
-    margin-top: -3px; /* Moved slightly up */
+    width: 50px;
+    height: 50px;
+    margin-top: 0;
   }
 
   /* When Art is Expanded on Mobile: Dhun button becomes circle and Panchayat button sits right next to it */
@@ -1033,14 +1042,14 @@
 
   .player-body-wrap {
     width: 100%;
-    gap: 8px;
+    gap: 4px;
   }
 
   /* On mobile: Name of song & artist directly on top of the buttons */
   .player-top-row {
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
+    gap: 4px;
     width: 100%;
   }
 
@@ -1049,12 +1058,12 @@
   }
 
   .track-name {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
   }
 
   .track-artist {
-    font-size: 11.5px;
+    font-size: 11px;
   }
 
   .player-ctrls-wrap {
@@ -1075,29 +1084,57 @@
   }
 
   .ctrl.play.solid-white-play {
-    width: 44px;
-    height: 44px;
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    max-width: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+    flex: 0 0 42px !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .ctrl.prev, .ctrl.next {
-    width: 34px;
-    height: 34px;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    flex: 0 0 32px !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .ctrl.mute, .ctrl.queue-btn {
-    width: 32px;
-    height: 32px;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    flex: 0 0 32px !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .dhun-pill-btn {
     order: -1;
-    padding: 6px 11px 6px 8px;
-    font-size: 12px;
+    padding: 5px 10px 5px 8px;
+    font-size: 11.5px;
+    flex-shrink: 0;
   }
 
   .dhun-pill-icon {
-    width: 17px;
-    height: 17px;
+    width: 16px;
+    height: 16px;
   }
 
   .ctrl.queue-btn {
