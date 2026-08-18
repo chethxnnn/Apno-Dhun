@@ -1,3 +1,21 @@
+:root {
+  --app-height: 100dvh;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+
+  /* Fluid Spacing & Dimensions */
+  --dock-baseline-mobile: calc(140px + var(--safe-bottom));
+  --dock-baseline-tablet: calc(180px + var(--safe-bottom));
+  --dock-baseline-desktop: 96px;
+
+  /* Fluid Card Sizes */
+  --panel-width-mobile: clamp(320px, calc(100vw - 24px), 440px);
+  --panel-width-tablet: clamp(440px, 65vw, 650px);
+  --panel-width-desktop: 365px;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
