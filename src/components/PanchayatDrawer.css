@@ -273,23 +273,38 @@
 }
 
 .empty-icon {
-  font-size: 30px;
-  opacity: 0.5;
+  font-size: 28px;
+  opacity: 0.7;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+  margin-bottom: 2px;
 }
 
-.empty-text {
-  font-family: 'Inter', sans-serif;
+.empty-hindi-quote {
+  font-family: 'Inter', -apple-system, sans-serif;
   font-size: 13.5px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.90);
+  line-height: 1.4;
   margin: 0;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
-.empty-hint {
+.empty-action-hint {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.35);
-  margin: 0;
+  color: rgba(255, 255, 255, 0.50);
+  margin: 2px 0 0;
+  line-height: 1.4;
+}
+
+.empty-punchline {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #FFDF73;
+  margin: 6px 0 0;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 10px rgba(255, 223, 115, 0.4);
 }
 
 /* ── Setup State ── */

@@ -301,8 +301,9 @@ export default function PanchayatDrawer({
           {messages.length === 0 && (
             <div className="panchayat-empty">
               <span className="empty-icon">💬</span>
-              <p className="empty-text">Panchayat is open!</p>
-              <p className="empty-hint">Say Ram Ram Sa or share a song...</p>
+              <p className="empty-hindi-quote">बोली ऐसी बोलो, मन भी राजी हो जावै।</p>
+              <p className="empty-action-hint">Talk. Share your song. Introduce yourself.</p>
+              <p className="empty-punchline">Panchayat karooooooooo!</p>
             </div>
           )}
 

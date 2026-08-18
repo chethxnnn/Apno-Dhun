@@ -1,31 +1,74 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './InstallPwaBanner.css';
+
+const SHOW_DURATION_MS = 10000; // Visible for 10 seconds
+const REPEAT_INTERVAL_MS = 10 * 60 * 1000; // Comes every 10 minutes
+const INITIAL_DELAY_MS = 6000; // 6 seconds on initial visit
 
 export default function InstallPwaBanner() {
   const [showBanner, setShowBanner] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const hideTimerRef = useRef(null);
+  const closeAnimTimerRef = useRef(null);
+
+  const triggerClose = () => {
+    setIsClosing(true);
+    if (closeAnimTimerRef.current) clearTimeout(closeAnimTimerRef.current);
+    closeAnimTimerRef.current = setTimeout(() => {
+      setShowBanner(false);
+      setIsClosing(false);
+    }, 350);
+  };
 
   useEffect(() => {
-    const isMobile = window.innerWidth <= 900;
-    if (!isMobile) return;
+    // If running in standalone mode (already installed), do not show
+    const isStandalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.standalone === true;
+    if (isStandalone) return;
 
-    const isDismissed = sessionStorage.getItem('pwa_banner_dismissed');
-    if (!isDismissed) {
-      const timer = setTimeout(() => {
-        setShowBanner(true);
-      }, 3500);
-      return () => clearTimeout(timer);
-    }
+    // Show initial banner after a short delay
+    const initialTimer = setTimeout(() => {
+      setShowBanner(true);
+      setIsClosing(false);
+    }, INITIAL_DELAY_MS);
+
+    // Repeat every 10 minutes
+    const repeatInterval = setInterval(() => {
+      setShowBanner(true);
+      setIsClosing(false);
+    }, REPEAT_INTERVAL_MS);
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(repeatInterval);
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      if (closeAnimTimerRef.current) clearTimeout(closeAnimTimerRef.current);
+    };
   }, []);
 
+  // Whenever banner is shown, auto-hide it after 10 seconds
+  useEffect(() => {
+    if (showBanner && !isClosing) {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = setTimeout(() => {
+        triggerClose();
+      }, SHOW_DURATION_MS);
+    }
+    return () => {
+      if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    };
+  }, [showBanner, isClosing]);
+
   const handleDismiss = () => {
-    setShowBanner(false);
-    sessionStorage.setItem('pwa_banner_dismissed', 'true');
+    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    triggerClose();
   };
 
   if (!showBanner) return null;
 
   return (
-    <div className="pwa-banner mobile-only-pwa">
+    <div className={`pwa-banner mobile-only-pwa ${isClosing ? 'pwa-banner-closing' : ''}`}>
       <img src="/favicon.png" alt="Apno Dhun" className="pwa-logo-left" />
 
       <div className="pwa-text-lines">
