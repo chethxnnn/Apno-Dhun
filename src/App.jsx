@@ -228,6 +228,40 @@ export default function App() {
     setIsAnnouncementOpen(false);
   }, []);
 
+  // Play exact shared song from Panchayat Chat (switching vibe + loading track)
+  const handlePlaySharedSong = useCallback(
+    (song) => {
+      if (!song) return;
+      const targetMode = song.vibeKey || currentMode;
+      const targetPl = activePlaylists[targetMode] || initialPlaylists[targetMode];
+
+      let trackIndex = -1;
+      if (song.youtubeId) {
+        trackIndex = targetPl.findIndex((t) => t.id === song.youtubeId);
+      }
+      if (trackIndex === -1 && song.title) {
+        trackIndex = targetPl.findIndex((t) => t.title.toLowerCase().trim() === song.title.toLowerCase().trim());
+      }
+      if (trackIndex === -1 && typeof song.trackIndex === 'number') {
+        trackIndex = song.trackIndex;
+      }
+      if (trackIndex < 0 || trackIndex >= targetPl.length) {
+        trackIndex = 0;
+      }
+
+      if (targetMode !== currentMode) {
+        setCurrentMode(targetMode);
+        loadNewPlaylist(targetPl);
+      }
+
+      setTimeout(() => {
+        loadTrack(trackIndex);
+        play();
+      }, 100);
+    },
+    [currentMode, activePlaylists, loadNewPlaylist, loadTrack, play]
+  );
+
   // Pro Interactivity Shortcuts: Space, M, S, F, Q, P, G, Escape, Arrows
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -435,6 +469,7 @@ export default function App() {
         currentTrack={currentTrack}
         currentMode={currentMode}
         listenerCount={listenerCount}
+        onPlaySong={handlePlaySharedSong}
         onModeChange={handleModeChange}
         onSelectTrack={loadTrack}
       />

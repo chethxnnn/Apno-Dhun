@@ -15,6 +15,7 @@ export default function PanchayatDrawer({
   currentTrack,
   currentMode,
   listenerCount = 1,
+  onPlaySong,
   onModeChange,
   onSelectTrack,
 }) {
@@ -82,30 +83,28 @@ export default function PanchayatDrawer({
     }
   }, [messages]);
 
-  // Smooth mobile/iPad keyboard auto-adjustment (Top stays fixed, bottom moves up)
+  // Smooth mobile/iPad keyboard auto-adjustment (Chat contracts cleanly without moving background site)
   useEffect(() => {
-    if (!isInputFocused || !window.visualViewport) {
-      setKeyboardOffset(0);
-      return;
-    }
+    if (!window.visualViewport) return;
 
     const viewport = window.visualViewport;
-    const fullHeight = window.innerHeight;
 
-    const handleResize = () => {
-      const keyboardHeight = fullHeight - viewport.height;
-      if (keyboardHeight > 100) {
+    const handleViewportResize = () => {
+      if (!isInputFocused) {
+        setKeyboardOffset(0);
+        return;
+      }
+      const keyboardHeight = window.innerHeight - viewport.height;
+      if (keyboardHeight > 80) {
         setKeyboardOffset(keyboardHeight);
       } else {
         setKeyboardOffset(0);
       }
     };
 
-    viewport.addEventListener('resize', handleResize);
-    handleResize();
-
+    viewport.addEventListener('resize', handleViewportResize);
     return () => {
-      viewport.removeEventListener('resize', handleResize);
+      viewport.removeEventListener('resize', handleViewportResize);
     };
   }, [isInputFocused]);
 
@@ -143,7 +142,7 @@ export default function PanchayatDrawer({
 
     sendSongShare(identity, {
       title: currentTrack.title,
-      artist: currentTrack.artist || 'Apna Culturez',
+      artist: currentTrack.artist || 'Apno Dhun',
       vibeKey: currentMode,
       trackIndex: currentTrack.trackIndex || 0,
       youtubeId: currentTrack.id,
@@ -153,7 +152,10 @@ export default function PanchayatDrawer({
   };
 
   const handleListenNow = (song) => {
-    if (song.vibeKey !== currentMode) {
+    if (!song) return;
+    if (onPlaySong) {
+      onPlaySong(song);
+    } else if (song.vibeKey !== currentMode) {
       onModeChange && onModeChange(song.vibeKey);
       setTimeout(() => {
         onSelectTrack && onSelectTrack(song.trackIndex);
@@ -225,76 +227,88 @@ export default function PanchayatDrawer({
 
         {/* Message Feed */}
         <div className="panchayat-messages" ref={messagesContainerRef}>
-              {messages.length === 0 && (
-                <div className="panchayat-empty">
-                  <span className="empty-icon">💬</span>
-                  <p className="empty-text">Panchayat is open!</p>
-                  <p className="empty-hint">Say Ram Ram Sa or share a song...</p>
-                </div>
-              )}
+          {messages.length === 0 && (
+            <div className="panchayat-empty">
+              <span className="empty-icon">💬</span>
+              <p className="empty-text">Panchayat is open!</p>
+              <p className="empty-hint">Say Ram Ram Sa or share a song...</p>
+            </div>
+          )}
 
-              {messages.map((msg) => {
-                const isMe = msg.sender?.id === identity?.id;
+          {messages.map((msg) => {
+            const isMe = msg.sender?.id === identity?.id;
 
-                if (msg.type === 'song_share') {
-                  return (
-                    <div
-                      key={msg.id}
-                      className={`panchayat-msg ${isMe ? 'msg-mine' : 'msg-other'}`}
-                    >
-                      {!isMe && (
-                        <span className="msg-sender" style={{ color: msg.sender?.color }}>
-                          {msg.sender?.avatar} {msg.sender?.name} #{msg.sender?.number}
+            if (msg.type === 'song_share') {
+              return (
+                <div
+                  key={msg.id}
+                  className={`panchayat-msg ${isMe ? 'msg-mine' : 'msg-other'}`}
+                >
+                  {!isMe && (
+                    <span className="msg-sender" style={{ color: msg.sender?.color }}>
+                      {msg.sender?.avatar} {msg.sender?.name} #{msg.sender?.number}
+                    </span>
+                  )}
+                  {/* Professional Song Share Card Template */}
+                  <div className="msg-song-card">
+                    <div className="song-card-badge-row">
+                      <div className="song-card-badge-left">
+                        <span className="song-card-music-icon">🎵</span>
+                        <span className="song-card-badge-label">
+                          {isMe ? 'Shared by you' : `${msg.sender?.name || 'Mehmaan'} shared`}
+                        </span>
+                      </div>
+                      {msg.song?.vibeKey && (
+                        <span className={`song-card-vibe-tag vibe-tag-${msg.song.vibeKey}`}>
+                          {msg.song.vibeKey.toUpperCase()}
                         </span>
                       )}
-                      <div className="msg-song-card">
-                        <div className="song-card-header">
-                          <span className="song-card-icon">🎧</span>
-                          <span className="song-card-label">
-                            {isMe ? 'You shared' : `${msg.sender?.name} is vibing to`}
-                          </span>
-                        </div>
-                        <div className="song-card-body">
-                          <div className="song-card-info">
-                            <span className="song-card-title">{msg.song?.title}</span>
-                            <span className="song-card-artist">{msg.song?.artist}</span>
-                          </div>
-                          <button
-                            className="song-card-listen"
-                            onClick={() => handleListenNow(msg.song)}
-                          >
-                            ▶ Listen
-                          </button>
-                        </div>
-                      </div>
-                      <span className="msg-time">{formatTime(msg.timestamp)}</span>
                     </div>
-                  );
-                }
 
-                // Text message
-                const isSingleEmoji = /^\p{Emoji}$/u.test(msg.text?.trim() || '');
-                return (
-                  <div
-                    key={msg.id}
-                    className={`panchayat-msg ${isMe ? 'msg-mine' : 'msg-other'}`}
-                  >
-                    {!isMe && (
-                      <span className="msg-sender" style={{ color: msg.sender?.color }}>
-                        {msg.sender?.avatar} {msg.sender?.name} #{msg.sender?.number}
-                      </span>
-                    )}
-                    <div
-                      className={`msg-bubble ${isMe ? 'bubble-mine' : 'bubble-other'} ${isSingleEmoji ? 'bubble-emoji' : ''}`}
-                    >
-                      <span className={isSingleEmoji ? 'msg-emoji-big' : 'msg-text'}>
-                        {msg.text}
-                      </span>
+                    <div className="song-card-details">
+                      <h4 className="song-card-title">{msg.song?.title}</h4>
+                      <p className="song-card-artist">{msg.song?.artist || 'Apno Dhun'}</p>
                     </div>
-                    <span className="msg-time">{formatTime(msg.timestamp)}</span>
+
+                    <button
+                      className="song-card-listen-btn"
+                      onClick={() => handleListenNow(msg.song)}
+                      aria-label={`Listen to ${msg.song?.title}`}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                      <span>Listen Now</span>
+                    </button>
                   </div>
-                );
-              })}
+                  <span className="msg-time">{formatTime(msg.timestamp)}</span>
+                </div>
+              );
+            }
+
+            // Text message
+            const isSingleEmoji = /^\p{Emoji}$/u.test(msg.text?.trim() || '');
+            return (
+              <div
+                key={msg.id}
+                className={`panchayat-msg ${isMe ? 'msg-mine' : 'msg-other'}`}
+              >
+                {!isMe && (
+                  <span className="msg-sender" style={{ color: msg.sender?.color }}>
+                    {msg.sender?.avatar} {msg.sender?.name} #{msg.sender?.number}
+                  </span>
+                )}
+                <div
+                  className={`msg-bubble ${isMe ? 'bubble-mine' : 'bubble-other'} ${isSingleEmoji ? 'bubble-emoji' : ''}`}
+                >
+                  <span className={isSingleEmoji ? 'msg-emoji-big' : 'msg-text'}>
+                    {msg.text}
+                  </span>
+                </div>
+                <span className="msg-time">{formatTime(msg.timestamp)}</span>
+              </div>
+            );
+          })}
               <div ref={messagesEndRef} />
             </div>
 
