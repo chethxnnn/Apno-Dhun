@@ -28,6 +28,7 @@ export default function PanchayatDrawer({
   const [inputText, setInputText] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
+  const [viewportVisibleHeight, setViewportVisibleHeight] = useState(0);
 
   const messages = propMessages || [];
   const identity = propIdentity || getIdentity();
@@ -111,7 +112,7 @@ export default function PanchayatDrawer({
     }
   }, [messages, isMounted, scrollToBottom]);
 
-  // Mobile / iPad keyboard auto-adjustment: keeps background website locked and adjusts card
+  // Mobile / iPad keyboard auto-adjustment: positions chat window directly above virtual keyboard
   useEffect(() => {
     if (!window.visualViewport) return;
 
@@ -125,14 +126,26 @@ export default function PanchayatDrawer({
       }
       if (!isInputFocused) {
         setKeyboardOffset(0);
+        setViewportVisibleHeight(0);
         return;
       }
-      const keyboardHeight = window.innerHeight - viewport.height;
-      setKeyboardOffset(keyboardHeight > 60 ? keyboardHeight : 0);
+      const offsetTop = viewport.offsetTop || 0;
+      const currentHeight = viewport.height;
+      const keyboardHeight = Math.max(0, window.innerHeight - (currentHeight + offsetTop));
+
+      if (keyboardHeight > 50) {
+        setKeyboardOffset(keyboardHeight + 8);
+        setViewportVisibleHeight(currentHeight);
+      } else {
+        setKeyboardOffset(0);
+        setViewportVisibleHeight(0);
+      }
     };
 
     viewport.addEventListener('resize', handleViewportChange);
     viewport.addEventListener('scroll', handleViewportChange);
+    handleViewportChange();
+
     return () => {
       viewport.removeEventListener('resize', handleViewportChange);
       viewport.removeEventListener('scroll', handleViewportChange);
@@ -233,7 +246,14 @@ export default function PanchayatDrawer({
       <div
         ref={cardRef}
         className={`panchayat-card panchayat-mode-${currentMode} ${isClosing ? 'closing' : ''} ${keyboardOffset > 0 ? 'keyboard-open' : ''}`}
-        style={keyboardOffset > 0 ? { bottom: `${keyboardOffset + 12}px` } : undefined}
+        style={
+          keyboardOffset > 0
+            ? {
+                bottom: `${keyboardOffset}px`,
+                maxHeight: viewportVisibleHeight > 0 ? `${viewportVisibleHeight - 65}px` : undefined,
+              }
+            : undefined
+        }
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header: Bigger Apno Dhun Logo (Left) + Live Counter & Close Button (Right) */}
