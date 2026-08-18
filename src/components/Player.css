@@ -410,6 +410,101 @@
   letter-spacing: 0.3px;
 }
 
+/* ─── Left Column wrapper (Zero layout effect on Desktop/iPad) ─── */
+.player-left-col {
+  display: contents; /* Clean pass-through on Desktop & iPad */
+}
+
+/* ─── Circular Panchayat Button (for Mobile & iPad) ─── */
+.panchayat-circle-btn {
+  display: none; /* Hidden on desktop */
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.panchayat-circle-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+.panchayat-circle-btn:active {
+  transform: scale(0.92);
+}
+
+.panchayat-circle-btn.active {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #FFFFFF;
+}
+
+.panchayat-btn-svg {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ─── Desktop-Only Symmetrical Panchayat Disc (Exact 58px matching Vinyl CD Art) ─── */
+.desktop-panchayat-disc {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.88);
+  cursor: pointer;
+  outline: none;
+  transition: all 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  position: relative;
+  margin-left: 2px;
+}
+
+.desktop-panchayat-disc:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #FFFFFF;
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.2);
+}
+
+.desktop-panchayat-disc:active {
+  transform: scale(0.94);
+}
+
+.desktop-panchayat-disc.active {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.38);
+  color: #FFFFFF;
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.18);
+}
+
+.desktop-panchayat-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.desktop-panchayat-svg {
+  display: block;
+}
+
 /* Solid White Circle Play Button */
 .ctrl.play.solid-white-play {
   width: 44px;
@@ -681,14 +776,43 @@
     height: 36px !important;
   }
 
+  /* ─── Expanded Mode Controls Row: Dhun (Circle) + Panchayat (Circle) ─── */
   .player-ctrls-wrap.ctrls-expanded .dhun-pill-btn {
-    order: -1;
-    padding: 7px 14px 7px 10px;
-    font-size: 13px;
+    order: -2 !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    flex-shrink: 0 !important;
+  }
+
+  .player-ctrls-wrap.ctrls-expanded .dhun-pill-btn .dhun-pill-text {
+    display: none !important;
+  }
+
+  .player-ctrls-wrap.ctrls-expanded .dhun-pill-btn .dhun-pill-icon {
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+  }
+
+  .player-ctrls-wrap.ctrls-expanded .dock-panchayat-btn {
+    display: inline-flex !important;
+    order: -1 !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    flex-shrink: 0 !important;
   }
 
   .player-ctrls-wrap.ctrls-expanded .ctrl.queue-btn {
     order: 10;
+  }
+
+  .capsule-glass.glass-expanded .desktop-panchayat-disc {
+    display: none !important; /* Hide far-right disc in expanded mode */
   }
 }
 
@@ -707,6 +831,25 @@
   .player-dock.dock-expanded {
     max-width: 540px !important;
     bottom: 88px !important;
+  }
+
+  .desktop-panchayat-disc {
+    display: none !important; /* Hidden on iPad */
+  }
+
+  /* iPad: Always show circular Panchayat button in controls dock next to Dhun button */
+  .panchayat-circle-btn.dock-panchayat-btn,
+  .dock-panchayat-btn {
+    display: inline-flex !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .panchayat-circle-btn.mobile-only-panchayat {
+    display: none !important;
   }
 
   .art-disc-wrap {
@@ -744,13 +887,26 @@
     max-width: 420px !important;
   }
 
+  .desktop-panchayat-disc {
+    display: none !important; /* Hidden on mobile */
+  }
+
+  .player-left-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
   .capsule-glass {
     width: 100%;
     max-width: 440px;
-    padding: 11px 14px 11px 12px;
+    padding: 10px 14px 10px 12px;
     border-radius: 28px;
     margin: 0 auto;
-    gap: 11px;
+    gap: 10px;
     align-items: center;
   }
 
@@ -761,10 +917,64 @@
     align-items: stretch !important;
   }
 
+  /* Default Collapsed on Mobile: Hide dock chat button, show under CD art */
+  .panchayat-circle-btn.dock-panchayat-btn,
+  .dock-panchayat-btn {
+    display: none !important;
+  }
+
+  .panchayat-circle-btn.mobile-only-panchayat {
+    display: flex !important;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+  }
+
   .art-disc-wrap {
-    width: 48px;
-    height: 48px;
-    margin-top: 0;
+    width: 52px; /* Bigger CD art thumbnail on mobile */
+    height: 52px;
+    margin-top: -3px; /* Moved slightly up */
+  }
+
+  /* When Art is Expanded on Mobile: Dhun button becomes circle and Panchayat button sits right next to it */
+  .capsule-glass.glass-expanded .dhun-pill-btn,
+  .dock-expanded .dhun-pill-btn {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    order: -2 !important;
+  }
+
+  .capsule-glass.glass-expanded .dhun-pill-text,
+  .dock-expanded .dhun-pill-text {
+    display: none !important;
+  }
+
+  .capsule-glass.glass-expanded .dhun-pill-icon,
+  .dock-expanded .dhun-pill-icon {
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0 !important;
+  }
+
+  .capsule-glass.glass-expanded .dock-panchayat-btn,
+  .dock-expanded .dock-panchayat-btn {
+    display: inline-flex !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    order: -1 !important;
+    margin-left: 2px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .capsule-glass.glass-expanded .panchayat-circle-btn.mobile-only-panchayat,
+  .dock-expanded .panchayat-circle-btn.mobile-only-panchayat {
+    display: none !important;
   }
 
   .art-disc-wrap.art-wrap-expanded {

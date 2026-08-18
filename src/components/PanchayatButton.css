@@ -1,0 +1,93 @@
+/* ═══════════════════════════════════════════════════════════════════
+   🏰 Panchayat Floating Button (Desktop: Top-Right Above Player Dock)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.panchayat-float-btn {
+  position: fixed;
+  bottom: 172px; /* Floats directly above player dock's top edge (bottom: 96px + height) */
+  right: max(36px, calc((100vw - 660px) / 2)); /* Aligned with player dock's right edge */
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(14, 12, 16, 0.88);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 8px 15px;
+  gap: 6px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.panchayat-btn-icon {
+  display: block;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.85);
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.panchayat-btn-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.3px;
+  line-height: 1;
+}
+
+.panchayat-float-btn:hover {
+  background: rgba(26, 22, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(255, 255, 255, 0.1);
+}
+
+.panchayat-float-btn:hover .panchayat-btn-icon {
+  color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+.panchayat-float-btn:active {
+  transform: scale(0.96) translateY(0);
+}
+
+.panchayat-float-btn.active {
+  background: rgba(40, 34, 48, 0.96);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.12);
+}
+
+.panchayat-unread-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: #ff3b30;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(255, 59, 48, 0.8);
+  animation: panchayat-pulse 2s infinite cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes panchayat-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(255, 59, 48, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+  }
+}
+
+/* ─── Mobile & iPad (Hidden because they use dedicated dock buttons) ─── */
+@media (max-width: 1023px) {
+  .panchayat-float-btn {
+    display: none !important;
+  }
+}

@@ -65,6 +65,33 @@
   - **Interactive Website Share Button**: Bottom card `[ ⬆ ] Share Apno Dhun` triggers native Web Share API on supported devices or copies `apno-dhun.vercel.app` URL to clipboard with visual green checkmark feedback!
 - **Smooth Apple UI Opening & Closing Modal Sheet Animations**:
   - Queue list modal uses Apple iOS sheet physics (`cubic-bezier(0.32, 0.72, 0, 1)`) with scale spring (`scale(0.93) ➔ scale(1)`), subtle blur fade, and backdrop blur transitions both ways.
+
+---
+
+## 🏰 3. Panchayat (पंचायत) — Zero-Login Ephemeral Real-Time Chat Room
+
+- **100% Free Ephemeral Real-Time Messaging**:
+  - Powered by **Supabase Realtime Broadcast Channels** (`apno-panchayat`) over WebSockets.
+  - Zero database storage / zero disk writes — pure in-memory relaying with zero cost ($0.00/month).
+  - Refreshing or closing the tab clears message history completely.
+- **Random Rajasthani Anonymous Identity Engine (`rajasthaniNames.js`)**:
+  - Automatically assigns every visitor a unique Rajasthani moniker (e.g. *Rangilo Banna #482*, *Royal Baisa #117*, *Thar Dhunbaaz #630*) with avatars (`👳`, `👑`, `🪕`, `🐪`, `🚩`, `🦅`, `🦚`, `⚔️`, `🐎`, `🪘`, `🦁`) and unique accent colors.
+  - Cached in `sessionStorage` for consistency during a session.
+- **Apple iMessage-Style UI Design (`PanchayatDrawer.jsx` & `PanchayatDrawer.css`)**:
+  - **Your Messages**: Right-aligned with vibe accent bubbles (`border-radius: 18px 18px 4px 18px`).
+  - **Others' Messages**: Left-aligned frosted glass bubbles with colored moniker badges and avatars (`border-radius: 18px 18px 18px 4px`).
+  - **Quick Emoji Reaction Bar**: Instant 1-tap reaction buttons (`🔥`, `🚩`, `🪕`, `👑`, `❤️`, `👏`).
+  - **🎵 Live Song Sharing**: Tap *"🎵 Share"* to broadcast what song you are listening to as an interactive card.
+  - **"▶ Listen Now" Navigation**: When any listener taps *"▶ Listen Now"* on a shared song card, the player smoothly transitions to that exact vibe and begins playing that track!
+  - **Apple-Style Text Bar**: Glassmorphic input field with strict 16px font-size to prevent mobile auto-zoom, and smooth fade-in send button (`➤`).
+- **Responsive Layout & Placement**:
+  - **Desktop (>= 1024px)**: Elegant right-hand side panel (`380px` wide) sliding in with Apple spring animation.
+  - **iPad (641px - 1023px)**: Centered floating glass card (`500px` max-width, `55vh` max-height).
+  - **Mobile (<= 640px)**: iOS-style bottom sheet (`75vh` height) with smooth slide-up physics.
+  - **Floating Access Button (`PanchayatButton.jsx`)**: Floating glass pill (`🏰 पंचायत` on desktop, `🏰` circle on mobile) positioned cleanly above the player dock at `bottom: 180px` (desktop) and `bottom: 165px` (mobile).
+  - **Keyboard Shortcut**: Press `C` to toggle Panchayat chat open/close, `Escape` to close.
+- **Client-Side Spam & Abuse Protection**:
+  - 2-second rate-limit cooldown, 200-character max limit, and consecutive duplicate message prevention.
 - **Offscreen 1037 × 1516 Native DOM Export Node (`PatrikaModal.jsx`)**:
   - Rendered a dedicated hidden 1037 × 1516 full-res React DOM node (`exportCardRef`) offscreen so the browser's native DOM engine handles text layout, Devanagari Hindi Unicode characters ("सतरंगी लहरियो"), and font rendering with 100% perfection!
   - **Exact 1:1 Title Font Size Parity**: Set `font-size: 43px;` on `.clean-song-title-compact-export` (exact mathematical 1:1 ratio matching `0.91rem` on `348px` screen preview card), ensuring title size, margins, and line wrapping match the screen preview 100%!

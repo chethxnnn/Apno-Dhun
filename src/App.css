@@ -45,6 +45,28 @@
   pointer-events: none !important;
 }
 
+/* Panchayat Chat Open — Dim announcement and background */
+.app.panchayat-active .announcement-backdrop {
+  opacity: 0.3 !important;
+  filter: brightness(0.7) !important;
+  pointer-events: none !important;
+}
+
+.app.panchayat-active .pwa-banner {
+  opacity: 0.3 !important;
+  pointer-events: none !important;
+}
+
+/* Keep mobile footer visible when Panchayat chat is open */
+
+/* Hide Panchayat floating button when chat itself, queue, or patrika is open */
+.app.panchayat-active .panchayat-float-btn,
+.app.queue-active .panchayat-float-btn {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.8) !important;
+}
+
 /* Shortcut Toast Notification */
 .shortcut-toast {
   position: fixed;

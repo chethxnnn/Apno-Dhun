@@ -18,6 +18,8 @@ export default function Player({
   currentTime,
   duration,
   isQueueOpen,
+  isPanchayatOpen = false,
+  unreadPanchayatCount = 0,
   onTogglePlay,
   onToggleMute,
   onNext,
@@ -26,6 +28,7 @@ export default function Player({
   onVolumeChange,
   onToggleQueue,
   onOpenPatrika,
+  onTogglePanchayat,
 }) {
   const seekRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -33,13 +36,13 @@ export default function Player({
   const [isArtExpanded, setIsArtExpanded] = useState(false);
   const prevQueueOpenRef = useRef(isQueueOpen);
 
-  // Automatically collapse art when queue list opens from an external trigger
+  // Automatically collapse art when queue list or panchayat opens
   useEffect(() => {
-    if (isQueueOpen && !prevQueueOpenRef.current) {
+    if ((isQueueOpen && !prevQueueOpenRef.current) || isPanchayatOpen) {
       setIsArtExpanded(false);
     }
     prevQueueOpenRef.current = isQueueOpen;
-  }, [isQueueOpen]);
+  }, [isQueueOpen, isPanchayatOpen]);
 
   // Reset art expansion on window resize if resizing back to desktop (> 1366px)
   useEffect(() => {
@@ -84,12 +87,16 @@ export default function Player({
   const pct = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   const toggleArtExpanded = useCallback(() => {
-    // If the queue list is currently open, close queue list first and then expand art!
+    // If the queue list is currently open, close queue list first
     if (isQueueOpen && onToggleQueue) {
       onToggleQueue();
     }
+    // If Panchayat chat is currently open, close chat first
+    if (isPanchayatOpen && onTogglePanchayat) {
+      onTogglePanchayat();
+    }
     setIsArtExpanded((prev) => !prev);
-  }, [isQueueOpen, onToggleQueue]);
+  }, [isQueueOpen, onToggleQueue, isPanchayatOpen, onTogglePanchayat]);
 
   const handleQueueToggleClick = useCallback(() => {
     // If art is expanded, close art first and then open queue list!
@@ -100,6 +107,20 @@ export default function Player({
       onToggleQueue();
     }
   }, [isArtExpanded, onToggleQueue]);
+
+  const handlePanchayatClick = useCallback(
+    (e) => {
+      if (e) e.stopPropagation();
+      // If art is expanded, collapse art smoothly first
+      if (isArtExpanded) {
+        setIsArtExpanded(false);
+      }
+      if (onTogglePanchayat) {
+        onTogglePanchayat();
+      }
+    },
+    [isArtExpanded, onTogglePanchayat]
+  );
 
   const isDraggingRef = useRef(false);
 
@@ -216,41 +237,73 @@ export default function Player({
       <div className={`player-glow ${isPlaying ? 'on' : ''}`} />
 
       <div className={`player-glass capsule-glass ${isArtExpanded ? 'glass-expanded' : ''}`}>
-        {/* Left: Vinyl Disc (or Expanded Large Card on Mobile/iPad) */}
-        <div
-          className={`art-disc-wrap ${isArtExpanded ? 'art-wrap-expanded' : ''}`}
-          onClick={toggleArtExpanded}
-          role="button"
-          tabIndex={0}
-          aria-label={isArtExpanded ? 'Close artwork' : 'Expand artwork'}
-          title={isArtExpanded ? 'Click to close artwork' : 'Click to expand artwork'}
-        >
-          <div className={`art-disc ${isPlaying && !isArtExpanded ? 'spin' : ''} ${isArtExpanded ? 'as-card' : ''}`}>
-            {thumb && (
-              <img
-                src={thumb}
-                alt=""
-                className="art-disc-img"
-                draggable="false"
-                onContextMenu={(e) => e.preventDefault()}
-              />
+        {/* Left Column: Vinyl Disc (or Expanded Large Card on Mobile/iPad) + Mobile Panchayat Button */}
+        <div className={`player-left-col ${isArtExpanded ? 'left-col-expanded' : ''}`}>
+          <div
+            className={`art-disc-wrap ${isArtExpanded ? 'art-wrap-expanded' : ''}`}
+            onClick={toggleArtExpanded}
+            role="button"
+            tabIndex={0}
+            aria-label={isArtExpanded ? 'Close artwork' : 'Expand artwork'}
+            title={isArtExpanded ? 'Click to close artwork' : 'Click to expand artwork'}
+          >
+            <div className={`art-disc ${isPlaying && !isArtExpanded ? 'spin' : ''} ${isArtExpanded ? 'as-card' : ''}`}>
+              {thumb && (
+                <img
+                  src={thumb}
+                  alt=""
+                  className="art-disc-img"
+                  draggable="false"
+                  onContextMenu={(e) => e.preventDefault()}
+                />
+              )}
+            </div>
+            {!isArtExpanded && <div className="art-hole" />}
+            {isArtExpanded && (
+              <button
+                className="art-close-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleArtExpanded();
+                }}
+                aria-label="Close artwork"
+                title="Close"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
             )}
           </div>
-          {!isArtExpanded && <div className="art-hole" />}
-          {isArtExpanded && (
+
+          {/* Mobile-Only Circular Panchayat Button stacked below the CD thumbnail */}
+          {!isArtExpanded && (
             <button
-              className="art-close-btn"
+              className={`panchayat-circle-btn mobile-only-panchayat ${isPanchayatOpen ? 'active' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
-                toggleArtExpanded();
+                onTogglePanchayat && onTogglePanchayat();
               }}
-              aria-label="Close artwork"
-              title="Close"
+              aria-label="Panchayat Chat"
+              title="Panchayat Chat (C)"
             >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
+              <svg
+                className="panchayat-btn-svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
               </svg>
+              {unreadPanchayatCount > 0 && !isPanchayatOpen && (
+                <span className="panchayat-unread-dot" />
+              )}
             </button>
           )}
         </div>
@@ -282,6 +335,31 @@ export default function Player({
                     onContextMenu={(e) => e.preventDefault()}
                   />
                   <span className="dhun-pill-text">Dhun</span>
+                </button>
+
+                {/* Circular Panchayat Button right next to Dhun Button */}
+                <button
+                  className={`ctrl panchayat-circle-btn dock-panchayat-btn ${isPanchayatOpen ? 'active' : ''}`}
+                  onClick={handlePanchayatClick}
+                  aria-label="Panchayat Chat"
+                  title="Panchayat Chat (C)"
+                >
+                  <svg
+                    className="panchayat-btn-svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
+                  {unreadPanchayatCount > 0 && !isPanchayatOpen && (
+                    <span className="panchayat-unread-dot" />
+                  )}
                 </button>
 
                 {/* Previous */}
@@ -433,6 +511,33 @@ export default function Player({
             <span className="time-inline time-inline-right">{fmt(duration)}</span>
           </div>
         </div>
+
+        {/* Desktop-Only Matching Circular Panchayat Disc Button (Symmetrical with Left Art Disc!) */}
+        <button
+          className={`desktop-panchayat-disc ${isPanchayatOpen ? 'active' : ''}`}
+          onClick={handlePanchayatClick}
+          aria-label="Panchayat Chat"
+          title="Panchayat Chat (C)"
+        >
+          <div className="desktop-panchayat-inner">
+            <svg
+              className="desktop-panchayat-svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
+            {unreadPanchayatCount > 0 && !isPanchayatOpen && (
+              <span className="panchayat-unread-dot" />
+            )}
+          </div>
+        </button>
       </div>
     </div>
   );

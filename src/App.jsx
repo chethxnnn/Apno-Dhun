@@ -11,6 +11,7 @@ import PatrikaModal from './components/PatrikaModal';
 import VibeAnnouncementModal from './components/VibeAnnouncementModal';
 import InstallPwaBanner from './components/InstallPwaBanner';
 import KeycapLegendBar from './components/KeycapLegendBar';
+import PanchayatDrawer from './components/PanchayatDrawer';
 import { useYouTubePlayer } from './hooks/useYouTubePlayer';
 import { useLiveListeners } from './hooks/useLiveListeners';
 import { useShake } from './hooks/useShake';
@@ -28,6 +29,8 @@ export default function App() {
   const [isQueueOpen, setIsQueueOpen] = useState(false);
   const [isPatrikaOpen, setIsPatrikaOpen] = useState(false);
   const [isAnnouncementOpen, setIsAnnouncementOpen] = useState(false);
+  const [isPanchayatOpen, setIsPanchayatOpen] = useState(false);
+  const [unreadPanchayatCount, setUnreadPanchayatCount] = useState(0);
   const [toastMessage, setToastMessage] = useState(null);
 
   const ghungrooContainerRef = useRef(null);
@@ -256,12 +259,23 @@ export default function App() {
 
         case 'KeyQ':
           e.preventDefault();
+          setIsPanchayatOpen(false);
+          setIsPatrikaOpen(false);
           setIsQueueOpen((prev) => !prev);
           break;
 
         case 'KeyP':
           e.preventDefault();
+          setIsPanchayatOpen(false);
+          setIsQueueOpen(false);
           setIsPatrikaOpen((prev) => !prev);
+          break;
+
+        case 'KeyC':
+          e.preventDefault();
+          setIsQueueOpen(false);
+          setIsPatrikaOpen(false);
+          setIsPanchayatOpen((prev) => !prev);
           break;
 
         case 'KeyG':
@@ -290,6 +304,7 @@ export default function App() {
           setIsQueueOpen(false);
           setIsPatrikaOpen(false);
           setIsAnnouncementOpen(false);
+          setIsPanchayatOpen(false);
           setCinemaMode(false);
           break;
 
@@ -313,7 +328,7 @@ export default function App() {
 
   return (
     <main
-      className={`app ${cinemaMode ? 'cinema-active' : ''} ${isQueueOpen ? 'queue-active' : ''}`}
+      className={`app ${cinemaMode ? 'cinema-active' : ''} ${isQueueOpen ? 'queue-active' : ''} ${isPanchayatOpen ? 'panchayat-active' : ''}`}
       onContextMenu={(e) => e.preventDefault()}
     >
       <YouTubeEmbed containerRef={containerRef} ghungrooRef={ghungrooContainerRef} />
@@ -367,8 +382,23 @@ export default function App() {
         onNext={nextTrack}
         onPrev={prevTrack}
         onSeek={seekTo}
-        onToggleQueue={() => setIsQueueOpen((prev) => !prev)}
-        onOpenPatrika={() => setIsPatrikaOpen(true)}
+        onToggleQueue={() => {
+          setIsPanchayatOpen(false);
+          setIsPatrikaOpen(false);
+          setIsQueueOpen((prev) => !prev);
+        }}
+        onOpenPatrika={() => {
+          setIsPanchayatOpen(false);
+          setIsQueueOpen(false);
+          setIsPatrikaOpen(true);
+        }}
+        isPanchayatOpen={isPanchayatOpen}
+        unreadPanchayatCount={unreadPanchayatCount}
+        onTogglePanchayat={() => {
+          setIsQueueOpen(false);
+          setIsPatrikaOpen(false);
+          setIsPanchayatOpen((prev) => !prev);
+        }}
         onPlayGhungroo={playGhungrooSound}
       />
 
@@ -397,6 +427,17 @@ export default function App() {
           vibeTitle={latestVibeAnnouncement?.vibeKey?.toUpperCase()}
         />
       )}
+
+      {/* Panchayat Live Chat Drawer */}
+      <PanchayatDrawer
+        isOpen={isPanchayatOpen}
+        onClose={() => setIsPanchayatOpen(false)}
+        currentTrack={currentTrack}
+        currentMode={currentMode}
+        listenerCount={listenerCount}
+        onModeChange={handleModeChange}
+        onSelectTrack={loadTrack}
+      />
 
       {/* Floating Glassmorphic Toast Notification */}
       {toastMessage && <div className="shortcut-toast">{toastMessage}</div>}
