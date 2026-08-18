@@ -206,6 +206,11 @@ export default function App() {
           ...prev,
           ...livePlaylists,
         }));
+        // Select a fresh random track across the full live playlist of the active vibe on enter
+        const liveCurrentPl = livePlaylists[currentMode];
+        if (liveCurrentPl && liveCurrentPl.length > 0) {
+          loadNewPlaylist(liveCurrentPl);
+        }
       }
     });
   }, []);
