@@ -303,14 +303,16 @@ export default function PanchayatDrawer({
           {messages.length === 0 && (
             <div className="panchayat-empty-wrap">
               <p className="empty-hindi-quote">बोली ऐसी बोलो, मन भी राजी हो जावै।</p>
-              <p className="empty-chalo-text">Chalo yeh bataao,</p>
-              <div className="empty-questions-container">
-                {randomQuestions[0] && (
-                  <p className="empty-question-text question-left">{randomQuestions[0]}</p>
-                )}
-                {randomQuestions[1] && (
-                  <p className="empty-question-text question-right">{randomQuestions[1]}</p>
-                )}
+              <div className="empty-conversation-block">
+                <p className="empty-chalo-text">Chalo yeh bataao,</p>
+                <div className="empty-questions-container">
+                  {randomQuestions[0] && (
+                    <p className="empty-question-text">{randomQuestions[0]}</p>
+                  )}
+                  {randomQuestions[1] && (
+                    <p className="empty-question-text">{randomQuestions[1]}</p>
+                  )}
+                </div>
               </div>
               <p className="empty-punchline">Panchayat karoooooooooooo!</p>
             </div>
