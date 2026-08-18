@@ -823,12 +823,6 @@
     animation: panchayatMobileShrink 0.3s cubic-bezier(0.32, 0.72, 0, 1) both;
   }
 
-  .panchayat-card.keyboard-open {
-    bottom: 8px !important;
-    max-height: calc(100% - 16px) !important;
-    top: auto !important;
-  }
-
   .panchayat-card.keyboard-open .panchayat-messages {
     flex: 1 1 auto;
     min-height: 50px;

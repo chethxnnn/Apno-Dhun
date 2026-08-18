@@ -76,14 +76,7 @@
     overscroll-behavior: none;
   }
 
-  /* When typing inside chat on mobile/Instagram, hide player dock and footer underneath so chat has full screen */
-  .app.keyboard-open .player-dock,
-  .app.keyboard-open .mobile-footer {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transform: translateY(40px) !important;
-    transition: opacity 0.22s ease, transform 0.22s ease !important;
-  }
+
 }
 
 /* Keep mobile footer visible when Panchayat chat is open */
