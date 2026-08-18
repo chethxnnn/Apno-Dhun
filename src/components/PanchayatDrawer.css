@@ -7,7 +7,7 @@
 .panchayat-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 45;
+  z-index: 85;
   background: transparent;
   pointer-events: none;
   display: flex;
@@ -28,7 +28,7 @@
   bottom: 96px; /* Exact same baseline where bottom of player dock is on desktop */
   width: 365px; /* Widened from left side */
   max-height: calc(100vh - 231px);
-  z-index: 53;
+  z-index: 90;
   display: flex;
   flex-direction: column;
   background: rgba(14, 12, 16, 0.90);
