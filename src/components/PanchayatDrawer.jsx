@@ -272,6 +272,9 @@ export default function PanchayatDrawer({
         }
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Chat Wallpaper Layer (Bottom half subtle visibility, top half transparent) */}
+        <div className="panchayat-wallpaper" aria-hidden="true" />
+
         {/* Redesigned Header: Centered Panchayat Logo + 'You are [Avatar] [Name] #[Number]' subtitle + Top-right Close Button */}
         <div className="panchayat-header">
           <div className="panchayat-header-center">
@@ -415,7 +418,13 @@ export default function PanchayatDrawer({
                 disabled={!currentTrack}
                 title="Share what you're listening to"
               >
-                🎵 Share
+                <img
+                  src="/chat-icon.png"
+                  alt="Share"
+                  className="share-song-icon"
+                  draggable="false"
+                />
+                <span className="share-song-label">Share</span>
               </button>
             </div>
 
