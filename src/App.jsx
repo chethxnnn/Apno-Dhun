@@ -18,6 +18,8 @@ import { useShake } from './hooks/useShake';
 import { playlists as initialPlaylists, modeConfig } from './data/playlists';
 import { isNewVibeActive, latestVibeAnnouncement, getActiveNewVibeKey } from './data/newVibeConfig';
 import { fetchAllLivePlaylists } from './services/youtubeApi';
+import { getIdentity } from './data/rajasthaniNames';
+import { joinPanchayat, leavePanchayat, onMessage, sendTextMessage, sendSongShare } from './services/panchayatChat';
 import { Analytics } from '@vercel/analytics/react';
 
 const GHUNGROO_VIDEO_ID = 'CvCD8ZEoIes';
@@ -31,11 +33,45 @@ export default function App() {
   const [isAnnouncementOpen, setIsAnnouncementOpen] = useState(false);
   const [isPanchayatOpen, setIsPanchayatOpen] = useState(false);
   const [unreadPanchayatCount, setUnreadPanchayatCount] = useState(0);
+  const [panchayatMessages, setPanchayatMessages] = useState([]);
+  const [panchayatIdentity, setPanchayatIdentity] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
 
   const ghungrooContainerRef = useRef(null);
   const ghungrooPlayerRef = useRef(null);
   const toastTimerRef = useRef(null);
+  const prevMsgLengthRef = useRef(0);
+
+  // Background Connection to Panchayat Live Chat
+  useEffect(() => {
+    const id = getIdentity();
+    setPanchayatIdentity(id);
+    joinPanchayat(id);
+
+    const unsubMsg = onMessage((msg) => {
+      setPanchayatMessages((prev) => {
+        const next = [...prev, msg];
+        if (next.length > 100) return next.slice(next.length - 100);
+        return next;
+      });
+    });
+
+    return () => {
+      if (unsubMsg) unsubMsg();
+      leavePanchayat();
+    };
+  }, []);
+
+  // Track unread messages when Panchayat is closed
+  useEffect(() => {
+    if (isPanchayatOpen) {
+      setUnreadPanchayatCount(0);
+    } else if (panchayatMessages.length > prevMsgLengthRef.current) {
+      const diff = panchayatMessages.length - prevMsgLengthRef.current;
+      setUnreadPanchayatCount((prev) => prev + diff);
+    }
+    prevMsgLengthRef.current = panchayatMessages.length;
+  }, [panchayatMessages, isPanchayatOpen]);
 
   const listenerCount = useLiveListeners();
   const currentPlaylist = activePlaylists[currentMode] || initialPlaylists[currentMode];
@@ -67,10 +103,10 @@ export default function App() {
 
   // Mobile / iPad Shake Phone Gesture: Open Dhun Card on shake (disabled when Panchayat chat is open)
   useShake(() => {
-    if (!isPanchayatOpen) {
+    if (!isPanchayatOpen && !isQueueOpen && !isPatrikaOpen) {
       setIsPatrikaOpen(true);
     }
-  }, !isPanchayatOpen);
+  }, !isPanchayatOpen && !isQueueOpen && !isPatrikaOpen);
 
   const {
     containerRef,
@@ -94,6 +130,7 @@ export default function App() {
     seekTo,
     loadTrack,
     loadNewPlaylist,
+    loadSpecificTrack,
   } = useYouTubePlayer(currentPlaylist);
 
   // Initialize dedicated Ghungroo YouTube audio player instance
@@ -231,7 +268,7 @@ export default function App() {
     setIsAnnouncementOpen(false);
   }, []);
 
-  // Play exact shared song from Panchayat Chat (switching vibe + loading track)
+  // Play exact shared song from Panchayat Chat (switching vibe + loading track directly)
   const handlePlaySharedSong = useCallback(
     (song) => {
       if (!song) return;
@@ -254,15 +291,11 @@ export default function App() {
 
       if (targetMode !== currentMode) {
         setCurrentMode(targetMode);
-        loadNewPlaylist(targetPl);
       }
 
-      setTimeout(() => {
-        loadTrack(trackIndex);
-        play();
-      }, 100);
+      loadSpecificTrack(targetPl, trackIndex, song.youtubeId);
     },
-    [currentMode, activePlaylists, loadNewPlaylist, loadTrack, play]
+    [currentMode, activePlaylists, loadSpecificTrack]
   );
 
   // Pro Interactivity Shortcuts: Space, M, S, F, Q, P, G, Escape, Arrows
@@ -469,6 +502,10 @@ export default function App() {
       <PanchayatDrawer
         isOpen={isPanchayatOpen}
         onClose={() => setIsPanchayatOpen(false)}
+        identity={panchayatIdentity}
+        messages={panchayatMessages}
+        onSendMessage={sendTextMessage}
+        onSendSong={sendSongShare}
         currentTrack={currentTrack}
         currentMode={currentMode}
         listenerCount={listenerCount}

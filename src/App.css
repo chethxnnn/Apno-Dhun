@@ -57,6 +57,21 @@
   pointer-events: none !important;
 }
 
+/* Prevent background website from shifting or scrolling when mobile keyboard opens */
+@media (max-width: 1024px) {
+  .app.panchayat-active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+}
+
 /* Keep mobile footer visible when Panchayat chat is open */
 
 /* Hide Panchayat floating button when chat itself, queue, or patrika is open */

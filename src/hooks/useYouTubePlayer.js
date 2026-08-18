@@ -320,6 +320,37 @@ export function useYouTubePlayer(playlist) {
     [fetchTrackMeta]
   );
 
+  // Exact song loading for shared songs in chat (bypasses random index selection)
+  const loadSpecificTrack = useCallback(
+    (newPl, targetIndex, youtubeId) => {
+      playlistRef.current = newPl;
+      let finalIdx = targetIndex;
+      if (typeof finalIdx !== 'number' || finalIdx < 0 || finalIdx >= newPl.length) {
+        if (youtubeId) {
+          finalIdx = newPl.findIndex((t) => t.id === youtubeId);
+        }
+        if (finalIdx === -1) finalIdx = 0;
+      }
+      setCurrentTrackIndex(finalIdx);
+      setCurrentTime(0);
+      setDuration(0);
+      setIsBuffering(false);
+      const videoId = youtubeId || newPl[finalIdx]?.id;
+      if (videoId) {
+        fetchTrackMeta(videoId);
+      }
+      startSilentAudio();
+      if (playerRef.current && typeof playerRef.current.loadVideoById === 'function' && videoId) {
+        try {
+          playerRef.current.loadVideoById(videoId);
+        } catch (e) {
+          console.warn('loadSpecificTrack error:', e);
+        }
+      }
+    },
+    [fetchTrackMeta, startSilentAudio]
+  );
+
   const play = useCallback(() => {
     startSilentAudio();
     if (playerRef.current && typeof playerRef.current.playVideo === 'function') {
@@ -520,5 +551,6 @@ export function useYouTubePlayer(playlist) {
     seekTo,
     loadTrack,
     loadNewPlaylist,
+    loadSpecificTrack,
   };
 }

@@ -12,6 +12,10 @@ function formatTime(ts) {
 export default function PanchayatDrawer({
   isOpen,
   onClose,
+  identity: propIdentity,
+  messages: propMessages,
+  onSendMessage,
+  onSendSong,
   currentTrack,
   currentMode,
   listenerCount = 1,
@@ -21,12 +25,12 @@ export default function PanchayatDrawer({
 }) {
   const [isMounted, setIsMounted] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const [identity, setIdentity] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [onlineCount, setOnlineCount] = useState(listenerCount);
   const [inputText, setInputText] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [keyboardOffset, setKeyboardOffset] = useState(0);
+
+  const messages = propMessages || [];
+  const identity = propIdentity || getIdentity();
 
   const messagesContainerRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -49,62 +53,59 @@ export default function PanchayatDrawer({
     }
   }, [isOpen, isMounted]);
 
-  // Connect to Realtime Broadcast (or Local In-Memory Relay) on mount
+  const scrollToBottom = useCallback((smooth = false) => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({
+        behavior: smooth ? 'smooth' : 'auto',
+        block: 'end',
+      });
+    }
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, []);
+
+  // Auto-scroll to latest chat on opening drawer (initial snap + smooth finish after animation)
   useEffect(() => {
     if (isMounted) {
-      const id = getIdentity();
-      setIdentity(id);
-      joinPanchayat(id);
-
-      const unsubMsg = onMessage((msg) => {
-        setMessages((prev) => {
-          const next = [...prev, msg];
-          if (next.length > 100) return next.slice(next.length - 100);
-          return next;
-        });
-      });
-
-      const unsubPresence = onPresenceChange((count) => {
-        setOnlineCount(count);
-      });
-
+      scrollToBottom(false);
+      const t1 = setTimeout(() => scrollToBottom(false), 50);
+      const t2 = setTimeout(() => scrollToBottom(true), 240);
       return () => {
-        if (unsubMsg) unsubMsg();
-        if (unsubPresence) unsubPresence();
-        leavePanchayat();
+        clearTimeout(t1);
+        clearTimeout(t2);
       };
     }
-  }, [isMounted]);
+  }, [isMounted, scrollToBottom]);
 
   // Auto-scroll on new messages
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (isMounted && messages.length > 0) {
+      scrollToBottom(true);
     }
-  }, [messages]);
+  }, [messages, isMounted, scrollToBottom]);
 
-  // Smooth mobile/iPad keyboard auto-adjustment (Chat contracts cleanly without moving background site)
+  // Mobile / iPad keyboard auto-adjustment: keeps background website locked and adjusts card
   useEffect(() => {
     if (!window.visualViewport) return;
 
     const viewport = window.visualViewport;
 
-    const handleViewportResize = () => {
+    const handleViewportChange = () => {
+      window.scrollTo(0, 0);
       if (!isInputFocused) {
         setKeyboardOffset(0);
         return;
       }
       const keyboardHeight = window.innerHeight - viewport.height;
-      if (keyboardHeight > 80) {
-        setKeyboardOffset(keyboardHeight);
-      } else {
-        setKeyboardOffset(0);
-      }
+      setKeyboardOffset(keyboardHeight > 60 ? keyboardHeight : 0);
     };
 
-    viewport.addEventListener('resize', handleViewportResize);
+    viewport.addEventListener('resize', handleViewportChange);
+    viewport.addEventListener('scroll', handleViewportChange);
     return () => {
-      viewport.removeEventListener('resize', handleViewportResize);
+      viewport.removeEventListener('resize', handleViewportChange);
+      viewport.removeEventListener('scroll', handleViewportChange);
     };
   }, [isInputFocused]);
 
@@ -121,7 +122,11 @@ export default function PanchayatDrawer({
       return; // Duplicate block
     }
 
-    sendTextMessage(identity, text);
+    if (onSendMessage) {
+      onSendMessage(identity, text);
+    } else {
+      sendTextMessage(identity, text);
+    }
     lastSendTimeRef.current = now;
     lastMessageRef.current = text;
     setInputText('');
@@ -140,13 +145,19 @@ export default function PanchayatDrawer({
     const now = Date.now();
     if (now - lastSendTimeRef.current < 1500) return;
 
-    sendSongShare(identity, {
+    const songData = {
       title: currentTrack.title,
       artist: currentTrack.artist || 'Apno Dhun',
       vibeKey: currentMode,
       trackIndex: currentTrack.trackIndex || 0,
       youtubeId: currentTrack.id,
-    });
+    };
+
+    if (onSendSong) {
+      onSendSong(identity, songData);
+    } else {
+      sendSongShare(identity, songData);
+    }
 
     lastSendTimeRef.current = now;
   };
@@ -168,7 +179,11 @@ export default function PanchayatDrawer({
   const handleQuickEmoji = (emoji) => {
     const now = Date.now();
     if (now - lastSendTimeRef.current < 1500) return;
-    sendTextMessage(identity, emoji);
+    if (onSendMessage) {
+      onSendMessage(identity, emoji);
+    } else {
+      sendTextMessage(identity, emoji);
+    }
     lastSendTimeRef.current = now;
   };
 
