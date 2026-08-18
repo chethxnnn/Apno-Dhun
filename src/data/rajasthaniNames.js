@@ -42,7 +42,7 @@ const names = [
   'Ghumela',
   'Ghumariya',
   'Fuddu',
-  'Fuddi',
+  
   'Lappu',
   'Lappudi',
   'Tuntuniya',
