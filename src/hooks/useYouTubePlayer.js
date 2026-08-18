@@ -187,6 +187,9 @@ export function useYouTubePlayer(playlist) {
       if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
         try {
           playerRef.current.loadVideoById(playlistRef.current[i].id);
+          if (typeof playerRef.current.playVideo === 'function') {
+            playerRef.current.playVideo();
+          }
         } catch (e) {
           console.warn('loadVideoById call failed:', e);
         }
@@ -244,7 +247,6 @@ export function useYouTubePlayer(playlist) {
           rel: 0,
           showinfo: 0,
           iv_load_policy: 3,
-          origin: window.location.origin,
         },
         events: {
           onReady: (event) => {

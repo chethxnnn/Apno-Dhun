@@ -41,6 +41,13 @@ export default function PanchayatDrawer({
   const cardRef = useRef(null);
   const lastSendTimeRef = useRef(0);
   const lastMessageRef = useRef('');
+  const initialWindowHeightRef = useRef(typeof window !== 'undefined' ? window.innerHeight : 800);
+
+  useEffect(() => {
+    if (!isInputFocused && typeof window !== 'undefined') {
+      initialWindowHeightRef.current = window.innerHeight;
+    }
+  }, [isInputFocused]);
 
   // Mount/Unmount with Apple iOS physics transition
   useEffect(() => {
@@ -131,6 +138,19 @@ export default function PanchayatDrawer({
       }
 
       const isMobile = window.innerWidth <= 1023;
+      const initialHeight = initialWindowHeightRef.current || window.innerHeight;
+      const windowDidResize = window.innerHeight < initialHeight - 120;
+
+      // Case 1: Instagram Android WebView (native adjustResize mode)
+      // The OS already physically shrank the WebView window frame above the keyboard.
+      // Setting keyboardOffset = 0 keeps the card docked right above the keyboard without double-pushing!
+      if (windowDidResize) {
+        setKeyboardOffset(0);
+        setViewportVisibleHeight(window.innerHeight);
+        return;
+      }
+
+      // Case 2: Browsers with visualViewport resizing (iOS Safari, standard Chrome visual viewport)
       if (window.visualViewport) {
         const viewport = window.visualViewport;
         const offsetTop = viewport.offsetTop || 0;
@@ -144,7 +164,7 @@ export default function PanchayatDrawer({
         }
       }
 
-      // Guaranteed elevation fallback on Android devices (e.g. OnePlus 9 Pro)
+      // Case 3: Android Chrome (overlays-content mode where window does NOT resize)
       if (isMobile) {
         const fallbackKbHeight = Math.max(Math.round(window.innerHeight * 0.38), 300);
         setKeyboardOffset(fallbackKbHeight);
@@ -273,13 +293,18 @@ export default function PanchayatDrawer({
     >
       <div
         ref={cardRef}
-        className={`panchayat-card panchayat-mode-${currentMode} ${isClosing ? 'closing' : ''} ${keyboardOffset > 0 ? 'keyboard-open' : ''}`}
+        className={`panchayat-card panchayat-mode-${currentMode} ${isClosing ? 'closing' : ''} ${isInputFocused || keyboardOffset > 0 ? 'keyboard-open' : ''}`}
         style={
-          keyboardOffset > 0
-            ? {
-                bottom: `${keyboardOffset}px`,
-                maxHeight: viewportVisibleHeight > 0 ? `${viewportVisibleHeight - 65}px` : undefined,
-              }
+          isInputFocused
+            ? keyboardOffset > 0
+              ? {
+                  bottom: `${keyboardOffset}px`,
+                  maxHeight: viewportVisibleHeight > 0 ? `${viewportVisibleHeight - 65}px` : undefined,
+                }
+              : {
+                  bottom: '12px',
+                  maxHeight: viewportVisibleHeight > 0 ? `${viewportVisibleHeight - 24}px` : 'calc(100% - 24px)',
+                }
             : undefined
         }
         onClick={(e) => e.stopPropagation()}

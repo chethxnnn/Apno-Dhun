@@ -5,11 +5,10 @@ export default function YouTubeEmbed({ containerRef, ghungrooRef }) {
     <div
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '240px',
+        top: '-9999px',
+        left: '-9999px',
+        width: '320px',
         height: '240px',
-        opacity: 0.001,
         pointerEvents: 'none',
         overflow: 'hidden',
         zIndex: -1,
