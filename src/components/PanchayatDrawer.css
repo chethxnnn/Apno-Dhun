@@ -142,77 +142,84 @@
   border-color: rgba(64, 90, 135, 0.45);
 }
 
-/* ── Header: Bigger Logo (Left) + Live Counter & Close Button (Right) — Seamless without dividing border ── */
+/* ── Header: Centered Panchayat Logo + Subtitle (Seamless without dividing border) ── */
 .panchayat-header {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px 6px;
-  border-bottom: none; /* No dividing border */
+  justify-content: center;
+  padding: 8px 16px 2px;
+  border-bottom: none;
   flex-shrink: 0;
   background: transparent;
+  text-align: center;
 }
 
-.panchayat-brand-logo {
-  height: 34px; /* Bigger logo in the left corner */
+.panchayat-header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: 100%;
+}
+
+.panchayat-main-logo {
+  height: 52px;
+  max-width: 85%;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.6));
   pointer-events: none;
   user-select: none;
+  transition: transform 0.2s ease;
 }
 
-.panchayat-header-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.panchayat-header-online {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 9px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.panchayat-header-online .online-text {
+.panchayat-user-subtitle {
+  margin: 0;
   font-family: 'Inter', sans-serif;
   font-size: 10.5px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(255, 255, 255, 0.55);
   letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
 }
 
-.online-dot {
-  width: 5.5px;
-  height: 5.5px;
-  border-radius: 50%;
-  background: #34C759;
-  box-shadow: 0 0 6px rgba(52, 199, 89, 0.85);
-  animation: onlinePulse 2.2s ease-in-out infinite;
+.you-are-label {
+  color: rgba(255, 255, 255, 0.40);
+  font-size: 9.5px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
 }
 
-@keyframes onlinePulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.55; transform: scale(0.85); }
+.user-moniker {
+  font-weight: 600;
+  font-size: 10.5px;
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .panchayat-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
   width: 28px;
   height: 28px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.65);
   display: grid;
   place-items: center;
-  font-size: 12.5px;
+  font-size: 12px;
   cursor: pointer;
   outline: none;
   transition: all 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  z-index: 10;
 }
 
 .panchayat-close-btn:hover {
@@ -223,39 +230,6 @@
 
 .panchayat-close-btn:active {
   transform: scale(0.92);
-}
-
-/* ── Identity Bar (You) — Seamless without dividing border ── */
-.panchayat-identity-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 16px 8px;
-  background: transparent;
-  border-bottom: none; /* No dividing border */
-  flex-shrink: 0;
-}
-
-.identity-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 9px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-}
-
-.identity-avatar {
-  font-size: 12px;
-  line-height: 1;
-}
-
-.identity-name {
-  font-family: 'Inter', sans-serif;
 }
 
 .identity-you {
@@ -763,15 +737,15 @@
   }
 
   .panchayat-header {
-    padding: 11px 14px 9px;
+    padding: 8px 14px 2px;
   }
 
-  .panchayat-brand-logo {
-    height: 26px;
+  .panchayat-main-logo {
+    height: 42px;
   }
 
-  .panchayat-identity-bar {
-    padding: 5px 14px;
+  .panchayat-user-subtitle {
+    font-size: 10px;
   }
 
   .panchayat-messages {

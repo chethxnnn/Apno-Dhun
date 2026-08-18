@@ -432,6 +432,7 @@ export default function Player({
                       value={isMuted ? 0 : volume}
                       onChange={(e) => onVolumeChange && onVolumeChange(Number(e.target.value))}
                       className="vol-slider"
+                      style={{ '--vol-pct': `${isMuted ? 0 : volume}%` }}
                       aria-label="Volume"
                     />
                   </div>

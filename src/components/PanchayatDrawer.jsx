@@ -270,40 +270,31 @@ export default function PanchayatDrawer({
         }
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header: Bigger Apno Dhun Logo (Left) + Live Counter & Close Button (Right) */}
+        {/* Redesigned Header: Centered Panchayat Logo + 'You are [Avatar] [Name] #[Number]' subtitle + Top-right Close Button */}
         <div className="panchayat-header">
-          <img
-            src="/apno-dhun-logo.png"
-            alt="Apno Dhun"
-            className="panchayat-brand-logo"
-          />
-          <div className="panchayat-header-right">
-            <div className="panchayat-header-online">
-              <span className="online-dot" />
-              <span className="online-text">{displayCount} Mehmaan</span>
-            </div>
-            <button
-              className="panchayat-close-btn"
-              onClick={onClose}
-              aria-label="Close Panchayat"
-            >
-              ✕
-            </button>
+          <div className="panchayat-header-center">
+            <img
+              src="/panchayat.png"
+              alt="Panchayat"
+              className="panchayat-main-logo"
+            />
+            {identity && (
+              <p className="panchayat-user-subtitle">
+                <span className="you-are-label">You are </span>
+                <span className="user-moniker" style={{ color: identity.color || '#FFDF73' }}>
+                  {identity.avatar} {identity.name} #{identity.number}
+                </span>
+              </p>
+            )}
           </div>
+          <button
+            className="panchayat-close-btn"
+            onClick={onClose}
+            aria-label="Close Panchayat"
+          >
+            ✕
+          </button>
         </div>
-
-        {/* Identity Subheader (You) */}
-        {identity && (
-          <div className="panchayat-identity-bar">
-            <div className="identity-pill" style={{ borderColor: identity.color + '55' }}>
-              <span className="identity-avatar">{identity.avatar}</span>
-              <span className="identity-name" style={{ color: identity.color }}>
-                {identity.name} #{identity.number}
-              </span>
-              <span className="identity-you">(You)</span>
-            </div>
-          </div>
-        )}
 
         {/* Message Feed */}
         <div className="panchayat-messages" ref={messagesContainerRef}>
