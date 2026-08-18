@@ -20,6 +20,14 @@ function loadYouTubeAPI() {
       apiLoaded = true;
       resolve();
     };
+
+    // Polling fallback for WebViews where callback fires before handler attaches
+    const poll = setInterval(() => {
+      if (window.YT && window.YT.Player) {
+        clearInterval(poll);
+        if (!apiLoaded) { apiLoaded = true; resolve(); }
+      }
+    }, 100);
   });
   return apiLoadPromise;
 }
@@ -32,6 +40,7 @@ export function useYouTubePlayer(playlist) {
   const containerRef = useRef(null);
   const intervalRef = useRef(null);
   const silentAudioRef = useRef(null);
+  const pendingPlayRef = useRef(false);
 
   const getRandomIndex = (len) => (len > 0 ? Math.floor(Math.random() * len) : 0);
 
@@ -251,6 +260,14 @@ export function useYouTubePlayer(playlist) {
                   iframe.setAttribute('playsinline', '1');
                 }
               } catch (err) {}
+
+              // If user tapped Play before iframe was ready, honor it now
+              if (pendingPlayRef.current) {
+                pendingPlayRef.current = false;
+                try {
+                  event.target.playVideo();
+                } catch (e) {}
+              }
             }
           },
           onStateChange: (e) => {
@@ -360,27 +377,28 @@ export function useYouTubePlayer(playlist) {
   );
 
   const play = useCallback(() => {
-    startSilentAudio();
-    if (playerRef.current) {
-      try {
-        if (typeof playerRef.current.unMute === 'function' && !isMuted) {
-          playerRef.current.unMute();
-        }
-        const state = typeof playerRef.current.getPlayerState === 'function' ? playerRef.current.getPlayerState() : -1;
-        // If unstarted (-1), cued (5), or undefined, trigger immediate stream loading
-        if (state === -1 || state === 5 || state === undefined) {
-          const curId = playlistRef.current[trackIndexRef.current]?.id;
-          if (curId && typeof playerRef.current.loadVideoById === 'function') {
-            playerRef.current.loadVideoById(curId);
-            return;
-          }
-        }
-        if (typeof playerRef.current.playVideo === 'function') {
-          playerRef.current.playVideo();
-        }
-      } catch (e) {}
+    if (!playerRef.current || !isReady) {
+      // Player not ready yet — queue intent for onReady
+      pendingPlayRef.current = true;
+      setIsBuffering(true);
+      return;
     }
-  }, [startSilentAudio, isMuted]);
+    try {
+      // CRITICAL: Call playVideo() FIRST to use the user gesture token.
+      // Do NOT call audio.play() or loadVideoById() before this —
+      // they consume the single gesture token on Android WebView.
+      if (typeof playerRef.current.unMute === 'function' && !isMuted) {
+        playerRef.current.unMute();
+      }
+      if (typeof playerRef.current.playVideo === 'function') {
+        playerRef.current.playVideo();
+      }
+    } catch (e) {
+      console.warn('play() error:', e);
+    }
+    // Start silent audio AFTER playVideo() so it doesn't steal the gesture
+    startSilentAudio();
+  }, [startSilentAudio, isMuted, isReady]);
 
   const pause = useCallback(() => {
     stopSilentAudio();

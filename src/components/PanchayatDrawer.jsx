@@ -152,11 +152,22 @@ export default function PanchayatDrawer({
       }
     };
 
+    // Instagram Android WebView forcibly scrolls window on input focus —
+    // aggressively fight it by resetting scroll on every scroll event
+    const lockScroll = () => {
+      if (isInputFocused) {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
+    };
+
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', handleViewportChange);
       window.visualViewport.addEventListener('scroll', handleViewportChange);
     }
     window.addEventListener('resize', handleViewportChange);
+    window.addEventListener('scroll', lockScroll, { passive: false });
     handleViewportChange();
 
     return () => {
@@ -165,6 +176,7 @@ export default function PanchayatDrawer({
         window.visualViewport.removeEventListener('scroll', handleViewportChange);
       }
       window.removeEventListener('resize', handleViewportChange);
+      window.removeEventListener('scroll', lockScroll);
     };
   }, [isInputFocused]);
 
@@ -437,7 +449,15 @@ export default function PanchayatDrawer({
                 placeholder="Message Panchayat..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value.slice(0, 200))}
-                onFocus={() => setIsInputFocused(true)}
+                onFocus={() => {
+                  setIsInputFocused(true);
+                  // Fight Instagram Android WebView's forced window scroll
+                  requestAnimationFrame(() => {
+                    window.scrollTo(0, 0);
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                  });
+                }}
                 onBlur={() => setIsInputFocused(false)}
                 onKeyDown={handleKeyDown}
                 autoComplete="off"
