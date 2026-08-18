@@ -114,41 +114,54 @@ export default function PanchayatDrawer({
 
   // Mobile / iPad keyboard auto-adjustment: positions chat window directly above virtual keyboard
   useEffect(() => {
-    if (!window.visualViewport) return;
-
-    const viewport = window.visualViewport;
-
     const handleViewportChange = () => {
       if (window.scrollY !== 0 || document.documentElement.scrollTop !== 0 || document.body.scrollTop !== 0) {
         window.scrollTo(0, 0);
         document.documentElement.scrollTop = 0;
         document.body.scrollTop = 0;
       }
+
       if (!isInputFocused) {
         setKeyboardOffset(0);
         setViewportVisibleHeight(0);
         return;
       }
-      const offsetTop = viewport.offsetTop || 0;
-      const currentHeight = viewport.height;
-      const keyboardHeight = Math.max(0, window.innerHeight - (currentHeight + offsetTop));
 
-      if (keyboardHeight > 50) {
-        setKeyboardOffset(keyboardHeight + 8);
-        setViewportVisibleHeight(currentHeight);
-      } else {
-        setKeyboardOffset(0);
-        setViewportVisibleHeight(0);
+      const isMobile = window.innerWidth <= 1023;
+      if (window.visualViewport) {
+        const viewport = window.visualViewport;
+        const offsetTop = viewport.offsetTop || 0;
+        const currentHeight = viewport.height;
+        const keyboardHeight = Math.max(0, window.innerHeight - (currentHeight + offsetTop));
+
+        if (keyboardHeight > 50) {
+          setKeyboardOffset(keyboardHeight + 8);
+          setViewportVisibleHeight(currentHeight);
+          return;
+        }
+      }
+
+      // Guaranteed elevation fallback on Android devices (e.g. OnePlus 9 Pro)
+      if (isMobile) {
+        const fallbackKbHeight = Math.max(Math.round(window.innerHeight * 0.38), 300);
+        setKeyboardOffset(fallbackKbHeight);
+        setViewportVisibleHeight(window.innerHeight - fallbackKbHeight);
       }
     };
 
-    viewport.addEventListener('resize', handleViewportChange);
-    viewport.addEventListener('scroll', handleViewportChange);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleViewportChange);
+      window.visualViewport.addEventListener('scroll', handleViewportChange);
+    }
+    window.addEventListener('resize', handleViewportChange);
     handleViewportChange();
 
     return () => {
-      viewport.removeEventListener('resize', handleViewportChange);
-      viewport.removeEventListener('scroll', handleViewportChange);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleViewportChange);
+        window.visualViewport.removeEventListener('scroll', handleViewportChange);
+      }
+      window.removeEventListener('resize', handleViewportChange);
     };
   }, [isInputFocused]);
 

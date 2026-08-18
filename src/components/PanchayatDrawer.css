@@ -757,7 +757,9 @@
   }
 
   .panchayat-card.keyboard-open .panchayat-messages {
-    max-height: 140px;
+    flex: 1 1 auto;
+    min-height: 50px;
+    max-height: 220px;
   }
 
   .panchayat-header {
