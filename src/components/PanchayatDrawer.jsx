@@ -305,9 +305,12 @@ export default function PanchayatDrawer({
               <p className="empty-hindi-quote">बोली ऐसी बोलो, मन भी राजी हो जावै।</p>
               <p className="empty-chalo-text">Chalo yeh bataao,</p>
               <div className="empty-questions-container">
-                {randomQuestions.map((q, idx) => (
-                  <p key={idx} className="empty-question-text">{q}</p>
-                ))}
+                {randomQuestions[0] && (
+                  <p className="empty-question-text question-left">{randomQuestions[0]}</p>
+                )}
+                {randomQuestions[1] && (
+                  <p className="empty-question-text question-right">{randomQuestions[1]}</p>
+                )}
               </div>
               <p className="empty-punchline">Panchayat karoooooooooooo!</p>
             </div>

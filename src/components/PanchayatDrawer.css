@@ -301,10 +301,10 @@
 .empty-questions-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 4px 0 2px;
+  gap: 10px;
+  margin: 6px 0;
   width: 100%;
-  padding: 0 6px;
+  padding: 0 4px;
   box-sizing: border-box;
 }
 
@@ -316,6 +316,17 @@
   margin: 0;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
   word-break: break-word;
+  max-width: 90%;
+}
+
+.empty-question-text.question-left {
+  text-align: left;
+  align-self: flex-start;
+}
+
+.empty-question-text.question-right {
+  text-align: right;
+  align-self: flex-end;
 }
 
 .empty-punchline {

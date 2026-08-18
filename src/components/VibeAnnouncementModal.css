@@ -1,7 +1,7 @@
 .announcement-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 35; /* Sits cleanly behind Queue Viewer (z-40/52) and Player (z-50) */
+  z-index: 70; /* Sits in front of player (z-50) so button is never covered */
   background: transparent; /* No dimming or fading of the background website! */
   pointer-events: none; /* Let background remain interactive outside card */
   display: flex;
@@ -197,18 +197,20 @@
     align-items: flex-end;
     justify-content: center;
     padding: 0 16px;
+    z-index: 70 !important;
   }
 
   .announcement-modal-card {
     position: fixed;
-    bottom: 172px; /* Precision position directly above mobile player dock */
+    bottom: 250px; /* Elevated significantly higher on mobile, well above player dock */
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 32px);
-    max-width: min(88vw, 320px);
-    max-height: calc(100dvh - 255px);
+    width: calc(100% - 36px);
+    max-width: min(84vw, 290px);
+    max-height: calc(100dvh - 330px);
     aspect-ratio: 1122 / 1402;
     border-radius: 16px;
+    z-index: 75 !important;
     animation: announcementSlideUpMobile 0.38s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     transform-origin: center bottom;
   }
@@ -220,7 +222,7 @@
   @keyframes announcementSlideUpMobile {
     from {
       opacity: 0;
-      transform: translateX(-50%) translateY(20px) scale(0.94);
+      transform: translateX(-50%) translateY(24px) scale(0.92);
     }
     to {
       opacity: 1;
@@ -235,7 +237,7 @@
     }
     to {
       opacity: 0;
-      transform: translateX(-50%) translateY(16px) scale(0.94);
+      transform: translateX(-50%) translateY(20px) scale(0.92);
     }
   }
 
@@ -247,8 +249,8 @@
   }
 
   .announcement-checkout-btn {
-    bottom: 16px;
-    padding: 9.5px 24px;
+    bottom: 15px;
+    padding: 9px 24px;
     font-size: 13px;
     border-radius: 11px;
   }
