@@ -65,42 +65,55 @@ export function joinPanchayat(identity) {
 
   if (channel) return true; // Already joined
 
-  channel = supabase.channel(CHANNEL_NAME, {
-    config: {
-      broadcast: { self: true }, // Receive own messages for confirmation
-      presence: { key: identity.id },
-    },
-  });
+  try {
+    channel = supabase.channel(CHANNEL_NAME, {
+      config: {
+        broadcast: { self: true }, // Receive own messages for confirmation
+        presence: { key: identity.id },
+      },
+    });
 
-  // Listen for broadcast messages
-  channel.on('broadcast', { event: BROADCAST_EVENT }, (payload) => {
-    const message = payload.payload;
-    if (message) {
-      messageListeners.forEach((cb) => cb(message));
-    }
-  });
+    // Listen for broadcast messages
+    channel.on('broadcast', { event: BROADCAST_EVENT }, (payload) => {
+      const message = payload?.payload;
+      if (message) {
+        messageListeners.forEach((cb) => cb(message));
+      }
+    });
 
-  // Listen for presence changes (online count)
-  channel.on('presence', { event: 'sync' }, () => {
-    const state = channel.presenceState();
-    const count = Object.keys(state).length;
-    presenceListeners.forEach((cb) => cb(count));
-  });
+    // Listen for presence changes (online count)
+    channel.on('presence', { event: 'sync' }, () => {
+      try {
+        const state = channel.presenceState();
+        const count = Object.keys(state).length;
+        presenceListeners.forEach((cb) => cb(count));
+      } catch (e) {
+        /* ignore */
+      }
+    });
 
-  // Subscribe and track presence
-  channel.subscribe(async (status) => {
-    if (status === 'SUBSCRIBED') {
-      await channel.track({
-        user_id: identity.id,
-        name: identity.name,
-        number: identity.number,
-        avatar: identity.avatar,
-        online_at: new Date().toISOString(),
-      });
-    }
-  });
+    // Subscribe and track presence
+    channel.subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        try {
+          await channel.track({
+            user_id: identity.id,
+            name: identity.name,
+            number: identity.number,
+            avatar: identity.avatar,
+            online_at: new Date().toISOString(),
+          });
+        } catch (e) {
+          /* ignore */
+        }
+      }
+    });
 
-  return true;
+    return true;
+  } catch (err) {
+    console.warn('Failed to join Panchayat channel:', err);
+    return false;
+  }
 }
 
 /**

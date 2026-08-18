@@ -65,10 +65,12 @@ export default function App() {
     }
   }, [currentMode, activeNewVibeKey, isAnnouncementOpen]);
 
-  // Mobile / iPad Shake Phone Gesture: Open Dhun Card on shake!
+  // Mobile / iPad Shake Phone Gesture: Open Dhun Card on shake (disabled when Panchayat chat is open)
   useShake(() => {
-    setIsPatrikaOpen(true);
-  }, true);
+    if (!isPanchayatOpen) {
+      setIsPatrikaOpen(true);
+    }
+  }, !isPanchayatOpen);
 
   const {
     containerRef,
