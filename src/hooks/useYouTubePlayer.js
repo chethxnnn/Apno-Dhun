@@ -15,27 +15,11 @@ function loadYouTubeAPI() {
     const tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
     const first = document.getElementsByTagName('script')[0];
-    if (first && first.parentNode) {
-      first.parentNode.insertBefore(tag, first);
-    } else {
-      document.head.appendChild(tag);
-    }
-
-    const prevReady = window.onYouTubeIframeAPIReady;
+    first.parentNode.insertBefore(tag, first);
     window.onYouTubeIframeAPIReady = () => {
-      if (typeof prevReady === 'function') prevReady();
       apiLoaded = true;
       resolve();
     };
-
-    // Polling fallback in case onYouTubeIframeAPIReady already fired or got intercepted in WebViews
-    const timer = setInterval(() => {
-      if (window.YT && window.YT.Player) {
-        clearInterval(timer);
-        apiLoaded = true;
-        resolve();
-      }
-    }, 50);
   });
   return apiLoadPromise;
 }
@@ -48,7 +32,6 @@ export function useYouTubePlayer(playlist) {
   const containerRef = useRef(null);
   const intervalRef = useRef(null);
   const silentAudioRef = useRef(null);
-  const pendingPlayRef = useRef(false);
 
   const getRandomIndex = (len) => (len > 0 ? Math.floor(Math.random() * len) : 0);
 
@@ -252,6 +235,7 @@ export function useYouTubePlayer(playlist) {
           rel: 0,
           showinfo: 0,
           iv_load_policy: 3,
+          origin: window.location.origin,
         },
         events: {
           onReady: (event) => {
@@ -267,14 +251,6 @@ export function useYouTubePlayer(playlist) {
                   iframe.setAttribute('playsinline', '1');
                 }
               } catch (err) {}
-
-              if (pendingPlayRef.current) {
-                pendingPlayRef.current = false;
-                try {
-                  event.target.unMute();
-                  event.target.playVideo();
-                } catch (e) {}
-              }
             }
           },
           onStateChange: (e) => {
@@ -344,9 +320,6 @@ export function useYouTubePlayer(playlist) {
       if (playerRef.current && typeof playerRef.current.loadVideoById === 'function' && newPl[initialIdx]) {
         try {
           playerRef.current.loadVideoById(newPl[initialIdx].id);
-          if (typeof playerRef.current.playVideo === 'function') {
-            playerRef.current.playVideo();
-          }
         } catch (e) {
           console.warn('loadNewPlaylist loadVideoById error:', e);
         }
@@ -378,9 +351,6 @@ export function useYouTubePlayer(playlist) {
       if (playerRef.current && typeof playerRef.current.loadVideoById === 'function' && videoId) {
         try {
           playerRef.current.loadVideoById(videoId);
-          if (typeof playerRef.current.playVideo === 'function') {
-            playerRef.current.playVideo();
-          }
         } catch (e) {
           console.warn('loadSpecificTrack error:', e);
         }
@@ -391,22 +361,26 @@ export function useYouTubePlayer(playlist) {
 
   const play = useCallback(() => {
     startSilentAudio();
-    if (!isReady || !playerRef.current) {
-      pendingPlayRef.current = true;
-      setIsBuffering(true);
-      return;
+    if (playerRef.current) {
+      try {
+        if (typeof playerRef.current.unMute === 'function' && !isMuted) {
+          playerRef.current.unMute();
+        }
+        const state = typeof playerRef.current.getPlayerState === 'function' ? playerRef.current.getPlayerState() : -1;
+        // If unstarted (-1), cued (5), or undefined, trigger immediate stream loading
+        if (state === -1 || state === 5 || state === undefined) {
+          const curId = playlistRef.current[trackIndexRef.current]?.id;
+          if (curId && typeof playerRef.current.loadVideoById === 'function') {
+            playerRef.current.loadVideoById(curId);
+            return;
+          }
+        }
+        if (typeof playerRef.current.playVideo === 'function') {
+          playerRef.current.playVideo();
+        }
+      } catch (e) {}
     }
-    try {
-      if (typeof playerRef.current.unMute === 'function' && !isMuted) {
-        playerRef.current.unMute();
-      }
-      if (typeof playerRef.current.playVideo === 'function') {
-        playerRef.current.playVideo();
-      }
-    } catch (e) {
-      console.warn('play error:', e);
-    }
-  }, [startSilentAudio, isMuted, isReady]);
+  }, [startSilentAudio, isMuted]);
 
   const pause = useCallback(() => {
     stopSilentAudio();

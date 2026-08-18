@@ -115,7 +115,7 @@ export default function PanchayatDrawer({
     }
   }, [messages, isMounted, scrollToBottom]);
 
-  // Mobile / iPad keyboard auto-adjustment: positions chat window directly above virtual keyboard without shifting page
+  // Mobile / iPad keyboard auto-adjustment: positions chat window directly above virtual keyboard
   useEffect(() => {
     const handleViewportChange = () => {
       if (window.scrollY !== 0 || document.documentElement.scrollTop !== 0 || document.body.scrollTop !== 0) {
@@ -130,6 +130,7 @@ export default function PanchayatDrawer({
         return;
       }
 
+      const isMobile = window.innerWidth <= 1023;
       if (window.visualViewport) {
         const viewport = window.visualViewport;
         const offsetTop = viewport.offsetTop || 0;
@@ -137,16 +138,17 @@ export default function PanchayatDrawer({
         const keyboardHeight = Math.max(0, window.innerHeight - (currentHeight + offsetTop));
 
         if (keyboardHeight > 50) {
-          setKeyboardOffset(keyboardHeight + 6);
+          setKeyboardOffset(keyboardHeight + 8);
           setViewportVisibleHeight(currentHeight);
-        } else {
-          // WebView already resized its own window frame automatically (e.g. Instagram Android WebView)
-          setKeyboardOffset(0);
-          setViewportVisibleHeight(currentHeight || window.innerHeight);
+          return;
         }
-      } else {
-        setKeyboardOffset(0);
-        setViewportVisibleHeight(window.innerHeight);
+      }
+
+      // Guaranteed elevation fallback on Android devices (e.g. OnePlus 9 Pro)
+      if (isMobile) {
+        const fallbackKbHeight = Math.max(Math.round(window.innerHeight * 0.38), 300);
+        setKeyboardOffset(fallbackKbHeight);
+        setViewportVisibleHeight(window.innerHeight - fallbackKbHeight);
       }
     };
 
@@ -435,12 +437,7 @@ export default function PanchayatDrawer({
                 placeholder="Message Panchayat..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value.slice(0, 200))}
-                onFocus={() => {
-                  setIsInputFocused(true);
-                  window.scrollTo(0, 0);
-                  document.body.scrollTop = 0;
-                  document.documentElement.scrollTop = 0;
-                }}
+                onFocus={() => setIsInputFocused(true)}
                 onBlur={() => setIsInputFocused(false)}
                 onKeyDown={handleKeyDown}
                 autoComplete="off"
