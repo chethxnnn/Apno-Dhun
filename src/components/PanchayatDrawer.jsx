@@ -61,8 +61,9 @@ export default function PanchayatDrawer({
 
     const handleOutsideInteraction = (e) => {
       if (cardRef.current && !cardRef.current.contains(e.target)) {
-        // Skip if tapping on the chat launcher buttons in player
+        // Allow clicking on player dock controls without closing chat window
         if (
+          e.target.closest('.player-dock') ||
           e.target.closest('.panchayat-circle-btn') ||
           e.target.closest('.desktop-panchayat-disc')
         ) {

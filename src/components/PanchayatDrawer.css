@@ -3,13 +3,13 @@
    Glassmorphic Floating Card (Vibe-Adaptive, Expanding from Chat Icon)
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ── Backdrop Fade Overlay (Catches taps/clicks outside chat card) ── */
+/* ── Backdrop Fade Overlay ── */
 .panchayat-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 52;
+  z-index: 45;
   background: transparent;
-  pointer-events: auto;
+  pointer-events: none;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
