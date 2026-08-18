@@ -49,6 +49,24 @@ export default function PanchayatDrawer({
     }
   }, [isInputFocused]);
 
+  // When mobile keyboard opens in chat, hide player dock and footer pills underneath
+  useEffect(() => {
+    if (isInputFocused) {
+      document.body.classList.add('keyboard-open');
+      const appEl = document.querySelector('.app');
+      if (appEl) appEl.classList.add('keyboard-open');
+    } else {
+      document.body.classList.remove('keyboard-open');
+      const appEl = document.querySelector('.app');
+      if (appEl) appEl.classList.remove('keyboard-open');
+    }
+    return () => {
+      document.body.classList.remove('keyboard-open');
+      const appEl = document.querySelector('.app');
+      if (appEl) appEl.classList.remove('keyboard-open');
+    };
+  }, [isInputFocused]);
+
   // Mount/Unmount with Apple iOS physics transition
   useEffect(() => {
     if (isOpen && !isMounted) {

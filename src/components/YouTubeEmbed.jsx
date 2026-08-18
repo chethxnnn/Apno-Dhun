@@ -5,18 +5,19 @@ export default function YouTubeEmbed({ containerRef, ghungrooRef }) {
     <div
       style={{
         position: 'fixed',
-        top: '-9999px',
-        left: '-9999px',
-        width: '320px',
-        height: '240px',
+        top: 0,
+        left: 0,
+        width: '2px',
+        height: '2px',
+        opacity: 0.01,
         pointerEvents: 'none',
         overflow: 'hidden',
-        zIndex: -1,
+        zIndex: 1,
       }}
       aria-hidden="true"
     >
-      <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
-      {ghungrooRef && <div ref={ghungrooRef} style={{ width: '100%', height: '100%' }} />}
+      <div ref={containerRef} style={{ width: '200px', height: '200px' }} />
+      {ghungrooRef && <div ref={ghungrooRef} style={{ width: '200px', height: '200px' }} />}
     </div>
   );
 }
