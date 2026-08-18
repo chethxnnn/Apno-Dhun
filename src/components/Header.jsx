@@ -21,7 +21,7 @@ function getOrdinalDate(date = new Date()) {
   return `${day}${suffix} ${month}, ${year}`;
 }
 
-export default function Header({ currentMode, onModeChange, listenerCount = null }) {
+export default function Header({ currentMode, onModeChange, listenerCount }) {
   const [timeStr, setTimeStr] = useState('');
   const [secStr, setSecStr] = useState('');
   const [ampmStr, setAmpmStr] = useState('');
@@ -44,32 +44,54 @@ export default function Header({ currentMode, onModeChange, listenerCount = null
       setSimpleMobileTime(`${h12}:${m} ${ampm}`);
     };
     tick();
-    const interval = setInterval(tick, 1000);
-    return () => clearInterval(interval);
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
   }, []);
 
   return (
     <>
       <header className="hdr">
-        {/* Top-Left Corner: Royal Crest Mark (Desktop/iPad) OR Date/Time (Mobile) */}
+        {/* Top-Left Corner: Apno Dhun ✕ Apna Culturez Collab Branding */}
         <div className="hdr-left">
-          {/* Desktop/iPad: Royal Crest Badge */}
-          <div className="royal-crest-wrap desktop-crest">
-            <span className="royal-crest-text">AD</span>
-          </div>
-
-          {/* Mobile Top-Left: Date display */}
-          <div className="mobile-top-date">
-            <span className="mobile-date-text">{dateStr}</span>
+          <div className="collab-brand-wrap">
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hdr-logo-link"
+              aria-label="Apno Dhun"
+            >
+              <img
+                src="/apno-dhun-logo.png"
+                alt="Apno Dhun"
+                className="hdr-top-logo"
+                draggable="false"
+                onContextMenu={(e) => e.preventDefault()}
+              />
+            </a>
+            <span className="brand-cross">✕</span>
+            <a
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hdr-logo-link"
+              aria-label="Apna Culturez"
+            >
+              <img
+                src="/logo.png"
+                alt="Apna Culturez"
+                className="hdr-apna-logo"
+                draggable="false"
+                onContextMenu={(e) => e.preventDefault()}
+              />
+            </a>
           </div>
         </div>
 
-        {/* Center: Mode (Vibe) Pill Navigation (Desktop/iPad only) */}
-        <div className="hdr-center desktop-nav">
-          <nav className="mode-nav" aria-label="Music Modes">
-            <CircularVibeNav currentMode={currentMode} onModeChange={onModeChange} isMobile={false} />
-          </nav>
-        </div>
+        {/* Desktop Center Infinite Circular Ring Nav */}
+        <nav className="hdr-nav desktop-only-nav">
+          <CircularVibeNav currentMode={currentMode} onModeChange={onModeChange} isMobile={false} />
+        </nav>
 
         {/* Mobile Top-Center Block: Time on top + Mehmaan directly below */}
         <div className="mobile-header-center">

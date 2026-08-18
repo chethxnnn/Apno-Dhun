@@ -302,21 +302,14 @@ export default function PanchayatDrawer({
         <div className="panchayat-messages" ref={messagesContainerRef}>
           {messages.length === 0 && (
             <div className="panchayat-empty-wrap">
-              <div className="panchayat-empty-card">
-                <p className="empty-hindi-quote">बोली ऐसी बोलो, मन भी राजी हो जावै।</p>
-                <div className="empty-prompts-block">
-                  <p className="empty-chalo-text">Chalo yeh bataao,</p>
-                  <div className="empty-questions-list">
-                    {randomQuestions.map((q, idx) => (
-                      <div key={idx} className="empty-question-item">
-                        <span className="question-bullet">•</span>
-                        <span className="question-text">{q}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <p className="empty-punchline">Panchayat karoooooooooooo!</p>
+              <p className="empty-hindi-quote">बोली ऐसी बोलो, मन भी राजी हो जावै।</p>
+              <p className="empty-chalo-text">Chalo yeh bataao,</p>
+              <div className="empty-questions-container">
+                {randomQuestions.map((q, idx) => (
+                  <p key={idx} className="empty-question-text">{q}</p>
+                ))}
               </div>
+              <p className="empty-punchline">Panchayat karoooooooooooo!</p>
             </div>
           )}
 

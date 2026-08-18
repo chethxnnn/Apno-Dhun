@@ -160,8 +160,9 @@ export const generalQuestions = [
 ];
 
 export function getRandomPanchayatQuestions() {
-  const q1 = musicQuestions[Math.floor(Math.random() * musicQuestions.length)];
-  const q2 = introQuestions[Math.floor(Math.random() * introQuestions.length)];
-  const q3 = generalQuestions[Math.floor(Math.random() * generalQuestions.length)];
-  return [q1, q2, q3];
+  const sets = [musicQuestions, introQuestions, generalQuestions];
+  const shuffledSets = [...sets].sort(() => 0.5 - Math.random());
+  const q1 = shuffledSets[0][Math.floor(Math.random() * shuffledSets[0].length)];
+  const q2 = shuffledSets[1][Math.floor(Math.random() * shuffledSets[1].length)];
+  return [q1, q2];
 }
