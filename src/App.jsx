@@ -101,15 +101,15 @@ export default function App() {
     }
   }, [currentMode, activeNewVibeKey, isAnnouncementOpen]);
 
-  // When Panchayat chat window is opened, automatically close and dismiss the announcement banner
+  // When Panchayat chat window or Queue is opened, automatically close and dismiss the announcement banner
   useEffect(() => {
-    if (isPanchayatOpen && isAnnouncementOpen) {
+    if ((isPanchayatOpen || isQueueOpen) && isAnnouncementOpen) {
       if (latestVibeAnnouncement?.vibeKey) {
         sessionStorage.setItem(`${latestVibeAnnouncement.vibeKey}_announcement_seen`, 'true');
       }
       setIsAnnouncementOpen(false);
     }
-  }, [isPanchayatOpen, isAnnouncementOpen]);
+  }, [isPanchayatOpen, isQueueOpen, isAnnouncementOpen]);
 
   // Mobile / iPad Shake Phone Gesture: Open Dhun Card on shake (disabled when Panchayat chat is open)
   useShake(() => {
@@ -346,6 +346,7 @@ export default function App() {
           e.preventDefault();
           setIsPanchayatOpen(false);
           setIsPatrikaOpen(false);
+          setIsAnnouncementOpen(false);
           setIsQueueOpen((prev) => !prev);
           break;
 
@@ -470,6 +471,7 @@ export default function App() {
         onToggleQueue={() => {
           setIsPanchayatOpen(false);
           setIsPatrikaOpen(false);
+          setIsAnnouncementOpen(false);
           setIsQueueOpen((prev) => !prev);
         }}
         onOpenPatrika={() => {

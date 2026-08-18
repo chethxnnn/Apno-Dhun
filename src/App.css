@@ -45,7 +45,9 @@
   pointer-events: none !important;
 }
 
-/* Panchayat Chat Open — Completely hide and disable announcement backdrop and modal */
+/* Queue or Panchayat Chat Open — Completely hide and disable announcement backdrop and modal */
+.app.queue-active .announcement-backdrop,
+.app.queue-active .announcement-modal-card,
 .app.panchayat-active .announcement-backdrop,
 .app.panchayat-active .announcement-modal-card {
   opacity: 0 !important;
