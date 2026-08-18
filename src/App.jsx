@@ -12,6 +12,7 @@ import VibeAnnouncementModal from './components/VibeAnnouncementModal';
 import InstallPwaBanner from './components/InstallPwaBanner';
 import KeycapLegendBar from './components/KeycapLegendBar';
 import PanchayatDrawer from './components/PanchayatDrawer';
+import OpenInChromeBanner from './components/OpenInChromeBanner';
 import { useYouTubePlayer } from './hooks/useYouTubePlayer';
 import { useLiveListeners } from './hooks/useLiveListeners';
 import { useShake } from './hooks/useShake';
@@ -494,6 +495,9 @@ export default function App() {
 
       {/* Add to Home Screen PWA Install Banner */}
       <InstallPwaBanner />
+
+      {/* Android Instagram Open in Chrome Banner */}
+      <OpenInChromeBanner />
 
       {/* Royal Patrika Card Generator Modal */}
       <PatrikaModal
