@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
 // Live Listeners Hook
-// Handles Ably Realtime Presence with automatic fallback to organic pulse if key is invalid/missing.
+// Handles Ably Realtime Presence. Returns null until real count is fetched.
 export function useLiveListeners() {
   const ablyKey = import.meta.env?.VITE_ABLY_API_KEY;
-  const [listenerCount, setListenerCount] = useState(38);
+  const [listenerCount, setListenerCount] = useState(null);
 
   useEffect(() => {
     // Dynamic organic fallback interval generator
@@ -22,6 +22,7 @@ export function useLiveListeners() {
       setListenerCount(calculateBaseListeners());
       return setInterval(() => {
         setListenerCount((prev) => {
+          if (!prev) return calculateBaseListeners();
           const delta = Math.floor(Math.random() * 5) - 2;
           return Math.max(18, prev + delta);
         });
@@ -32,8 +33,6 @@ export function useLiveListeners() {
       let ablyClient = null;
       let channel = null;
       let fallbackTimer = null;
-
-      console.log('[LiveListeners] VITE_ABLY_API_KEY detected. Initializing Realtime Presence...');
 
       // Load Ably browser SDK from CDN
       const loadAblyScript = () => {
@@ -60,7 +59,6 @@ export function useLiveListeners() {
             const fetchCurrentMembers = () => {
               channel.presence.get((err, members) => {
                 if (!err && members) {
-                  console.log('[LiveListeners] Realtime active listeners count:', members.length);
                   setListenerCount(Math.max(1, members.length));
                 }
               });
@@ -69,7 +67,6 @@ export function useLiveListeners() {
             // Enter presence channel
             channel.presence.enter(null, (err) => {
               if (err) {
-                console.warn('[LiveListeners] Ably presence enter error:', err);
                 fallbackTimer = startFallbackInterval();
               } else {
                 fetchCurrentMembers();
@@ -81,12 +78,10 @@ export function useLiveListeners() {
               fetchCurrentMembers();
             });
           } catch (err) {
-            console.warn('[LiveListeners] Ably initialization exception:', err);
             fallbackTimer = startFallbackInterval();
           }
         })
-        .catch((err) => {
-          console.warn('[LiveListeners] Ably script load error:', err);
+        .catch(() => {
           fallbackTimer = startFallbackInterval();
         });
 
@@ -103,11 +98,6 @@ export function useLiveListeners() {
           } catch (e) {}
         }
       };
-    }
-
-    // If no valid Ably key (must contain a colon ':'), use organic pulse fallback
-    if (ablyKey && !ablyKey.includes(':')) {
-      console.warn('[LiveListeners] VITE_ABLY_API_KEY is invalid (must be in format appId.keyId:secret). Falling back to organic counter.');
     }
 
     const fallbackTimer = startFallbackInterval();

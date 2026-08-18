@@ -6,13 +6,15 @@ export default function LiveListeners({ count }) {
   const prevCountRef = useRef(count);
 
   useEffect(() => {
-    if (prevCountRef.current !== count) {
+    if (prevCountRef.current !== count && count) {
       prevCountRef.current = count;
       setIsBlinking(true);
       const timer = setTimeout(() => setIsBlinking(false), 600);
       return () => clearTimeout(timer);
     }
   }, [count]);
+
+  if (!count) return null;
 
   return (
     <div className="live-listeners-bare">
