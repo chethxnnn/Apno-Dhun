@@ -1,28 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=overlays-content" />
+    <title>Apno Dhun 🎵 — Free Rajasthani Music Streaming | लोक, ब्याव, भक्ति & DHH</title>
+    
+    <!-- Primary Search & SEO Metadata -->
+    <meta name="description" content="सुणो राजस्थान री धरती रो संगीत अपणा अंदाज में। Stream trending Rajasthani Folk, Byaav (Wedding), Bhakti (Bhajan), and Desi Hip Hop (DHH Rap) online for free with live Panchayat chat & lyrics." />
+    <meta name="keywords" content="Rajasthani songs, Marwari gaana, राजस्थानी गीत, Rajasthani folk songs, Rajasthani wedding songs, byaav geet, Kesariya Balam, Chaudhary song, Mame Khan, Khatu Shyam bhajan, Ramdev ji bhajan, Rajasthani DHH, Desi Hip Hop Rajasthan, Apno Dhun, Apna Culturez, listen Rajasthani music online free" />
+    <meta name="author" content="Apna Culturez" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="canonical" href="https://apnodhun.in/" />
+
+    <!-- Geo & Regional Search Targeting -->
+    <meta name="geo.region" content="IN-RJ" />
+    <meta name="geo.placename" content="Rajasthan, India" />
+    <meta name="geo.position" content="26.9124;75.7873" />
+    <meta name="ICBM" content="26.9124, 75.7873" />
+    <meta name="language" content="Hindi, Rajasthani, English" />
+
+    <!-- Brand Icons & PWA -->
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Apno Dhun" />
+    <meta name="application-name" content="Apno Dhun" />
+    <meta name="theme-color" content="#08080A" />
+
+    <!-- Typography Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&family=Oswald:wght@500;600;700&family=Caveat:wght@600;700&family=Sacramento&family=Satisfy&family=Inter:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
-    <title>Apno Dhun</title>
-    <meta name="description" content="Rajasthani music — Folk, Wedding, Devotional & Trending — curated by Apna Culturez." />
-    <meta name="theme-color" content="#C41E3A" />
-    <meta property="og:title" content="Apno Dhun — Apna Culturez" />
-    <meta property="og:description" content="The music of Rajasthan, in our own style." />
-    <meta property="og:type" content="website" />
     <link rel="preload" as="image" href="/logo.png" />
+
+    <!-- Schema.org JSON-LD Structured Data for Google & AI Search Engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://apnodhun.in/#webapp",
+          "name": "Apno Dhun",
+          "alternateName": ["अपणो धुन", "ApnoDhun", "Apna Dhun"],
+          "url": "https://apnodhun.in/",
+          "description": "Free Rajasthani cultural music streaming platform featuring authentic Folk, Wedding (Byaav), Devotional (Bhakti), and Desi Hip Hop (DHH) tracks with live Panchayat community chat.",
+          "applicationCategory": "MultimediaApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "inLanguage": ["hi", "raj", "en"],
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "INR"
+          },
+          "creator": {
+            "@type": "Organization",
+            "@id": "https://apnodhun.in/#creator",
+            "name": "Apna Culturez",
+            "url": "https://instagram.com/apna.culturez",
+            "sameAs": [
+              "https://instagram.com/apna.culturez"
+            ]
+          }
+        },
+        {
+          "@type": "MusicPlaylist",
+          "@id": "https://apnodhun.in/#playlist-folk",
+          "name": "Lok Ri Dhun (लोक री धुन - Rajasthani Folk)",
+          "numTracks": 10,
+          "genre": "Rajasthani Folk",
+          "description": "Timeless Rajasthani folk classics including Kesariya Balam, Chaudhary by Amit Trivedi & Mame Khan, Ghoomar, and Padharo Mhare Des."
+        },
+        {
+          "@type": "MusicPlaylist",
+          "@id": "https://apnodhun.in/#playlist-wedding",
+          "name": "Byaav Ra Geet (ब्याव रा गीत - Wedding Songs)",
+          "numTracks": 10,
+          "genre": "Rajasthani Wedding Folk",
+          "description": "Rajputana and Marwari wedding celebrations, Banna Banni songs including Banna Re Baga Me, Moruda, and Pallo Latke."
+        },
+        {
+          "@type": "MusicPlaylist",
+          "@id": "https://apnodhun.in/#playlist-dhh",
+          "name": "Rajasthani DHH (देसी हिप हॉप)",
+          "numTracks": 10,
+          "genre": "Desi Hip Hop, Rajasthani Rap",
+          "description": "Underground Rajasthani hip hop and modern street rap from Rajasthan."
+        },
+        {
+          "@type": "MusicPlaylist",
+          "@id": "https://apnodhun.in/#playlist-devotional",
+          "name": "Bhagwan Ri Bhakti (भगवान री भक्ति - Bhajans)",
+          "numTracks": 10,
+          "genre": "Devotional, Bhajan",
+          "description": "Sacred Marwari devotional bhajans of Khatu Shyam, Baba Ramdev Ji, Meera Bai, and Shreenathji."
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Semantic SEO Fallback Crawlable by Googlebot & AI Web Scrapers before JS hydration -->
+      <noscript>
+        <header>
+          <h1>Apno Dhun — राजस्थान री धरती रो संगीत</h1>
+          <p>The music of Rajasthan, in our own style. Curated by Apna Culturez.</p>
+        </header>
+        <main>
+          <section>
+            <h2>लोक री धुन (Rajasthani Folk Songs)</h2>
+            <p>Listen to Kesariya Balam, Padharo Mhare Des, Gorband Nakhralo, Nimbuda, Ghoomar, Chaudhary by Amit Trivedi ft. Mame Khan.</p>
+          </section>
+          <section>
+            <h2>ब्याव रा गीत (Rajasthani Wedding Songs)</h2>
+            <p>Listen to Banna Re Baga Me, Banni Tharo Banno Diwano, Pallo Latke, Moruda, Suvatiyo.</p>
+          </section>
+          <section>
+            <h2>भगवान री भक्ति (Marwari Bhajans)</h2>
+            <p>Listen to Khatu Shyam Bhajan, Baba Ramdev Ji Bhajan, Meera Bai Bhajan, Shreenathji Aarti.</p>
+          </section>
+          <section>
+            <h2>देसी हिप हॉप (Rajasthani DHH & Rap)</h2>
+            <p>Underground Rajasthani Hip Hop and modern street rap.</p>
+          </section>
+        </main>
+      </noscript>
+    </div>
     <script>
       (function() {
         try {

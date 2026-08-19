@@ -26,7 +26,19 @@ import { Analytics } from '@vercel/analytics/react';
 const GHUNGROO_VIDEO_ID = 'CvCD8ZEoIes';
 
 export default function App() {
-  const [currentMode, setCurrentMode] = useState('wedding');
+  const [currentMode, setCurrentMode] = useState(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        const vibe = (params.get('vibe') || params.get('v') || '').toLowerCase();
+        const validModes = ['folk', 'wedding', 'dhh', 'trending', 'devotional'];
+        if (validModes.includes(vibe)) {
+          return vibe;
+        }
+      }
+    } catch (e) {}
+    return 'wedding';
+  });
   const [activePlaylists, setActivePlaylists] = useState(initialPlaylists);
   const [cinemaMode, setCinemaMode] = useState(false);
   const [isQueueOpen, setIsQueueOpen] = useState(false);

@@ -1,0 +1,47 @@
+# Apno Dhun (अपणो धुन)
+
+> राजस्थान री धरती रो संगीत, अपणा अंदाज में सुणो।
+> The ultimate Rajasthani cultural music streaming platform by Apna Culturez.
+
+## Overview
+Apno Dhun (https://apnodhun.in) is a free, web-based music streaming sanctuary dedicated to preserving, celebrating, and modernizing Rajasthani heritage music, folk traditions, devotional bhajans, and underground Desi Hip Hop (DHH).
+
+- **Website**: https://apnodhun.in
+- **Creator / Curation**: Apna Culturez (https://instagram.com/apna.culturez)
+- **Access**: 100% Free, no subscription or registration required.
+- **Platforms**: Mobile Web (PWA), iOS Safari, Android Chrome, Desktop, iPad.
+
+## Music Categories & Playlists
+
+### 1. Lok (लोक री धुन - Authentic Rajasthani Folk)
+- **Description**: Timeless Rajasthani folk classics celebrating the desert, bravery, love, and rural soul.
+- **Top Songs**: Kesariya Balam, Padharo Mhare Des, Gorband Nakhralo, Nimbuda Nimbuda, Ghoomar, Chaudhary (Amit Trivedi ft. Mame Khan).
+- **Artists**: Mame Khan, Ila Arun, Traditional Manganiyar & Langa folk musicians.
+- **Direct Link**: https://apnodhun.in/?vibe=folk
+
+### 2. Byaav (ब्याव रा गीत - Wedding & Banna Banni Bangers)
+- **Description**: Authentic songs for royal Rajputana and Marwari wedding celebrations, Sangeet, and rituals.
+- **Top Songs**: Banna Re Baga Me, Banni Tharo Banno Diwano, Pallo Latke, Moruda, Suvatiyo.
+- **Direct Link**: https://apnodhun.in/?vibe=wedding
+
+### 3. Bhakti (भगवान री भक्ति - Devotional & Marwari Bhajans)
+- **Description**: Spiritual awakening through the poetry of Meera Bai, Baba Ramdev Ji, and Khatu Shyam.
+- **Top Songs**: Khatu Shyam Bhajan, Baba Ramdev Ji Bhajan, Meera Bai Bhajan, Shreenathji Aarti, Jai Jai Rajasthan.
+- **Direct Link**: https://apnodhun.in/?vibe=devotional
+
+### 4. DHH (देसी हिप हॉप - Rajasthani Rap & Underground Hip Hop)
+- **Description**: The cutting-edge new wave of Rajasthani youth culture blending traditional folk rhythms with hard-hitting 808s and Marwari bars.
+- **Direct Link**: https://apnodhun.in/?vibe=dhh
+
+### 5. Trend (नवो ट्रेंड - Contemporary & Viral Rajasthani Hits)
+- **Description**: Chart-topping modern Rajasthani tracks trending globally.
+- **Top Songs**: Loor, Mharo Rajasthan, Balam Thanedar, Tejaji Song.
+- **Direct Link**: https://apnodhun.in/?vibe=trending
+
+## Unique Interactive Features
+- **Panchayat Live Community Chat**: A real-time community chat room where listeners interact using authentic Rajasthani monikers (Ranisa, Banna, Thakur Sahab, Hukum, Choudhary Sahab) and share songs directly.
+- **Geet Maala (गीत माला)**: An interactive queue viewer with live track durations and instant category switching.
+- **Royal Patrika Card Generator**: A 1-tap generator creating aesthetic Rajasthani wedding-invitation style cards for sharing music to Instagram Stories and WhatsApp Status.
+- **Live Mehmaan (मेहमान Counter)**: Real-time listener counter celebrating every visitor as an honored guest.
+- **Ghungroo (घुंघरू Percussion)**: Interactive audio chimes that trigger on keypress and tap.
+- **PWA (Progressive Web App)**: Installable directly to phone home screens as a native music app.
