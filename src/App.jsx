@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react';
 import './App.css';
 import Header from './components/Header';
 import BackgroundLayer from './components/BackgroundLayer';
@@ -7,7 +7,7 @@ import Player from './components/Player';
 import YouTubeEmbed from './components/YouTubeEmbed';
 import LiveListeners from './components/LiveListeners';
 import GeetMaalaModal from './components/GeetMaalaModal';
-import PatrikaModal from './components/PatrikaModal';
+const PatrikaModal = lazy(() => import('./components/PatrikaModal'));
 import VibeAnnouncementModal from './components/VibeAnnouncementModal';
 import InstallPwaBanner from './components/InstallPwaBanner';
 import KeycapLegendBar from './components/KeycapLegendBar';
@@ -511,14 +511,18 @@ export default function App() {
       {/* Android Instagram Open in Chrome Banner */}
       <OpenInChromeBanner />
 
-      {/* Royal Patrika Card Generator Modal */}
-      <PatrikaModal
-        isOpen={isPatrikaOpen}
-        onClose={() => setIsPatrikaOpen(false)}
-        currentTrack={currentTrack}
-        currentMode={currentMode}
-        listenerCount={listenerCount}
-      />
+      {/* Royal Patrika Card Generator Modal (Lazy-Loaded) */}
+      <Suspense fallback={null}>
+        {isPatrikaOpen && (
+          <PatrikaModal
+            isOpen={isPatrikaOpen}
+            onClose={() => setIsPatrikaOpen(false)}
+            currentTrack={currentTrack}
+            currentMode={currentMode}
+            listenerCount={listenerCount}
+          />
+        )}
+      </Suspense>
 
       {/* 6-Second Automated New Vibe Announcement Popup Modal */}
       {isNewVibeActive() && (
