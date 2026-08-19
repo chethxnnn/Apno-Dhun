@@ -13,6 +13,7 @@ import InstallPwaBanner from './components/InstallPwaBanner';
 import KeycapLegendBar from './components/KeycapLegendBar';
 import PanchayatDrawer from './components/PanchayatDrawer';
 import OpenInChromeBanner from './components/OpenInChromeBanner';
+import SplashScreen from './components/SplashScreen';
 import { useYouTubePlayer } from './hooks/useYouTubePlayer';
 import { useLiveListeners } from './hooks/useLiveListeners';
 import { useShake } from './hooks/useShake';
@@ -49,6 +50,18 @@ export default function App() {
   const [panchayatMessages, setPanchayatMessages] = useState([]);
   const [panchayatIdentity, setPanchayatIdentity] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
+  const [showSplash, setShowSplash] = useState(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        return !sessionStorage.getItem('apno_dhun_splash_seen');
+      }
+    } catch (e) {}
+    return true;
+  });
+
+  const handleSplashComplete = useCallback(() => {
+    setShowSplash(false);
+  }, []);
 
   const ghungrooContainerRef = useRef(null);
   const ghungrooPlayerRef = useRef(null);
@@ -439,7 +452,12 @@ export default function App() {
         currentMode={currentMode}
       />
 
-      <Header currentMode={currentMode} onModeChange={handleModeChange} listenerCount={listenerCount} />
+      <Header
+        currentMode={currentMode}
+        onModeChange={handleModeChange}
+        listenerCount={listenerCount}
+        showSplash={showSplash}
+      />
 
       {/* Live Listeners Counter below Header (Mehmaan with Safa Icon) */}
       <LiveListeners count={listenerCount} />
@@ -553,6 +571,9 @@ export default function App() {
 
       {/* Floating Glassmorphic Toast Notification */}
       {toastMessage && <div className="shortcut-toast">{toastMessage}</div>}
+
+      {/* First-Launch Royal Splash Screen */}
+      {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
 
       {/* Vercel Web Analytics */}
       <Analytics />

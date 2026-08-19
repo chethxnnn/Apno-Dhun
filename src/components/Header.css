@@ -49,6 +49,17 @@
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.6));
+  transition: opacity 0.3s ease;
+}
+
+.hdr-top-logo.hdr-logo-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.hdr-top-logo.hdr-logo-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .brand-cross {

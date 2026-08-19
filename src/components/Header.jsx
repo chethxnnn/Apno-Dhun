@@ -21,7 +21,7 @@ function getOrdinalDate(date = new Date()) {
   return `${day}${suffix} ${month}, ${year}`;
 }
 
-export default function Header({ currentMode, onModeChange, listenerCount }) {
+export default function Header({ currentMode, onModeChange, listenerCount, showSplash }) {
   const [timeStr, setTimeStr] = useState('');
   const [secStr, setSecStr] = useState('');
   const [ampmStr, setAmpmStr] = useState('');
@@ -64,7 +64,7 @@ export default function Header({ currentMode, onModeChange, listenerCount }) {
               <img
                 src="/apno-dhun-logo.png"
                 alt="Apno Dhun"
-                className="hdr-top-logo"
+                className={`hdr-top-logo ${showSplash ? 'hdr-logo-hidden' : 'hdr-logo-visible'}`}
                 draggable="false"
                 onContextMenu={(e) => e.preventDefault()}
               />
