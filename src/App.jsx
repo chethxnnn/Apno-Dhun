@@ -246,14 +246,26 @@ export default function App() {
           ...prev,
           ...livePlaylists,
         }));
-        // Select a fresh random track across the full live playlist of the active vibe on enter
         const liveCurrentPl = livePlaylists[currentMode];
         if (liveCurrentPl && liveCurrentPl.length > 0) {
-          loadNewPlaylist(liveCurrentPl);
+          let targetIdx = -1;
+          let targetSongId = null;
+          try {
+            targetSongId = localStorage.getItem('apno_dhun_last_song_id');
+            if (targetSongId) {
+              targetIdx = liveCurrentPl.findIndex((t) => t.id === targetSongId);
+            }
+          } catch (e) {}
+
+          if (targetIdx !== -1 && targetSongId) {
+            loadSpecificTrack(liveCurrentPl, targetIdx, targetSongId);
+          } else {
+            loadNewPlaylist(liveCurrentPl);
+          }
         }
       }
     });
-  }, []);
+  }, [currentMode, loadSpecificTrack, loadNewPlaylist]);
 
   const showToast = useCallback((msg) => {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);

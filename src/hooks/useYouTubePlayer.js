@@ -41,6 +41,7 @@ export function useYouTubePlayer(playlist) {
   const intervalRef = useRef(null);
   const silentAudioRef = useRef(null);
   const pendingPlayRef = useRef(false);
+  const pendingVideoIdRef = useRef(null);
 
   const getRandomIndex = (len) => (len > 0 ? Math.floor(Math.random() * len) : 0);
 
@@ -52,7 +53,16 @@ export function useYouTubePlayer(playlist) {
   const [volume, setVolumeState] = useState(100);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(() => getRandomIndex(playlist.length));
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(() => {
+    try {
+      const savedSongId = localStorage.getItem('apno_dhun_last_song_id');
+      if (savedSongId && Array.isArray(playlist)) {
+        const found = playlist.findIndex((t) => t.id === savedSongId);
+        if (found !== -1) return found;
+      }
+    } catch (e) {}
+    return getRandomIndex(playlist.length);
+  });
   const [metaCache, setMetaCache] = useState({});
 
   const playlistRef = useRef(playlist);
@@ -183,16 +193,22 @@ export function useYouTubePlayer(playlist) {
       const track = playlistRef.current[i];
       if (track?.id) {
         fetchTrackMeta(track.id);
+        try {
+          localStorage.setItem('apno_dhun_last_song_id', track.id);
+        } catch (e) {}
       }
       if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
         try {
-          playerRef.current.loadVideoById(playlistRef.current[i].id);
+          playerRef.current.loadVideoById(track.id);
           if (typeof playerRef.current.playVideo === 'function') {
             playerRef.current.playVideo();
           }
         } catch (e) {
           console.warn('loadVideoById call failed:', e);
         }
+      } else if (track?.id) {
+        pendingVideoIdRef.current = track.id;
+        pendingPlayRef.current = true;
       }
     },
     [fetchTrackMeta]
@@ -223,7 +239,17 @@ export function useYouTubePlayer(playlist) {
 
   useEffect(() => {
     let mounted = true;
-    const initialIndex = getRandomIndex(playlist.length);
+    let initialIndex = 0;
+    try {
+      const savedSongId = localStorage.getItem('apno_dhun_last_song_id');
+      if (savedSongId && Array.isArray(playlist)) {
+        const found = playlist.findIndex((t) => t.id === savedSongId);
+        if (found !== -1) initialIndex = found;
+      }
+    } catch (e) {}
+    if (initialIndex === 0 && !localStorage.getItem('apno_dhun_last_song_id')) {
+      initialIndex = getRandomIndex(playlist.length);
+    }
     setCurrentTrackIndex(initialIndex);
 
     loadYouTubeAPI().then(() => {
@@ -232,10 +258,13 @@ export function useYouTubePlayer(playlist) {
         try { playerRef.current.destroy(); } catch (e) {}
       }
 
+      const initialVideoId = pendingVideoIdRef.current || playlist[initialIndex]?.id || playlist[0]?.id || '';
+      pendingVideoIdRef.current = null;
+
       playerRef.current = new window.YT.Player(containerRef.current, {
         height: '240',
         width: '240',
-        videoId: playlist[initialIndex]?.id || playlist[0]?.id || '',
+        videoId: initialVideoId,
         playerVars: {
           autoplay: 0,
           controls: 0,
@@ -253,7 +282,6 @@ export function useYouTubePlayer(playlist) {
             if (mounted) {
               setIsReady(true);
               setIsBuffering(false);
-              updateMetaFromPlayer();
 
               try {
                 const iframe = event.target?.getIframe?.() || containerRef.current?.querySelector?.('iframe');
@@ -263,18 +291,46 @@ export function useYouTubePlayer(playlist) {
                 }
               } catch (err) {}
 
-              // If user tapped Play before iframe was ready, honor it now
-              if (pendingPlayRef.current) {
+              // If a video ID was queued before iframe was ready, load it now!
+              if (pendingVideoIdRef.current) {
+                const vid = pendingVideoIdRef.current;
+                pendingVideoIdRef.current = null;
+                try {
+                  event.target.loadVideoById(vid);
+                  if (pendingPlayRef.current) {
+                    pendingPlayRef.current = false;
+                    event.target.playVideo();
+                  }
+                } catch (e) {}
+              } else if (pendingPlayRef.current) {
                 pendingPlayRef.current = false;
                 try {
                   event.target.playVideo();
                 } catch (e) {}
               }
+
+              updateMetaFromPlayer();
             }
           },
           onStateChange: (e) => {
             if (!mounted) return;
             updateMetaFromPlayer();
+
+            // Auto-sync UI index with currently active YouTube video
+            try {
+              const videoData = playerRef.current?.getVideoData?.();
+              const activeVid = videoData?.video_id;
+              if (activeVid && playlistRef.current) {
+                const activeIdx = playlistRef.current.findIndex((t) => t.id === activeVid);
+                if (activeIdx !== -1 && activeIdx !== trackIndexRef.current) {
+                  setCurrentTrackIndex(activeIdx);
+                  try {
+                    localStorage.setItem('apno_dhun_last_song_id', activeVid);
+                  } catch (err) {}
+                }
+              }
+            } catch (err) {}
+
             switch (e.data) {
               case -1: // UNSTARTED
               case window.YT.PlayerState.PAUSED:
@@ -328,20 +384,35 @@ export function useYouTubePlayer(playlist) {
   const loadNewPlaylist = useCallback(
     (newPl) => {
       playlistRef.current = newPl;
-      const initialIdx = getRandomIndex(newPl.length);
+      let initialIdx = -1;
+      try {
+        const savedSongId = localStorage.getItem('apno_dhun_last_song_id');
+        if (savedSongId) {
+          initialIdx = newPl.findIndex((t) => t.id === savedSongId);
+        }
+      } catch (e) {}
+      if (initialIdx === -1) {
+        initialIdx = getRandomIndex(newPl.length);
+      }
       setCurrentTrackIndex(initialIdx);
       setCurrentTime(0);
       setDuration(0);
       setIsBuffering(false);
-      if (newPl[initialIdx]?.id) {
-        fetchTrackMeta(newPl[initialIdx].id);
-      }
-      if (playerRef.current && typeof playerRef.current.loadVideoById === 'function' && newPl[initialIdx]) {
+      const targetVideoId = newPl[initialIdx]?.id;
+      if (targetVideoId) {
+        fetchTrackMeta(targetVideoId);
         try {
-          playerRef.current.loadVideoById(newPl[initialIdx].id);
+          localStorage.setItem('apno_dhun_last_song_id', targetVideoId);
+        } catch (e) {}
+      }
+      if (playerRef.current && typeof playerRef.current.loadVideoById === 'function' && targetVideoId) {
+        try {
+          playerRef.current.loadVideoById(targetVideoId);
         } catch (e) {
           console.warn('loadNewPlaylist loadVideoById error:', e);
         }
+      } else if (targetVideoId) {
+        pendingVideoIdRef.current = targetVideoId;
       }
     },
     [fetchTrackMeta]
@@ -365,6 +436,9 @@ export function useYouTubePlayer(playlist) {
       const videoId = youtubeId || newPl[finalIdx]?.id;
       if (videoId) {
         fetchTrackMeta(videoId);
+        try {
+          localStorage.setItem('apno_dhun_last_song_id', videoId);
+        } catch (e) {}
       }
       startSilentAudio();
       if (playerRef.current && typeof playerRef.current.loadVideoById === 'function' && videoId) {
@@ -373,6 +447,8 @@ export function useYouTubePlayer(playlist) {
         } catch (e) {
           console.warn('loadSpecificTrack error:', e);
         }
+      } else if (videoId) {
+        pendingVideoIdRef.current = videoId;
       }
     },
     [fetchTrackMeta, startSilentAudio]
