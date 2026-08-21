@@ -3,13 +3,13 @@ import html2canvas from 'html2canvas';
 import './PatrikaModal.css';
 
 const vibeCardTemplates = {
-  folk: '/cards/folk.png',
-  wedding: '/cards/wedding.png',
-  dhh: '/cards/dhh.png',
-  trending: '/cards/trending.png',
-  trend: '/cards/trending.png',
-  devotional: '/cards/devotional.png',
-  bhakti: '/cards/devotional.png',
+  folk: '/cards/folk.webp',
+  wedding: '/cards/wedding.webp',
+  dhh: '/cards/dhh.webp',
+  trending: '/cards/trending.webp',
+  trend: '/cards/trending.webp',
+  devotional: '/cards/devotional.webp',
+  bhakti: '/cards/devotional.webp',
 };
 
 export default function PatrikaModal({
@@ -24,10 +24,10 @@ export default function PatrikaModal({
 
   if (!isOpen || !currentTrack) return null;
 
-  const cardTemplateUrl = vibeCardTemplates[currentMode] || '/cards/folk.png';
+  const cardTemplateUrl = vibeCardTemplates[currentMode] || '/cards/folk.webp';
   const thumbUrl = currentTrack
     ? `https://img.youtube.com/vi/${currentTrack.id}/hqdefault.jpg`
-    : '/logo.png';
+    : '/logo.webp';
 
   const fullTitle = currentTrack.title || 'Rajasthani Song';
   const shareText = `Ram Ram Sa! I am listening to "${fullTitle}" on Apno Dhun.\n\nApne favourite Rajasthani geet yahan suno!\nhttps://apnodhun.in`;

@@ -62,7 +62,7 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: url('/chat-wallpaper.png');
+  background-image: url('/chat-wallpaper.webp');
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;

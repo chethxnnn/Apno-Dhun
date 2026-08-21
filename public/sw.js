@@ -1,16 +1,27 @@
 // Apno Dhun Service Worker (PWA Offline Caching & High Performance)
-const CACHE_NAME = 'apnodhun-cache-v1';
+const CACHE_NAME = 'apnodhun-cache-v2';
 
-// Static assets to pre-cache on install
+// Static assets to pre-cache on install for 0ms loading
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
   '/favicon.png',
-  '/logo.png',
-  '/apno-dhun-logo.png',
-  '/safa-icon.png',
-  '/panchayat.png'
+  '/logo.webp',
+  '/apno-dhun-logo.webp',
+  '/safa-icon.webp',
+  '/panchayat.webp',
+  '/chat-icon.webp',
+  '/backgrounds/wedding.webp',
+  '/backgrounds/folk.webp',
+  '/backgrounds/rap-desktop.webp',
+  '/backgrounds/trending.webp',
+  '/backgrounds/devotional.webp',
+  '/titles/byaav.webp',
+  '/titles/lok.webp',
+  '/titles/dhh.webp',
+  '/titles/trend.webp',
+  '/titles/bhakti.webp',
 ];
 
 self.addEventListener('install', (event) => {

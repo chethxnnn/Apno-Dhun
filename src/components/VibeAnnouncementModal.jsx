@@ -5,7 +5,7 @@ export default function VibeAnnouncementModal({
   isOpen,
   onClose,
   onCheckOut,
-  posterImg = '/dhh-poster-popup.png',
+  posterImg = '/dhh-poster-popup.webp',
   vibeTitle = 'DHH',
 }) {
   const [render, setRender] = useState(isOpen);

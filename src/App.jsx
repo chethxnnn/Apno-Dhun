@@ -36,6 +36,10 @@ export default function App() {
         if (validModes.includes(vibe)) {
           return vibe;
         }
+        const savedVibe = localStorage.getItem('apno_dhun_last_vibe');
+        if (validModes.includes(savedVibe)) {
+          return savedVibe;
+        }
       }
     } catch (e) {}
     return 'wedding';
@@ -262,6 +266,9 @@ export default function App() {
   const handleModeChange = useCallback(
     (mode) => {
       if (mode === currentMode) return;
+      try {
+        localStorage.setItem('apno_dhun_last_vibe', mode);
+      } catch (e) {}
       setCurrentMode(mode);
       const targetPl = activePlaylists[mode] || initialPlaylists[mode];
       loadNewPlaylist(targetPl);

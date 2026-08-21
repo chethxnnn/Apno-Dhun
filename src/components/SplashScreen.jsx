@@ -32,7 +32,7 @@ export default function SplashScreen({ onComplete }) {
       {/* Proportional Flying Logo Stage */}
       <div className={`splash-logo-stage ${isFlying ? 'flying-to-header' : ''}`}>
         <img
-          src="/apno-dhun-logo.png"
+          src="/apno-dhun-logo.webp"
           alt="Apno Dhun"
           className="splash-logo-img"
         />

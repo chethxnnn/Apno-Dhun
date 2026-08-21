@@ -10,7 +10,7 @@
  */
 export const latestVibeAnnouncement = {
   vibeKey: 'dhh',
-  posterImg: '/dhh-poster-popup.png',
+  posterImg: '/dhh-poster-popup.webp',
   releaseDate: '2026-08-17T00:00:00Z',
   durationDays: 7, // 1 week active window
 };

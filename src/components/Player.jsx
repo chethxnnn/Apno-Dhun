@@ -2,9 +2,9 @@ import { useRef, useCallback, useState, useEffect } from 'react';
 import './Player.css';
 
 const modeSeekPointerImages = {
-  wedding: '/player-icons/groom.png',
-  folk: '/player-icons/dhol.png',
-  trending: '/player-icons/fire.png',
+  wedding: '/player-icons/groom.webp',
+  folk: '/player-icons/dhol.webp',
+  trending: '/player-icons/fire.webp',
   devotional: null,
 };
 
@@ -289,7 +289,7 @@ export default function Player({
               title="Panchayat Chat (C)"
             >
               <img
-                src="/chat-icon.png"
+                src="/chat-icon.webp"
                 alt="Panchayat"
                 className="panchayat-btn-img"
                 draggable="false"
@@ -321,7 +321,7 @@ export default function Player({
                   title="Dhun Card (P)"
                 >
                   <img
-                    src="/dhun-button.png"
+                    src="/dhun-button.webp"
                     alt=""
                     className="dhun-pill-icon"
                     draggable="false"
@@ -338,7 +338,7 @@ export default function Player({
                   title="Panchayat Chat (C)"
                 >
                   <img
-                    src="/chat-icon.png"
+                    src="/chat-icon.webp"
                     alt="Panchayat"
                     className="panchayat-btn-img"
                     draggable="false"
@@ -467,7 +467,7 @@ export default function Player({
               {isWedding && (
                 <div className="seek-target-bride">
                   <img
-                    src="/player-icons/bride.png"
+                    src="/player-icons/bride.webp"
                     alt="Bride"
                     className="bride-seek-img"
                     draggable="false"
@@ -508,7 +508,7 @@ export default function Player({
         >
           <div className="desktop-panchayat-inner">
             <img
-              src="/chat-icon.png"
+              src="/chat-icon.webp"
               alt="Panchayat"
               className="desktop-panchayat-img"
               draggable="false"

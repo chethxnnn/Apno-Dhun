@@ -18,7 +18,7 @@ export default function LiveListeners({ count }) {
 
   return (
     <div className="live-listeners-bare">
-      <img src="/safa-icon.png" alt="Safa" className="safa-icon-big" />
+      <img src="/safa-icon.webp" alt="Safa" className="safa-icon-big" />
       <span className={`listeners-text-clean ${isBlinking ? 'count-blink' : ''}`}>
         <strong className="listeners-num-bold">{count}</strong> Mehmaan
       </span>

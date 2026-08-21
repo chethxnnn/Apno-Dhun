@@ -62,7 +62,7 @@ export default function Header({ currentMode, onModeChange, listenerCount, showS
               aria-label="Apno Dhun"
             >
               <img
-                src="/apno-dhun-logo.png"
+                src="/apno-dhun-logo.webp"
                 alt="Apno Dhun"
                 className={`hdr-top-logo ${showSplash ? 'hdr-logo-hidden' : 'hdr-logo-visible'}`}
                 draggable="false"
@@ -78,7 +78,7 @@ export default function Header({ currentMode, onModeChange, listenerCount, showS
               aria-label="Apna Culturez"
             >
               <img
-                src="/logo.png"
+                src="/logo.webp"
                 alt="Apna Culturez"
                 className="hdr-apna-logo"
                 draggable="false"
@@ -99,7 +99,7 @@ export default function Header({ currentMode, onModeChange, listenerCount, showS
           {listenerCount ? (
             <div className="mobile-center-listeners">
               <img
-                src="/safa-icon.png"
+                src="/safa-icon.webp"
                 alt="Safa"
                 className="mobile-safa-icon"
                 draggable="false"
@@ -123,7 +123,7 @@ export default function Header({ currentMode, onModeChange, listenerCount, showS
             aria-label="Apna Culturez on Instagram"
           >
             <img
-              src="/logo.png"
+              src="/logo.webp"
               alt="Apna Culturez"
               className="mobile-apna-logo-img"
               draggable="false"

@@ -316,7 +316,7 @@ export default function PanchayatDrawer({
         <div className="panchayat-header">
           <div className="panchayat-header-center">
             <img
-              src="/panchayat.png"
+              src="/panchayat.webp"
               alt="Panchayat"
               className="panchayat-main-logo"
             />
@@ -456,7 +456,7 @@ export default function PanchayatDrawer({
                 title="Share what you're listening to"
               >
                 <img
-                  src="/chat-icon.png"
+                  src="/chat-icon.webp"
                   alt="Share"
                   className="share-song-icon"
                   draggable="false"
