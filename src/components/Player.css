@@ -545,6 +545,13 @@
   transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.2s ease;
 }
 
+.play-morph-icon,
+.play-morph-icon svg,
+.play-morph-icon path,
+.play-morph-icon polygon {
+  fill: currentColor !important;
+}
+
 /* Queue Open Toggle Button Animation */
 .ctrl.queue-btn.open-close-active {
   background: rgba(255, 255, 255, 0.18);
