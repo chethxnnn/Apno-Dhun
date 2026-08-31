@@ -6,7 +6,7 @@ import { trackMatchesQuery, vibeLabelMap } from '../data/searchAliases';
 // Helper: Try to get a richer playlist for a vibe from localStorage cache
 function getCachedPlaylist(vibeKey) {
   try {
-    const cacheKey = `apno_dhun_yt_cache_${vibeKey}`;
+    const cacheKey = `apno_dhun_yt_cache_v2_${vibeKey}`;
     const cachedStr = localStorage.getItem(cacheKey);
     if (cachedStr) {
       const cachedData = JSON.parse(cachedStr);

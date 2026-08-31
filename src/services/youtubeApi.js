@@ -2,6 +2,7 @@ import { playlists as fallbackPlaylists, playlistIds } from '../data/playlists';
 
 const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 const CACHE_TTL_MS = 15 * 60 * 1000; // 15 Minutes Cache TTL
+const CACHE_VERSION = 'v2'; // Cache version to bust older 50-item caches
 
 export async function fetchLivePlaylist(vibeKey) {
   const playlistId = playlistIds[vibeKey];
@@ -9,9 +10,14 @@ export async function fetchLivePlaylist(vibeKey) {
 
   if (!playlistId) return fallback;
 
-  // 1. Check LocalStorage Cache
-  const cacheKey = `apno_dhun_yt_cache_${vibeKey}`;
+  // 1. Check LocalStorage Cache (v2 with pagination support)
+  const cacheKey = `apno_dhun_yt_cache_${CACHE_VERSION}_${vibeKey}`;
+  const legacyKey = `apno_dhun_yt_cache_${vibeKey}`;
+
   try {
+    // Purge legacy 50-item unversioned cache if present
+    localStorage.removeItem(legacyKey);
+
     const cachedStr = localStorage.getItem(cacheKey);
     if (cachedStr) {
       const cachedData = JSON.parse(cachedStr);
